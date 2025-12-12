@@ -16,6 +16,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CodeHighlighter } from "@/components/ui/code-highlighter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { useCat } from "@/context/cat-context";
+import { t, type LanguageType } from "@/lib/translations";
 
 const exampleUrlData = [
   {
@@ -45,7 +47,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export function UrlEncoderTool() {
+export function UrlEncoderTool({ lang = "en" as LanguageType }) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [mode, setMode] = useState<"encode" | "decode">("encode");
@@ -56,27 +58,35 @@ export function UrlEncoderTool() {
 
   const toolSectionRef = useRef<HTMLDivElement>(null);
 
+  const { spawnItem } = useCat();
+
   const encodeUrl = useCallback(() => {
     try {
       const encoded = encodeURIComponent(input);
       setOutput(encoded);
       setError(null);
+      if (input.trim()) {
+        spawnItem("fish");
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Encoding failed");
       setOutput("");
     }
-  }, [input]);
+  }, [input, spawnItem]);
 
   const decodeUrl = useCallback(() => {
     try {
       const decoded = decodeURIComponent(input);
       setOutput(decoded);
       setError(null);
+      if (input.trim()) {
+        spawnItem("fish");
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Invalid encoded string");
       setOutput("");
     }
-  }, [input]);
+  }, [input, spawnItem]);
 
   const handleConvert = useCallback(() => {
     if (mode === "encode") {
@@ -140,7 +150,7 @@ export function UrlEncoderTool() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          URL Encoder / Decoder
+          {t("urlEncoder.pageTitle", lang)}
         </motion.h1>
         <motion.p
           className="text-lg text-muted-foreground max-w-2xl mx-auto"
@@ -148,7 +158,7 @@ export function UrlEncoderTool() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          Encode or decode URLs and query parameters instantly
+          {t("urlEncoder.pageSubtitle", lang)}
         </motion.p>
 
         <motion.div
@@ -194,10 +204,10 @@ export function UrlEncoderTool() {
             >
               <TabsList className="mb-4 rounded-xl">
                 <TabsTrigger value="encode" className="rounded-lg">
-                  Encode/Decode
+                  {t("urlEncoder.encodeTab", lang)}
                 </TabsTrigger>
                 <TabsTrigger value="examples" className="rounded-lg">
-                  Examples
+                  {t("urlEncoder.examplesTab", lang)}
                 </TabsTrigger>
               </TabsList>
 
@@ -253,15 +263,17 @@ export function UrlEncoderTool() {
                         htmlFor="url-input"
                         className="text-sm font-medium"
                       >
-                        {mode === "encode" ? "Text to Encode" : "URL to Decode"}
+                        {mode === "encode"
+                          ? t("urlEncoder.inputLabel.encode", lang)
+                          : t("urlEncoder.inputLabel.decode", lang)}
                       </label>
                     </div>
                     <Textarea
                       id="url-input"
                       placeholder={
                         mode === "encode"
-                          ? "Enter text or URL to encode..."
-                          : "Enter encoded URL to decode..."
+                          ? t("urlEncoder.inputPlaceholder.encode", lang)
+                          : t("urlEncoder.inputPlaceholder.decode", lang)
                       }
                       className="min-h-[220px] font-mono text-sm pixel-input resize-none rounded-xl"
                       value={input}
@@ -290,7 +302,9 @@ export function UrlEncoderTool() {
                     transition={{ delay: 0.5 }}
                   >
                     <div className="flex items-center justify-between h-8 mb-2">
-                      <span className="text-sm font-medium">Result</span>
+                      <span className="text-sm font-medium">
+                        {t("urlEncoder.outputPlaceholder", lang)}
+                      </span>
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -475,7 +489,7 @@ export function UrlEncoderTool() {
               title: "100% Private",
               desc: "All processing happens in your browser",
             },
-          ].map((feature, _index) => (
+          ].map((feature) => (
             <motion.div
               key={feature.title}
               className="pixel-card p-4"

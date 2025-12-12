@@ -1,0 +1,63 @@
+export const home = {
+  "app.title": "DevTools - 無料オンライン開発者ツール",
+  "app.description":
+    "JSON整形、URLエンコード、Base64変換などの無料オンライン開発者ツール。",
+  "app.hero.title": "開発者ツール",
+  "app.hero.subtitle":
+    "開発者のための便利なツール集。高速、無料、プライバシー優先。",
+  "hero.badge": "100% 無料＆オープンソース",
+  "hero.title1": "必須の開発者",
+  "hero.title2": "ツール",
+  "hero.description":
+    "無料、高速、プライバシー重視のユーティリティ。完全にブラウザ内で動作します。",
+  "hero.viewAllTools": "すべてのツールを見る",
+  "hero.learnMore": "詳しく見る",
+  "hero.stats.tools": "開発者ツール",
+  "hero.stats.privacy": "プライバシー重視",
+  "hero.stats.data": "サーバーへのデータ送信",
+  "hero.stats.limit": "使用制限",
+  "toolsSection.title": "人気ツール",
+  "toolsSection.subtitle": "最も使われている開発者ユーティリティを探索",
+  "toolsSection.viewAll": "すべてのツールを見る",
+  "toolsSection.jsonFormatter.title": "JSON整形",
+  "toolsSection.jsonFormatter.description": "JSONデータを整形、検証、美化",
+  "toolsSection.base64.title": "Base64エンコーダー",
+  "toolsSection.base64.description":
+    "Base64文字列とファイルを即座にエンコード・デコード",
+  "toolsSection.hash.title": "ハッシュ生成ツール",
+  "toolsSection.hash.description": "MD5、SHA-1、SHA-256などのハッシュ値を生成",
+  "toolsSection.uuid.title": "UUID生成ツール",
+  "toolsSection.uuid.description": "アプリケーション用のユニークUUIDを生成",
+  "toolsSection.color.title": "カラーコンバーター",
+  "toolsSection.color.description": "HEX、RGB、HSLなどのカラー形式間で変換",
+  "toolsSection.qrcode.title": "QRコード生成ツール",
+  "toolsSection.qrcode.description": "URL、テキスト用のQRコードを作成",
+  "toolsSection.markdown.title": "Markdownプレビュー",
+  "toolsSection.markdown.description":
+    "Markdownをライブレンダリングでプレビュー",
+  "toolsSection.timestamp.title": "タイムスタンプ変換ツール",
+  "toolsSection.timestamp.description": "Unixタイムスタンプと日付間で変換",
+  "featuresSection.title": "なぜDevTools？",
+  "featuresSection.subtitle":
+    "スピード、プライバシー、シンプルさを重視する開発者のために",
+  "featuresSection.fast.title": "超高速",
+  "featuresSection.fast.description":
+    "すべてのツールはブラウザ内でローカルに実行。",
+  "featuresSection.privacy.title": "プライバシー優先",
+  "featuresSection.privacy.description": "データはデバイスから離れません。",
+  "featuresSection.secure.title": "セキュア設計",
+  "featuresSection.secure.description": "監査可能なオープンソースコード。",
+  "featuresSection.offline.title": "オフライン対応",
+  "featuresSection.offline.description":
+    "一度読み込めば、インターネット接続なしで動作。",
+  "features.title": "特徴",
+  "features.free.title": "完全無料",
+  "features.free.description": "すべてのツールは完全無料、登録不要",
+  "features.privacy.title": "プライバシー優先",
+  "features.privacy.description": "すべての処理はブラウザ内で完結",
+  "features.offline.title": "オフライン対応",
+  "features.offline.description":
+    "ページ読み込み後、ほとんどのツールはネット接続なしで動作",
+  "features.fast.title": "超高速",
+  "features.fast.description": "サーバー通信なしで即座に結果を表示",
+};

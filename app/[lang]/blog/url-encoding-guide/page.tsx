@@ -10,6 +10,7 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import {
   MobileTableOfContents,
   TableOfContents,
@@ -40,6 +41,9 @@ const tocHeadings = [
 ];
 
 export default function UrlEncodingGuidePage() {
+  const params = useParams();
+  const lang = (params.lang as string) || "en";
+
   return (
     <article className="container mx-auto max-w-7xl px-4 py-12">
       {/* Back Button */}
@@ -48,7 +52,7 @@ export default function UrlEncodingGuidePage() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <Link href="/blog">
+        <Link href={`/${lang}/blog`}>
           <Button variant="ghost" className="mb-8 rounded-full">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
@@ -322,7 +326,7 @@ const url = \`\${baseUrl}?\${params.toString()}\`;`}</code>
             </p>
             <p>
               Try our{" "}
-              <Link href="/" className="text-accent hover:underline">
+              <Link href={`/${lang}`} className="text-accent hover:underline">
                 URL Encoder Tool
               </Link>{" "}
               now to quickly encode and decode your URLs!

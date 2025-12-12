@@ -1,0 +1,29 @@
+export const layout = {
+  "footer.copyright": "© 2025 DevTools",
+  "footer.builtWith": "Next.jsと最新技術で構築",
+  "footer.company": "会社",
+  "footer.aboutUs": "会社概要",
+  "footer.contact": "お問い合わせ",
+  "footer.resources": "リソース",
+  "footer.blog": "ブログ",
+  "footer.helpFaq": "ヘルプとFAQ",
+  "footer.legal": "法的情報",
+  "footer.privacyPolicy": "プライバシーポリシー",
+  "footer.termsOfService": "利用規約",
+  "footer.developer": "開発者",
+  "footer.sourceCode": "ソースコード",
+  "footer.githubProfile": "GitHub",
+  "metadata.title": "DevTools - 無料オンライン開発者ツール",
+  "metadata.description":
+    "JSON整形、URLエンコード、Base64変換などの無料オンライン開発者ツール。",
+  "metadata.keywords":
+    "開発者ツール, JSON整形, URLエンコード, Base64, ハッシュ生成, UUID",
+  "faq.title": "よくある質問",
+  "faq.privacy.question": "データは安全ですか？",
+  "faq.privacy.answer": "はい！すべての処理はブラウザ内で完結します。",
+  "faq.free.question": "これらのツールは無料ですか？",
+  "faq.free.answer": "はい、すべてのツールは完全無料でご利用いただけます。",
+  "faq.offline.question": "オフラインで使えますか？",
+  "faq.offline.answer":
+    "はい、ページの読み込み後、ほとんどのツールはインターネット接続なしで動作します。",
+};

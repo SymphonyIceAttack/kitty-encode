@@ -1,0 +1,52 @@
+export const urlEncoder = {
+  "urlEncoder.title": "URLエンコーダー/デコーダー",
+  "urlEncoder.description": "URLとクエリパラメータのエンコード・デコード",
+  "urlEncoder.pageTitle": "URLエンコーダー/デコーダー",
+  "urlEncoder.pageSubtitle":
+    "URLとクエリパラメータを即座にエンコード・デコード",
+  "urlEncoder.inputPlaceholder.encode":
+    "エンコードするテキストまたはURLを入力...",
+  "urlEncoder.inputPlaceholder.decode":
+    "デコードするエンコード済みURLを入力...",
+  "urlEncoder.inputLabel.encode": "エンコードするテキスト",
+  "urlEncoder.inputLabel.decode": "デコードするURL",
+  "urlEncoder.outputPlaceholder": "結果がここに表示されます...",
+  "urlEncoder.encodeBtn": "URLエンコード",
+  "urlEncoder.decodeBtn": "URLデコード",
+  "urlEncoder.swapBtn": "入れ替え & 変換",
+  "urlEncoder.encodeTab": "エンコード/デコード",
+  "urlEncoder.examplesTab": "サンプル",
+  "urlEncoder.examplesHint": "サンプルをクリックして読み込む：",
+  "urlEncoder.example1.title": "クエリパラメータ",
+  "urlEncoder.example2.title": "特殊文字を含むURL",
+  "urlEncoder.example3.title": "APIエンドポイント",
+  "urlEncoder.error.encode": "エンコード失敗",
+  "urlEncoder.error.decode": "無効なエンコード文字列",
+  "urlEncoder.seo.title": "URLエンコードとは？",
+  "urlEncoder.seo.description":
+    "URLエンコードは、URI内の情報をエンコードするメカニズムです。",
+  "urlEncoder.seo.featuresTitle": "主な機能",
+  "urlEncoder.seo.feature1.title": "URLエンコード",
+  "urlEncoder.seo.feature1.desc": "特殊文字をパーセントエンコードに変換",
+  "urlEncoder.seo.feature2.title": "URLデコード",
+  "urlEncoder.seo.feature2.desc": "エンコードされたURLを読める形式に復元",
+  "urlEncoder.seo.feature3.title": "シンタックスハイライト",
+  "urlEncoder.seo.feature3.desc": "読みやすいカラーコード出力",
+  "urlEncoder.seo.feature4.title": "100%プライベート",
+  "urlEncoder.seo.feature4.desc": "すべての処理がブラウザ内で実行",
+  "urlEncoder.seo.useCasesTitle": "一般的な使用例",
+  "urlEncoder.seo.useCase1": "APIリクエストのクエリパラメータをエンコード",
+  "urlEncoder.seo.useCase2": "URL内の非ASCII文字を変換",
+  "urlEncoder.seo.useCase3": "スペースや&などの特殊文字を処理",
+  "urlEncoder.seo.useCase4": "Web開発でエンコードされたURLをデバッグ",
+  "urlEncoder.seo.useCase5": "フォーム送信用のデータを準備",
+  "urlEncoder.faq.q1": "URLエンコードとは何ですか？",
+  "urlEncoder.faq.a1":
+    "URLエンコードは、文字をインターネット経由で送信可能な形式に変換します。",
+  "urlEncoder.faq.q2": "いつURLエンコードを使用すべきですか？",
+  "urlEncoder.faq.a2":
+    "URLにスペース、アンパサンド、または非ASCII文字が含まれている場合に使用してください。",
+  "urlEncoder.faq.q3": "データは安全ですか？",
+  "urlEncoder.faq.a3":
+    "はい、すべてのエンコードとデコードはブラウザ内で完全に実行されます。",
+};

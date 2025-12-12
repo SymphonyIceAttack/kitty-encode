@@ -1,41 +1,49 @@
+"use client";
+
 import { Globe, Lock, Shield, Zap } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
+import type { LanguageType } from "@/lib/translations";
 
 const features = [
   {
     icon: Zap,
-    title: "Lightning Fast",
-    description:
-      "All tools run locally in your browser with zero latency. No waiting for server responses.",
+    titleKey: "featuresSection.fast.title",
+    descriptionKey: "featuresSection.fast.description",
   },
   {
     icon: Shield,
-    title: "Privacy First",
-    description:
-      "Your data never leaves your device. No tracking, no analytics, no third-party services.",
+    titleKey: "featuresSection.privacy.title",
+    descriptionKey: "featuresSection.privacy.description",
   },
   {
     icon: Lock,
-    title: "Secure by Design",
-    description:
-      "Open source code you can audit. No hidden data collection or backdoors.",
+    titleKey: "featuresSection.secure.title",
+    descriptionKey: "featuresSection.secure.description",
   },
   {
     icon: Globe,
-    title: "Works Offline",
-    description:
-      "Once loaded, all tools work without an internet connection. Perfect for sensitive data.",
+    titleKey: "featuresSection.offline.title",
+    descriptionKey: "featuresSection.offline.description",
   },
 ];
 
-export function FeaturesSection() {
+interface FeaturesSectionProps {
+  lang: LanguageType;
+}
+
+export function FeaturesSection({ lang }: FeaturesSectionProps) {
+  const { t } = useTranslation(lang);
+
   return (
     <section className="py-20">
       <div className="container mx-auto max-w-6xl px-4">
         {/* Section Header */}
         <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">Why DevTools?</h2>
+          <h2 className="text-3xl font-bold tracking-tight">
+            {t("featuresSection.title")}
+          </h2>
           <p className="mt-2 text-muted-foreground">
-            Built for developers who value speed, privacy, and simplicity
+            {t("featuresSection.subtitle")}
           </p>
         </div>
 
@@ -44,13 +52,13 @@ export function FeaturesSection() {
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
-              <div key={feature.title} className="text-center">
+              <div key={feature.titleKey} className="text-center">
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
                   <Icon className="h-6 w-6 text-accent" />
                 </div>
-                <h3 className="mb-2 font-semibold">{feature.title}</h3>
+                <h3 className="mb-2 font-semibold">{t(feature.titleKey)}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {feature.description}
+                  {t(feature.descriptionKey)}
                 </p>
               </div>
             );

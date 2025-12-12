@@ -1,7 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 export default function GlobalNotFound() {
+  const params = useParams();
+  const lang = (params.lang as string) || "en";
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-zinc-50 via-white to-zinc-100 dark:from-zinc-950 dark:via-black dark:to-zinc-900 font-sans">
       <div className="text-center space-y-8 max-w-lg mx-auto px-6">
@@ -55,7 +61,7 @@ export default function GlobalNotFound() {
             asChild
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
           >
-            <Link href="/" className="flex items-center gap-2">
+            <Link href={`/${lang}`} className="flex items-center gap-2">
               <svg
                 className="w-4 h-4"
                 fill="none"

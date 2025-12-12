@@ -127,7 +127,6 @@ const cardVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
       stiffness: 300,
       damping: 24,
     },
@@ -140,7 +139,6 @@ const headerVariants = {
     opacity: 1,
     scale: 1,
     transition: {
-      type: "spring",
       stiffness: 300,
       damping: 24,
     },
@@ -213,13 +211,17 @@ export default function BlogPage() {
             Featured Articles
           </motion.h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {featuredPosts.map((post, index) => (
+            {featuredPosts.map((post, _index) => (
               <motion.div key={post.href} variants={cardVariants}>
                 <Link href={post.href}>
                   <motion.div
                     whileHover={{ y: -4, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    transition={{
+                      type: "spring" as const,
+                      stiffness: 400,
+                      damping: 17,
+                    }}
                   >
                     <Card className="group h-full transition-all hover:border-accent hover:shadow-lg hover:shadow-accent/10 rounded-2xl overflow-hidden">
                       <div className="aspect-video bg-muted relative overflow-hidden">
@@ -297,13 +299,17 @@ export default function BlogPage() {
             All Articles
           </motion.h2>
           <div className="space-y-4">
-            {regularPosts.map((post, index) => (
+            {regularPosts.map((post, _index) => (
               <motion.div key={post.href} variants={cardVariants}>
                 <Link href={post.href}>
                   <motion.div
                     whileHover={{ x: 8 }}
                     whileTap={{ scale: 0.99 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    transition={{
+                      type: "spring" as const,
+                      stiffness: 400,
+                      damping: 17,
+                    }}
                   >
                     <Card className="group transition-all hover:border-accent hover:shadow-md rounded-2xl overflow-hidden">
                       <div className="flex flex-col md:flex-row">

@@ -25,6 +25,7 @@ import {
 import { CodeHighlighter } from "@/components/ui/code-highlighter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { useCat } from "@/context/cat-context";
 import {
   analyzeJsonIssues,
   formatValidationErrors,
@@ -90,6 +91,8 @@ export function JsonFormatterTool() {
 
   const toolSectionRef = useRef<HTMLDivElement>(null);
 
+  const { spawnItem } = useCat();
+
   useEffect(() => {
     if (!input.trim()) {
       setValidation(null);
@@ -116,33 +119,37 @@ export function JsonFormatterTool() {
     if (validation && validation.valid && validation.parsed) {
       setOutput(JSON.stringify(validation.parsed, null, 2));
       setError(null);
+      spawnItem("yarn");
     } else {
       const result = validateJson(input);
       if (result.valid) {
         setOutput(JSON.stringify(result.parsed, null, 2));
         setError(null);
+        spawnItem("yarn");
       } else {
         setError(formatValidationErrors(result.errors || []));
         setOutput("");
       }
     }
-  }, [input, validation]);
+  }, [input, validation, spawnItem]);
 
   const minifyJson = useCallback(() => {
     if (validation && validation.valid && validation.parsed) {
       setOutput(JSON.stringify(validation.parsed));
       setError(null);
+      spawnItem("yarn");
     } else {
       const result = validateJson(input);
       if (result.valid) {
         setOutput(JSON.stringify(result.parsed));
         setError(null);
+        spawnItem("yarn");
       } else {
         setError(formatValidationErrors(result.errors || []));
         setOutput("");
       }
     }
-  }, [input, validation]);
+  }, [input, validation, spawnItem]);
 
   const copyToClipboard = useCallback(async () => {
     if (output) {
@@ -244,12 +251,7 @@ export function JsonFormatterTool() {
                     }}
                   >
                     <div className="flex items-center justify-between h-8">
-                      <label
-                        htmlFor="json-input"
-                        className="text-sm font-medium"
-                      >
-                        Input JSON
-                      </label>
+                      <span className="text-sm font-medium">Input JSON</span>
                       <AnimatePresence mode="wait">
                         {input.trim() && validation && (
                           <motion.div
