@@ -201,7 +201,7 @@ export default async function JsonFormatterPage({
   return (
     <>
       <JsonFormatterStructuredData />
-      <JsonFormatterTool lang={lang as LanguageType} />
+      <JsonFormatterTool lang={lang} />
     </>
   );
 }

@@ -44,4 +44,7 @@ export const common = {
   "button.switchTheme": "切换主题",
   "button.switchLanguage": "切换语言",
   "button.viewAll": "查看所有工具",
+
+  // Cat Mascot
+  "cat.fallingItemTooltip": "点击物品飞入小猫的家里！",
 };

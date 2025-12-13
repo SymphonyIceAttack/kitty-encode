@@ -13,7 +13,6 @@ import {
   XCircle,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,17 +31,25 @@ import {
   type ValidationResult,
   validateJson,
 } from "@/lib/json-validator";
+import { type LanguageType, t } from "@/lib/translations";
+
+interface JsonFormatterToolProps {
+  lang: LanguageType;
+}
 
 const exampleJsonData = [
   {
+    key: "apiResponse",
     title: "API Response",
     data: '{"status":"success","data":{"user":{"id":1,"name":"John Doe","email":"john@example.com"},"timestamp":"2024-01-15T10:30:00Z"}}',
   },
   {
+    key: "configFile",
     title: "Config File",
     data: '{"name":"my-app","version":"1.0.0","dependencies":{"react":"^18.2.0","next":"^14.0.0"}}',
   },
   {
+    key: "arrayData",
     title: "Array Data",
     data: '[{"id":1,"product":"Laptop","price":999},{"id":2,"product":"Phone","price":699},{"id":3,"product":"Tablet","price":449}]',
   },
@@ -65,21 +72,7 @@ const itemVariants = {
   },
 };
 
-const badgeVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delay: i * 0.1,
-      type: "spring" as const,
-      stiffness: 400,
-      damping: 20,
-    },
-  }),
-};
-
-export function JsonFormatterTool() {
+export function JsonFormatterTool({ lang }: JsonFormatterToolProps) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -171,8 +164,6 @@ export function JsonFormatterTool() {
     }, 100);
   }, []);
 
-  const badges = ["Free", "No Signup", "Works Offline", "Privacy First"];
-
   return (
     <motion.div
       className="container mx-auto max-w-6xl px-4 py-8"
@@ -180,40 +171,64 @@ export function JsonFormatterTool() {
       animate="visible"
       variants={containerVariants}
     >
-      <motion.section className="mb-8" variants={itemVariants}>
-        <div className="flex items-center gap-3 mb-4">
-          <motion.div
-            className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-500/10 text-yellow-500"
-            whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <FileJson className="h-6 w-6" />
-          </motion.div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-              JSON Formatter & Validator
-            </h1>
-            <p className="text-muted-foreground">
-              Format, validate and beautify your JSON data instantly
-            </p>
-          </div>
-        </div>
+      {/* Hero Section */}
+      <motion.section className="mb-10 text-center" variants={itemVariants}>
+        <motion.div
+          className="pixel-icon-box inline-flex items-center justify-center w-16 h-16 mb-6"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+          whileHover={{
+            rotate: [0, -10, 10, 0],
+            transition: { duration: 0.5 },
+          }}
+        >
+          <FileJson className="h-8 w-8 text-primary" />
+        </motion.div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
-          {badges.map((badge, i) => (
-            <motion.div
-              key={badge}
-              custom={i}
-              variants={badgeVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <Badge variant="secondary" className="rounded-full">
-                {badge}
-              </Badge>
-            </motion.div>
-          ))}
-        </div>
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold tracking-tight mb-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          {t("jsonFormatter.pageTitle", lang)}
+        </motion.h1>
+        <motion.p
+          className="text-lg text-muted-foreground max-w-2xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          {t("jsonFormatter.pageSubtitle", lang)}
+        </motion.p>
+
+        <motion.div
+          className="flex flex-wrap justify-center gap-3 mt-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.1, delayChildren: 0.5 },
+            },
+          }}
+        >
+          {["Free", "No Signup", "Works Offline", "Privacy First"].map(
+            (tag) => (
+              <motion.span
+                key={tag}
+                className="pixel-badge"
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8 },
+                  visible: { opacity: 1, scale: 1 },
+                }}
+                whileHover={{ scale: 1.1, y: -2 }}
+              >
+                {tag}
+              </motion.span>
+            ),
+          )}
+        </motion.div>
       </motion.section>
 
       <motion.section
@@ -233,7 +248,7 @@ export function JsonFormatterTool() {
                   Format
                 </TabsTrigger>
                 <TabsTrigger value="examples" className="rounded-lg">
-                  Examples
+                  {t("jsonFormatter.examples", lang)}
                 </TabsTrigger>
               </TabsList>
 
@@ -251,7 +266,9 @@ export function JsonFormatterTool() {
                     }}
                   >
                     <div className="flex items-center justify-between h-8">
-                      <span className="text-sm font-medium">Input JSON</span>
+                      <span className="text-sm font-medium">
+                        {t("jsonFormatter.inputLabel", lang)}
+                      </span>
                       <AnimatePresence mode="wait">
                         {input.trim() && validation && (
                           <motion.div
@@ -267,12 +284,12 @@ export function JsonFormatterTool() {
                             {validation.valid ? (
                               <>
                                 <CheckCircle2 className="h-3 w-3" />
-                                Valid JSON
+                                {t("jsonFormatter.valid", lang)}
                               </>
                             ) : (
                               <>
                                 <XCircle className="h-3 w-3" />
-                                Invalid JSON
+                                {t("jsonFormatter.invalid", lang)}
                               </>
                             )}
                           </motion.div>
@@ -280,7 +297,7 @@ export function JsonFormatterTool() {
                       </AnimatePresence>
                     </div>
                     <Textarea
-                      placeholder='{"key": "value"}'
+                      placeholder={t("jsonFormatter.placeholder", lang)}
                       className="min-h-[300px] font-mono text-sm rounded-xl"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
@@ -306,7 +323,9 @@ export function JsonFormatterTool() {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                         >
-                          <p className="font-medium mb-1">Possible issues:</p>
+                          <p className="font-medium mb-1">
+                            {t("jsonFormatter.possibleIssues", lang)}
+                          </p>
                           <ul className="list-disc list-inside text-xs space-y-1">
                             {jsonIssues.map((issue, i) => (
                               <li key={i}>{issue}</li>
@@ -360,7 +379,8 @@ export function JsonFormatterTool() {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.8 }}
                               >
-                                <Copy className="h-4 w-4 mr-1" /> Copy
+                                <Copy className="h-4 w-4 mr-1" />{" "}
+                                {t("jsonFormatter.copyBtn", lang)}
                               </motion.span>
                             )}
                           </AnimatePresence>
@@ -376,7 +396,7 @@ export function JsonFormatterTool() {
                         />
                       ) : (
                         <div className="p-4 text-sm text-muted-foreground font-mono">
-                          Formatted JSON will appear here...
+                          {t("jsonFormatter.outputPlaceholder", lang)}
                         </div>
                       )}
                     </div>
@@ -412,7 +432,7 @@ export function JsonFormatterTool() {
                       >
                         <Sparkles className="h-4 w-4" />
                       </motion.div>
-                      Format JSON
+                      {t("jsonFormatter.formatBtn", lang)}
                     </Button>
                   </motion.div>
                   <motion.div
@@ -425,7 +445,7 @@ export function JsonFormatterTool() {
                       className="gap-2 bg-transparent rounded-xl h-11"
                     >
                       <Minimize2 className="h-4 w-4" />
-                      Minify
+                      {t("jsonFormatter.minifyBtn", lang)}
                     </Button>
                   </motion.div>
                   <motion.div
@@ -443,7 +463,7 @@ export function JsonFormatterTool() {
                         setJsonIssues([]);
                       }}
                     >
-                      Clear
+                      {t("jsonFormatter.clearBtn", lang)}
                     </Button>
                   </motion.div>
                 </motion.div>
@@ -451,7 +471,7 @@ export function JsonFormatterTool() {
 
               <TabsContent value="examples" className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Click on an example to load it into the formatter:
+                  {t("jsonFormatter.examplesHint", lang)}
                 </p>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {exampleJsonData.map((example, index) => (
@@ -474,7 +494,7 @@ export function JsonFormatterTool() {
                       >
                         <CardHeader className="p-4">
                           <CardTitle className="text-sm">
-                            {example.title}
+                            {t(`jsonFormatter.examples.${example.key}`, lang)}
                           </CardTitle>
                           <CardDescription className="text-xs font-mono truncate">
                             {example.data}
@@ -490,77 +510,101 @@ export function JsonFormatterTool() {
         </Card>
       </motion.section>
 
+      {/* SEO Content Section */}
       <motion.section
-        className="mb-12 prose prose-neutral dark:prose-invert max-w-none"
-        variants={itemVariants}
+        className="mb-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={containerVariants}
       >
-        <h2 className="text-xl font-semibold mb-4">What is JSON Formatter?</h2>
-        <p className="text-muted-foreground leading-relaxed">
-          A <strong>JSON formatter</strong> is an essential developer tool that
-          transforms raw, minified JSON data into a human-readable format with
-          proper indentation and syntax highlighting. Our free online JSON
-          formatter helps you validate, beautify, and debug JSON data quickly
-          without any installation or signup.
-        </p>
+        <motion.h2 className="text-xl font-bold mb-4" variants={itemVariants}>
+          What is JSON Formatting?
+        </motion.h2>
+        <motion.p
+          className="text-muted-foreground leading-relaxed mb-6"
+          variants={itemVariants}
+        >
+          <strong className="text-foreground">JSON formatting</strong> is the
+          process of organizing and beautifying JavaScript Object Notation
+          (JSON) data to make it more readable and easier to understand. Our
+          free online JSON formatter validates, formats, and minifies JSON data
+          instantly. Perfect for developers working with APIs, configuration
+          files, and data exchange.
+        </motion.p>
 
-        <h3 className="text-lg font-semibold mt-6 mb-3">Key Features</h3>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 not-prose">
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Key Features
+        </motion.h3>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
-              title: "Format & Beautify",
-              desc: "Add proper indentation and line breaks",
-            },
-            {
-              title: "Zod Validation",
-              desc: "Real-time schema validation with helpful hints",
+              title: "JSON Validation",
+              desc: "Real-time validation with error highlighting",
             },
             {
               title: "Syntax Highlighting",
-              desc: "Color-coded output for easy reading",
+              desc: "Color-coded JSON for easy reading",
             },
             {
-              title: "100% Private",
-              desc: "Data processed locally in browser",
+              title: "Minify & Beautify",
+              desc: "Format or compress JSON as needed",
             },
-          ].map((feature, index) => (
+            {
+              title: "Error Detection",
+              desc: "Find and fix JSON syntax errors instantly",
+            },
+          ].map((feature) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                delay: index * 0.1,
-                type: "spring",
-                stiffness: 300,
-                damping: 24,
-              }}
-              whileHover={{ y: -4 }}
+              className="pixel-card p-4"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03, y: -4 }}
             >
-              <Card className="bg-muted/30 rounded-xl h-full">
-                <CardContent className="p-4">
-                  <h4 className="font-medium text-sm">{feature.title}</h4>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {feature.desc}
-                  </p>
-                </CardContent>
-              </Card>
+              <h4 className="font-semibold text-sm">{feature.title}</h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                {feature.desc}
+              </p>
             </motion.div>
           ))}
         </div>
 
-        <h3 className="text-lg font-semibold mt-6 mb-3">How to Use</h3>
-        <ol className="text-muted-foreground space-y-2">
-          <li>
-            <strong>1.</strong> Paste your JSON data into the input field
-          </li>
-          <li>
-            <strong>2.</strong> Click {"Format JSON"} to beautify or {"Minify"}{" "}
-            to compress
-          </li>
-          <li>
-            <strong>3.</strong> Copy the result with one click
-          </li>
-        </ol>
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Common Use Cases
+        </motion.h3>
+        <motion.ul
+          className="text-muted-foreground space-y-2"
+          variants={containerVariants}
+        >
+          {[
+            "Debugging API responses and requests",
+            "Formatting configuration files",
+            "Validating JSON data structure",
+            "Minifying JSON for production deployment",
+            "Learning and teaching JSON syntax",
+          ].map((item, index) => (
+            <motion.li
+              key={item}
+              className="flex items-center gap-3 text-sm"
+              variants={itemVariants}
+              whileHover={{ x: 4 }}
+            >
+              <motion.span
+                className="w-2 h-2 bg-primary rounded-full"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+              />
+              {item}
+            </motion.li>
+          ))}
+        </motion.ul>
       </motion.section>
 
       <motion.section className="mb-12" variants={itemVariants}>
@@ -590,20 +634,20 @@ export function JsonFormatterTool() {
             >
               {[
                 {
-                  q: "What is a JSON formatter?",
-                  a: "A JSON formatter is a tool that takes raw JSON data and formats it with proper indentation and syntax highlighting, making it easier to read and debug.",
+                  q: t("jsonFormatter.faq.q1", lang),
+                  a: t("jsonFormatter.faq.a1", lang),
                 },
                 {
-                  q: "Is this JSON formatter free to use?",
-                  a: "Yes, this JSON formatter is completely free to use. No signup or registration required. Your data is processed locally in your browser for maximum privacy.",
+                  q: t("jsonFormatter.faq.q2", lang),
+                  a: t("jsonFormatter.faq.a2", lang),
                 },
                 {
-                  q: "Does this tool validate JSON?",
-                  a: "Yes, our JSON formatter uses Zod schema validation to automatically validate your JSON and highlights any syntax errors with detailed error messages and helpful hints to fix issues quickly.",
+                  q: t("jsonFormatter.faq.q3", lang),
+                  a: t("jsonFormatter.faq.a3", lang),
                 },
                 {
-                  q: "Is my data secure?",
-                  a: "Absolutely. All JSON processing happens locally in your browser. Your data is never sent to any server, ensuring complete privacy and security.",
+                  q: t("jsonFormatter.faq.q4", lang),
+                  a: t("jsonFormatter.faq.a4", lang),
                 },
               ].map((faq, index) => (
                 <motion.div

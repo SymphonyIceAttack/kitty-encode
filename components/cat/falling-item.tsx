@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { type CatItemType, useCat } from "@/context/cat-context";
+import { useLanguage } from "@/context/language-context";
+import { t } from "@/lib/translations";
 
 const GhibliIcons: Record<CatItemType, React.ReactNode> = {
   fish: (
@@ -201,7 +203,8 @@ interface FallingItemProps {
 }
 
 export function FallingItem({ id, type, initialX }: FallingItemProps) {
-  const { feedCat, setMood } = useCat();
+  const { feedCat } = useCat();
+  const { lang } = useLanguage();
   const itemRef = useRef<HTMLDivElement>(null);
   const [isFlying, setIsFlying] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -209,8 +212,6 @@ export function FallingItem({ id, type, initialX }: FallingItemProps) {
     x: number;
     y: number;
   } | null>(null);
-  const feedTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const moodTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleItemClick = () => {
     if (!isFlying) {
@@ -222,9 +223,6 @@ export function FallingItem({ id, type, initialX }: FallingItemProps) {
     if (isFlying) return;
 
     setIsFlying(true);
-
-    // 让小猫开心，表示收到物品了
-    setMood("happy");
 
     // 找到网站图标位置
     const logoElement = document.querySelector("#site-logo");
@@ -238,37 +236,19 @@ export function FallingItem({ id, type, initialX }: FallingItemProps) {
         setTargetPosition({ x: targetX, y: targetY });
       }
     }
-
-    // 在飞行动画完成后添加物品到库存
-    const feedTimeout = setTimeout(() => {
-      // 只添加物品到库存，不触发表情变化
-      feedCat(id);
-    }, 5500); // 动画完成后执行
-    feedTimerRef.current = feedTimeout;
-
-    // 让小猫恢复原样
-    const moodTimeout = setTimeout(() => {
-      setMood("idle");
-    }, 4500);
-    moodTimerRef.current = moodTimeout;
+    feedCat(id);
   };
 
   useEffect(() => {
-    // 10秒后自动飞入小猫的家里
+    // 5秒后自动飞入小猫的家里
     const timer = setTimeout(() => {
       if (!isFlying) {
         triggerFlyToHome();
       }
-    }, 10000); // 掉落时间
+    }, 5000); // 掉落时间
 
     return () => {
       clearTimeout(timer);
-      if (feedTimerRef.current) {
-        clearTimeout(feedTimerRef.current);
-      }
-      if (moodTimerRef.current) {
-        clearTimeout(moodTimerRef.current);
-      }
     };
   }, [id, isFlying]);
 
@@ -350,7 +330,7 @@ export function FallingItem({ id, type, initialX }: FallingItemProps) {
             className="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-lg transition-opacity whitespace-nowrap"
             style={{ opacity: showTooltip ? 1 : 0 }}
           >
-            点击物品飞入小猫的家里！
+            {t("cat.fallingItemTooltip", lang)}
             <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" />
           </div>
         </motion.div>

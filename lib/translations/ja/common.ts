@@ -37,4 +37,7 @@ export const common = {
   "button.switchTheme": "テーマ切替",
   "button.switchLanguage": "言語切替",
   "button.viewAll": "すべてのツールを見る",
+
+  // Cat Mascot
+  "cat.fallingItemTooltip": "アイテムをクリックして猫の家に送ろう！",
 };

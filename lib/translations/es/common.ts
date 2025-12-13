@@ -44,4 +44,8 @@ export const common = {
   "button.switchTheme": "Cambiar tema",
   "button.switchLanguage": "Cambiar idioma",
   "button.viewAll": "Ver todas las herramientas",
+
+  // Cat Mascot
+  "cat.fallingItemTooltip":
+    "¡Haz clic en el objeto para enviarlo a casa del gato!",
 };

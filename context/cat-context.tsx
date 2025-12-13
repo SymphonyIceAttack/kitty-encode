@@ -103,22 +103,23 @@ export function CatProvider({ children }: { children: ReactNode }) {
     setItemsOnGround((prev) => [...prev, { id, type, x, y: -50 }]);
   }, []);
 
-  const feedCat = useCallback(
-    (itemId: string) => {
-      const item = itemsOnGround.find((i) => i.id === itemId);
+  const feedCat = useCallback((itemId: string) => {
+    // 通过setItemsOnGround的回调函数来同时更新inventory和移除物品
+    setItemsOnGround((prevItems) => {
+      const item = prevItems.find((i) => i.id === itemId);
       if (item) {
-        // Unlock item in inventory
+        // 更新inventory
         setInventory((prev) => ({ ...prev, [item.type]: true }));
-        // Remove from ground
-        setItemsOnGround((prev) => prev.filter((i) => i.id !== itemId));
-        // Make cat happy
-        setMoodState("happy");
-        // Reset mood after delay
-        setTimeout(() => setMoodState("idle"), 3000);
+        // 移除物品
+        return prevItems.filter((i) => i.id !== itemId);
       }
-    },
-    [itemsOnGround],
-  );
+      return prevItems;
+    });
+    // Make cat happy
+    setMoodState("happy");
+    // Reset mood after delay
+    setTimeout(() => setMoodState("idle"), 3000);
+  }, []);
 
   const removeItem = useCallback((itemId: string) => {
     setItemsOnGround((prev) => prev.filter((i) => i.id !== itemId));

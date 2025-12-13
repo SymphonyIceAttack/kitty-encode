@@ -4,8 +4,11 @@ import "../globals.css";
 import { redirect } from "next/navigation";
 import { CatSystem } from "@/components/cat/cat-system";
 import { BackgroundDecorations } from "@/components/layout/background-decorations";
+import { Footer } from "@/components/layout/footer-client";
+import { Navbar } from "@/components/layout/navbar-client";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CatProvider } from "@/context/cat-context";
+import { LanguageProvider } from "@/context/language-context";
 import type { LanguageType } from "@/lib/translations";
 import { supportedLocales } from "@/lib/translations";
 
@@ -49,10 +52,11 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({
   children,
-  navbar,
-  footer,
   params,
-}: LayoutProps<"/[lang]">) {
+}: {
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
+}) {
   const { lang } = await params;
   // Validate that the incoming `lang` parameter is valid
   if (!supportedLocales.includes(lang as LanguageType)) {
@@ -73,13 +77,15 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <CatProvider>
-            <div className="flex min-h-screen flex-col relative">
-              <BackgroundDecorations />
-              {navbar}
-              <main className="flex-1">{children}</main>
-              {footer}
-              <CatSystem />
-            </div>
+            <LanguageProvider lang={lang as LanguageType}>
+              <div className="flex min-h-screen flex-col relative">
+                <BackgroundDecorations />
+                <Navbar lang={lang as LanguageType} />
+                <main className="flex-1">{children}</main>
+                <Footer lang={lang as LanguageType} />
+                <CatSystem />
+              </div>
+            </LanguageProvider>
           </CatProvider>
         </ThemeProvider>
       </body>

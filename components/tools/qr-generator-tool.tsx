@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -48,20 +47,6 @@ const itemVariants = {
     y: 0,
     transition: { type: "spring" as const, stiffness: 300, damping: 24 },
   },
-};
-
-const badgeVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delay: i * 0.1,
-      type: "spring" as const,
-      stiffness: 400,
-      damping: 20,
-    },
-  }),
 };
 
 interface QrGeneratorToolProps {
@@ -132,32 +117,6 @@ export function QrGeneratorTool({ lang }: QrGeneratorToolProps) {
   });
 
   const toolSectionRef = useRef<HTMLDivElement>(null);
-
-  const badges = [
-    t("badge.free"),
-    t("badge.noSignup"),
-    t("badge.offline"),
-    t("badge.privacy"),
-  ];
-
-  const features = [
-    {
-      titleKey: "qrGenerator.seo.feature1.title",
-      descKey: "qrGenerator.seo.feature1.desc",
-    },
-    {
-      titleKey: "qrGenerator.seo.feature2.title",
-      descKey: "qrGenerator.seo.feature2.desc",
-    },
-    {
-      titleKey: "qrGenerator.seo.feature3.title",
-      descKey: "qrGenerator.seo.feature3.desc",
-    },
-    {
-      titleKey: "qrGenerator.seo.feature4.title",
-      descKey: "qrGenerator.seo.feature4.desc",
-    },
-  ];
 
   const faqs = [
     { qKey: "qrGenerator.faq.q1", aKey: "qrGenerator.faq.a1" },
@@ -246,40 +205,64 @@ export function QrGeneratorTool({ lang }: QrGeneratorToolProps) {
       animate="visible"
       variants={containerVariants}
     >
-      <motion.section className="mb-8" variants={itemVariants}>
-        <div className="flex items-center gap-3 mb-4">
-          <motion.div
-            className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-pink-500/10 text-pink-500"
-            whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <QrCode className="h-6 w-6" />
-          </motion.div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-              {t("qrGenerator.pageTitle")}
-            </h1>
-            <p className="text-muted-foreground">
-              {t("qrGenerator.pageSubtitle")}
-            </p>
-          </div>
-        </div>
+      {/* Hero Section */}
+      <motion.section className="mb-10 text-center" variants={itemVariants}>
+        <motion.div
+          className="pixel-icon-box inline-flex items-center justify-center w-16 h-16 mb-6"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+          whileHover={{
+            rotate: [0, -10, 10, 0],
+            transition: { duration: 0.5 },
+          }}
+        >
+          <QrCode className="h-8 w-8 text-primary" />
+        </motion.div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
-          {badges.map((badge, i) => (
-            <motion.div
-              key={badge}
-              custom={i}
-              variants={badgeVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <Badge variant="secondary" className="rounded-full">
-                {badge}
-              </Badge>
-            </motion.div>
-          ))}
-        </div>
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold tracking-tight mb-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          {t("qrGenerator.pageTitle")}
+        </motion.h1>
+        <motion.p
+          className="text-lg text-muted-foreground max-w-2xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          {t("qrGenerator.pageSubtitle")}
+        </motion.p>
+
+        <motion.div
+          className="flex flex-wrap justify-center gap-3 mt-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.1, delayChildren: 0.5 },
+            },
+          }}
+        >
+          {["Free", "No Signup", "Works Offline", "Privacy First"].map(
+            (tag) => (
+              <motion.span
+                key={tag}
+                className="pixel-badge"
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8 },
+                  visible: { opacity: 1, scale: 1 },
+                }}
+                whileHover={{ scale: 1.1, y: -2 }}
+              >
+                {tag}
+              </motion.span>
+            ),
+          )}
+        </motion.div>
       </motion.section>
 
       <motion.section
@@ -562,61 +545,101 @@ export function QrGeneratorTool({ lang }: QrGeneratorToolProps) {
         </Card>
       </motion.section>
 
+      {/* SEO Content Section */}
       <motion.section
-        className="mb-12 prose prose-neutral dark:prose-invert max-w-none"
-        variants={itemVariants}
+        className="mb-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={containerVariants}
       >
-        <h2 className="text-xl font-semibold mb-4">
-          {t("qrGenerator.seo.title")}
-        </h2>
-        <p className="text-muted-foreground leading-relaxed">
-          {t("qrGenerator.seo.description")}
-        </p>
+        <motion.h2 className="text-xl font-bold mb-4" variants={itemVariants}>
+          What is QR Code Generation?
+        </motion.h2>
+        <motion.p
+          className="text-muted-foreground leading-relaxed mb-6"
+          variants={itemVariants}
+        >
+          <strong className="text-foreground">QR code generation</strong> is the
+          process of creating two-dimensional barcodes that can be scanned by
+          smartphones and other devices to quickly access information. Our free
+          online QR code generator allows you to create custom QR codes for
+          URLs, text, phone numbers, WiFi credentials, and more without any
+          registration or software installation.
+        </motion.p>
 
-        <h3 className="text-lg font-semibold mt-6 mb-3">
-          {t("qrGenerator.seo.featuresTitle")}
-        </h3>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 not-prose">
-          {features.map((feature, index) => (
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Key Features
+        </motion.h3>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              title: "Multiple Data Types",
+              desc: "Generate QR codes for URLs, text, phone numbers, and WiFi",
+            },
+            {
+              title: "Custom Colors",
+              desc: "Personalize QR codes with custom foreground and background colors",
+            },
+            {
+              title: "High Resolution",
+              desc: "Download high-quality QR codes in PNG format",
+            },
+            {
+              title: "100% Free",
+              desc: "No watermarks, registration, or usage limits",
+            },
+          ].map((feature) => (
             <motion.div
-              key={feature.titleKey}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                delay: index * 0.1,
-                type: "spring",
-                stiffness: 300,
-                damping: 24,
-              }}
-              whileHover={{ y: -4 }}
+              key={feature.title}
+              className="pixel-card p-4"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03, y: -4 }}
             >
-              <Card className="bg-muted/30 rounded-xl h-full">
-                <CardContent className="p-4">
-                  <h4 className="font-medium text-sm">{t(feature.titleKey)}</h4>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {t(feature.descKey)}
-                  </p>
-                </CardContent>
-              </Card>
+              <h4 className="font-semibold text-sm">{feature.title}</h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                {feature.desc}
+              </p>
             </motion.div>
           ))}
         </div>
 
-        <h3 className="text-lg font-semibold mt-6 mb-3">
-          {t("qrGenerator.seo.howToUseTitle")}
-        </h3>
-        <ol className="text-muted-foreground space-y-2">
-          <li>
-            <strong>1.</strong> {t("qrGenerator.seo.howToUse1")}
-          </li>
-          <li>
-            <strong>2.</strong> {t("qrGenerator.seo.howToUse2")}
-          </li>
-          <li>
-            <strong>3.</strong> {t("qrGenerator.seo.howToUse3")}
-          </li>
-        </ol>
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Common Use Cases
+        </motion.h3>
+        <motion.ul
+          className="text-muted-foreground space-y-2"
+          variants={containerVariants}
+        >
+          {[
+            "Sharing website URLs and social media profiles",
+            "Displaying contact information and business cards",
+            "Setting up WiFi access for guests",
+            "Creating digital menus and product information",
+            "Marketing campaigns and promotional materials",
+          ].map((item, index) => (
+            <motion.li
+              key={item}
+              className="flex items-center gap-3 text-sm"
+              variants={itemVariants}
+              whileHover={{ x: 4 }}
+            >
+              <motion.span
+                className="w-2 h-2 bg-primary rounded-full"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+              />
+              {item}
+            </motion.li>
+          ))}
+        </motion.ul>
       </motion.section>
 
       <motion.section className="mb-12" variants={itemVariants}>
