@@ -4,6 +4,8 @@ import { Base64EncoderTool } from "@/components/tools/base64-encoder-tool";
 import type { LanguageType } from "@/lib/translations";
 import { generateHreflangLinks } from "@/lib/translations";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kitty-encode.top";
+
 // 多语言元数据
 const metadataConfig = {
   en: {
@@ -26,7 +28,7 @@ const metadataConfig = {
       title: "Base64 Encoder & Decoder - Free Online Tool",
       description:
         "Encode text to Base64 or decode Base64 to text instantly. Free, secure, and works offline.",
-      url: "https://devtools.app/tools/base64-encoder",
+      url: `${baseUrl}/tools/base64-encoder`,
       type: "website",
     },
   },
@@ -50,7 +52,7 @@ const metadataConfig = {
       title: "Base64 编码解码器 - 免费在线工具",
       description:
         "将文本编码为 Base64 或将 Base64 解码为文本。免费、安全、离线工作。",
-      url: "https://devtools.app/tools/base64-encoder",
+      url: `${baseUrl}/tools/base64-encoder`,
       type: "website",
     },
   },
@@ -74,7 +76,7 @@ const metadataConfig = {
       title: "Base64 エンコーダー - 無料オンライン ツール",
       description:
         "テキストを Base64 にエンコードまたは Base64 をテキストにデコード。即座に動作します。",
-      url: "https://devtools.app/tools/base64-encoder",
+      url: `${baseUrl}/tools/base64-encoder`,
       type: "website",
     },
   },
@@ -98,7 +100,7 @@ const metadataConfig = {
       title: "Encodeur Base64 - Outil en ligne gratuit",
       description:
         "Encodez du texte en Base64 ou décodez Base64 en texte instantanément. Gratuit et sécurisé.",
-      url: "https://devtools.app/tools/base64-encoder",
+      url: `${baseUrl}/tools/base64-encoder`,
       type: "website",
     },
   },
@@ -122,7 +124,7 @@ const metadataConfig = {
       title: "Codificador Base64 - Herramienta en línea gratis",
       description:
         "Codifica texto a Base64 o decodifica Base64 a texto al instante. Gratis y seguro.",
-      url: "https://devtools.app/tools/base64-encoder",
+      url: `${baseUrl}/tools/base64-encoder`,
       type: "website",
     },
   },
@@ -146,7 +148,7 @@ const metadataConfig = {
       title: "Base64 Кодировщик - Бесплатный онлайн инструмент",
       description:
         "Кодируйте текст в Base64 или декодируйте Base64 в текст мгновенно. Бесплатно и безопасно.",
-      url: "https://devtools.app/tools/base64-encoder",
+      url: `${baseUrl}/tools/base64-encoder`,
       type: "website",
     },
   },
@@ -170,7 +172,7 @@ const metadataConfig = {
       title: "Base64 Encoder - Kostenloses Online Tool",
       description:
         "Text zu Base64 kodieren oder Base64 zu Text dekodieren sofort. Kostenlos und sicher.",
-      url: "https://devtools.app/tools/base64-encoder",
+      url: `${baseUrl}/tools/base64-encoder`,
       type: "website",
     },
   },
@@ -194,7 +196,7 @@ export async function generateMetadata({
     keywords: langData.keywords,
     openGraph: langData.openGraph,
     alternates: {
-      canonical: "https://devtools.app/tools/base64-encoder",
+      canonical: `${baseUrl}/tools/base64-encoder`,
       languages: hreflangLinks,
     },
   };

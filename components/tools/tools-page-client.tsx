@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import {
   FileText,
+  Fingerprint,
   Hash,
   Key,
   KeyRound,
@@ -26,7 +27,7 @@ const allTools = [
     titleKey: "urlEncoder.title",
     descriptionKey: "urlEncoder.description",
     icon: LinkIcon,
-    href: "/tools/url-encoder",
+    href: "/",
     color: "text-blue-500",
     category: "tools.category.encoding",
   },
@@ -60,6 +61,14 @@ const allTools = [
     icon: KeyRound,
     href: "/tools/password-generator",
     color: "text-pink-500",
+    category: "tools.category.encoding",
+  },
+  {
+    titleKey: "uuidGenerator.title",
+    descriptionKey: "uuidGenerator.description",
+    icon: Fingerprint,
+    href: "/tools/uuid-generator",
+    color: "text-cyan-500",
     category: "tools.category.encoding",
   },
 ];

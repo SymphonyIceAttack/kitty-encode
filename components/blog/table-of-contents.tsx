@@ -52,10 +52,10 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="sticky top-24"
+      className="sticky top-6 h-[80vh] overflow-hidden"
     >
-      <div className="bg-card border-2 border-foreground/10 rounded-2xl p-5 shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.05)]">
-        <div className="flex items-center gap-2 text-sm font-bold mb-4 text-foreground">
+      <div className="bg-card border-2 border-foreground/10 rounded-2xl p-4 h-full overflow-y-auto shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.05)]">
+        <div className="flex items-center gap-2 text-sm font-bold mb-3 text-foreground sticky top-0 bg-card py-2 border-b border-foreground/10">
           <List className="h-4 w-4 text-accent" />
           Table of Contents
         </div>
@@ -72,7 +72,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 type="button"
                 onClick={() => handleClick(heading.id)}
                 className={cn(
-                  "block w-full text-left text-sm py-2 px-3 rounded-xl transition-all duration-200",
+                  "block w-full text-left text-xs py-1.5 px-3 rounded-xl transition-all duration-200",
                   heading.level === 3 && "pl-5 text-xs",
                   activeId === heading.id
                     ? "text-accent font-semibold bg-accent/15 shadow-sm"

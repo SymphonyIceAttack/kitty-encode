@@ -1,6 +1,7 @@
 export const passwordGenerator = {
   "passwordGenerator.title": "密码生成器",
-  "passwordGenerator.description": "生成安全的随机密码和 API 密钥，支持自定义选项",
+  "passwordGenerator.description":
+    "生成安全的随机密码和 API 密钥，支持自定义选项",
   "passwordGenerator.pageTitle": "密码 & 密钥生成器",
   "passwordGenerator.pageSubtitle": "生成安全的随机密码、API 密钥和令牌",
   "passwordGenerator.outputLabel": "生成的密码",

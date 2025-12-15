@@ -31,6 +31,7 @@ export const common = {
   "common.result": "结果",
   "common.examples": "示例",
   "common.faq": "常见问题",
+  "common.needsUpdate": "输入已更改，需要重新转换",
 
   // Badges
   "badge.free": "免费",

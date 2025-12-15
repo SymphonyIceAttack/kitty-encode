@@ -10,6 +10,7 @@ export const layout = {
   "footer.legal": "Rechtliches",
   "footer.privacyPolicy": "Datenschutz",
   "footer.termsOfService": "Nutzungsbedingungen",
+  "footer.disclaimer": "Haftungsausschluss",
   "footer.developer": "Entwickler",
   "footer.sourceCode": "Quellcode",
   "footer.githubProfile": "GitHub",

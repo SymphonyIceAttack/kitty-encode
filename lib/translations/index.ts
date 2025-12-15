@@ -33,6 +33,7 @@ export interface Translations {
   [key: string]: LanguageTranslations;
 }
 
+import { siteUrl } from "@/lib/config";
 import { translations_de } from "./de";
 // 导入各语言翻译文件（从新的模块化结构）
 import { translations_en } from "./en";
@@ -65,7 +66,7 @@ export function generateHreflangLinks(
 ): Record<LanguageType, string> {
   return supportedLocales.reduce(
     (acc, locale) => {
-      acc[locale] = `https://devtools.app/${locale}${basePath}`;
+      acc[locale] = `${siteUrl}/${locale}${basePath}`;
       return acc;
     },
     {} as Record<LanguageType, string>,

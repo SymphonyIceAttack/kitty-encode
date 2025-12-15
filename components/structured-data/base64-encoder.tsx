@@ -3,12 +3,14 @@
 import type { FAQPage, WebApplication, WithContext } from "schema-dts";
 
 export function Base64EncoderStructuredData() {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://kitty-encode.top";
   const webApplicationSchema: WithContext<WebApplication> = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Base64 Encoder & Decoder",
     description: "Free online Base64 encoder and decoder tool",
-    url: "https://devtools.app/tools/base64-encoder",
+    url: `${baseUrl}/tools/base64-encoder`,
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Any",
     offers: {

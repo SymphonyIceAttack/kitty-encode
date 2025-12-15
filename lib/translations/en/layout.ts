@@ -11,6 +11,7 @@ export const layout = {
   "footer.legal": "Legal",
   "footer.privacyPolicy": "Privacy Policy",
   "footer.termsOfService": "Terms of Service",
+  "footer.disclaimer": "Disclaimer",
   "footer.developer": "Developer",
   "footer.sourceCode": "Source Code",
   "footer.githubProfile": "GitHub",

@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  AlertCircle,
   ArrowRightLeft,
   Check,
   ChevronDown,
@@ -12,13 +13,7 @@ import {
 } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { CodeHighlighter } from "@/components/ui/code-highlighter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -90,8 +85,15 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [showFaq, setShowFaq] = useState(false);
   const [activeTab, setActiveTab] = useState("convert");
+  const [needsUpdate, setNeedsUpdate] = useState(false);
+  const [showFaq, setShowFaq] = useState(true); // 默认展开FAQ
+  const [conversionStats, setConversionStats] = useState({
+    totalConversions: 0,
+    encodeCount: 0,
+    decodeCount: 0,
+    lastUsed: null as Date | null,
+  });
 
   const toolSectionRef = useRef<HTMLDivElement>(null);
 
@@ -156,6 +158,17 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
     } else {
       decodeBase64(input);
     }
+
+    // 更新统计信息
+    setConversionStats((prev) => ({
+      totalConversions: prev.totalConversions + 1,
+      encodeCount: mode === "encode" ? prev.encodeCount + 1 : prev.encodeCount,
+      decodeCount: mode === "decode" ? prev.decodeCount + 1 : prev.decodeCount,
+      lastUsed: new Date(),
+    }));
+
+    // Clear the needs update flag after successful conversion
+    setNeedsUpdate(false);
   }, [input, mode, encodeBase64, decodeBase64]);
 
   const copyToClipboard = useCallback(async () => {
@@ -166,17 +179,26 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
     }
   }, [output]);
 
-  const loadExample = useCallback((data: string) => {
-    setInput(data);
-    setError(null);
-    setActiveTab("convert");
-    setTimeout(() => {
-      toolSectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  }, []);
+  const loadExample = useCallback(
+    (data: string) => {
+      setInput(data);
+      setError(null);
+      setActiveTab("convert");
+
+      // Only mark as needing update if the input is different from current input and we have existing output
+      if (output && data !== input) {
+        setNeedsUpdate(true);
+      }
+
+      setTimeout(() => {
+        toolSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    },
+    [output, input],
+  );
 
   const switchMode = useCallback(() => {
     const newMode = mode === "encode" ? "decode" : "encode";
@@ -269,51 +291,90 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                 <TabsTrigger value="convert" className="rounded-lg">
                   {t("common.convert")}
                 </TabsTrigger>
-                <TabsTrigger value="examples" className="rounded-lg">
-                  {t("base64Encoder.examples")}
-                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="convert" className="space-y-4">
-                <div className="flex items-center gap-4 mb-4">
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Button
-                      variant={mode === "encode" ? "default" : "outline"}
-                      onClick={() => setMode("encode")}
-                      className="gap-2 rounded-xl h-11"
+                <div className="flex items-center justify-between gap-4 mb-4">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                     >
-                      <ArrowRightLeft className="h-4 w-4" />
-                      {t("base64Encoder.encode")}
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Button
-                      variant={mode === "decode" ? "default" : "outline"}
-                      onClick={() => setMode("decode")}
-                      className="gap-2 rounded-xl h-11"
+                      <Button
+                        variant={mode === "encode" ? "default" : "outline"}
+                        onClick={() => setMode("encode")}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        <ArrowRightLeft className="h-4 w-4" />
+                        {t("base64Encoder.encode")}
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                     >
-                      <ArrowRightLeft className="h-4 w-4" />
-                      {t("base64Encoder.decode")}
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Button
-                      variant="outline"
-                      onClick={switchMode}
-                      className="gap-2 rounded-xl h-11"
+                      <Button
+                        variant={mode === "decode" ? "default" : "outline"}
+                        onClick={() => setMode("decode")}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        <ArrowRightLeft className="h-4 w-4" />
+                        {t("base64Encoder.decode")}
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                     >
-                      <RotateCcw className="h-4 w-4" />
-                      {t("base64Encoder.swap")}
-                    </Button>
+                      <Button
+                        variant="outline"
+                        onClick={switchMode}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                        {t("base64Encoder.swap")}
+                      </Button>
+                    </motion.div>
+                  </div>
+
+                  {/* Usage Analysis Tags - 右侧 */}
+                  <motion.div
+                    className="flex flex-wrap gap-2"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      {conversionStats.totalConversions} Total
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      {conversionStats.encodeCount} Encodes
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      {conversionStats.decodeCount} Decodes
+                    </motion.div>
+                    {conversionStats.lastUsed && (
+                      <motion.div
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium"
+                        whileHover={{ scale: 1.05 }}
+                        title={`Last used: ${conversionStats.lastUsed.toLocaleString()}`}
+                      >
+                        <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                        {conversionStats.lastUsed.toLocaleTimeString()}
+                      </motion.div>
+                    )}
                   </motion.div>
                 </div>
 
@@ -347,7 +408,18 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                       }
                       className="min-h-[300px] font-mono text-sm rounded-xl"
                       value={input}
-                      onChange={(e) => setInput(e.target.value)}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        setInput(newValue);
+
+                        // Mark as needing update if input changes and we have output
+                        if (newValue !== input && output) {
+                          setNeedsUpdate(true);
+                        }
+
+                        // Clear error when input changes
+                        setError(null);
+                      }}
                     />
                     <AnimatePresence>
                       {error && (
@@ -417,15 +489,34 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                         </Button>
                       </motion.div>
                     </div>
-                    <div className="min-h-[300px] rounded-xl border-2 border-border bg-muted/30 overflow-hidden">
+                    <div
+                      className={`
+                      min-h-[300px] rounded-xl border-2 overflow-hidden transition-all duration-300
+                      ${
+                        needsUpdate
+                          ? "border-amber-300 bg-amber-50/30 dark:border-amber-600/30 dark:bg-amber-950/20"
+                          : "border-foreground/20 bg-muted/30"
+                      }
+                    `}
+                    >
                       {output ? (
-                        <CodeHighlighter
-                          code={output}
-                          language="javascript"
-                          className="min-h-[300px] max-h-[400px]"
-                        />
+                        <div>
+                          {needsUpdate && (
+                            <div className="flex items-center gap-2 p-3 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30">
+                              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                              <span className="text-sm text-amber-800 dark:text-amber-200">
+                                {t("common.needsUpdate")}
+                              </span>
+                            </div>
+                          )}
+                          <CodeHighlighter
+                            code={output}
+                            language="javascript"
+                            className={`min-h-[300px] max-h-[400px] ${needsUpdate ? "opacity-90" : ""}`}
+                          />
+                        </div>
                       ) : (
-                        <div className="p-4 text-sm text-muted-foreground font-mono">
+                        <div className="p-4 text-sm text-muted-foreground font-mono whitespace-pre-wrap break-words">
                           {t("base64Encoder.outputPlaceholder")}
                         </div>
                       )}
@@ -485,44 +576,93 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                   </motion.div>
                 </motion.div>
               </TabsContent>
-
-              <TabsContent value="examples" className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  {t("base64Encoder.examplesHint")}
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
-                  {exampleData.map((example, index) => (
-                    <motion.div
-                      key={example.titleKey}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        delay: index * 0.1,
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 24,
-                      }}
-                      whileHover={{ y: -4, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Card
-                        className="cursor-pointer hover:border-accent transition-colors rounded-xl"
-                        onClick={() => loadExample(example.data)}
-                      >
-                        <CardHeader className="p-4">
-                          <CardTitle className="text-sm">
-                            {t(example.titleKey)}
-                          </CardTitle>
-                          <CardDescription className="text-xs font-mono truncate">
-                            {example.data}
-                          </CardDescription>
-                        </CardHeader>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </TabsContent>
             </Tabs>
+          </CardContent>
+        </Card>
+      </motion.section>
+
+      {/* Examples Section */}
+      <motion.section className="mb-12" variants={itemVariants}>
+        <Card className="rounded-2xl overflow-hidden">
+          <CardContent className="p-6">
+            <motion.h3
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Sparkles className="h-5 w-5" />
+              {t("base64Encoder.examples")}
+            </motion.h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              {t("base64Encoder.examplesHint")} Click on any example to load it
+              into the input field, or use "Quick Run" to automatically
+              encode/decode:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+              {exampleData.map((example, index) => (
+                <motion.div
+                  key={example.titleKey}
+                  className="pixel-card p-4 space-y-3 cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: index * 0.1,
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 24,
+                  }}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  onClick={() => loadExample(example.data)}
+                >
+                  <div className="flex items-start justify-between">
+                    <h4 className="text-sm font-semibold flex-1">
+                      {t(example.titleKey)}
+                    </h4>
+                    <div className="flex gap-1 ml-2">
+                      <motion.button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          loadExample(example.data);
+                          // Note: Do NOT auto-convert, let user manually click convert button
+                        }}
+                        className="pixel-btn px-3 py-1 text-xs h-7"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Load Example Only"
+                      >
+                        <motion.span
+                          animate={{ rotate: [0, 15, -15, 0] }}
+                          transition={{
+                            duration: 2,
+                            repeat: Number.POSITIVE_INFINITY,
+                            repeatDelay: 4,
+                          }}
+                        >
+                          <Sparkles className="h-3 w-3" />
+                        </motion.span>
+                      </motion.button>
+                      <motion.button
+                        onClick={async (e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          await navigator.clipboard.writeText(example.data);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="px-3 py-1 text-xs h-7 rounded-full border-2 border-foreground/30 dark:border-primary/30 bg-transparent hover:bg-accent transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Copy"
+                      >
+                        <Copy className="h-3 w-3" />
+                      </motion.button>
+                    </div>
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground break-all bg-muted/30 p-2 rounded border">
+                    {example.data}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </motion.section>
@@ -549,6 +689,25 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
           data. Our free online Base64 encoder/decoder tool handles text and
           binary data conversion instantly.
         </motion.p>
+
+        <motion.div
+          className="mb-6 p-4 bg-muted/30 rounded-xl border border-border/50"
+          variants={itemVariants}
+        >
+          <h4 className="font-semibold mb-2">🔧 Technical Implementation</h4>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Our Base64 encoder uses JavaScript's built-in{" "}
+            <code className="bg-background px-1 rounded">btoa()</code> and
+            <code className="bg-background px-1 rounded">atob()</code> functions
+            with proper Unicode handling via
+            <code className="bg-background px-1 rounded">
+              encodeURIComponent()
+            </code>{" "}
+            for international characters. The algorithm maps every 3 bytes of
+            binary data to 4 Base64 characters using a 64-character alphabet
+            (A-Z, a-z, 0-9, +, /) with padding (=) for incomplete byte groups.
+          </p>
+        </motion.div>
 
         <motion.h3
           className="text-lg font-semibold mt-8 mb-4"
@@ -622,6 +781,38 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
             </motion.li>
           ))}
         </motion.ul>
+
+        <motion.div
+          className="mt-6 p-4 bg-muted/30 rounded-xl border border-border/50"
+          variants={itemVariants}
+        >
+          <h4 className="font-semibold mb-2">
+            💻 Technical Implementation Details
+          </h4>
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <p>
+              <strong>Data URI Scheme:</strong>{" "}
+              <code>data:image/png;base64,iVBORw0KGgo...</code> - Used for
+              embedding images directly in HTML/CSS
+            </p>
+            <p>
+              <strong>Email Attachments:</strong> binary MIME encoding for
+              attachments in email systems (SMTP)
+            </p>
+            <p>
+              <strong>Database Storage:</strong> Converting BLOBs to TEXT
+              columns while preserving binary integrity
+            </p>
+            <p>
+              <strong>JWT Tokens:</strong> Payload section in JSON Web Tokens
+              for API authentication
+            </p>
+            <p>
+              <strong>API Responses:</strong> Serializing complex objects for
+              JSON API responses
+            </p>
+          </div>
+        </motion.div>
 
         {/* Real-World Scenarios */}
         <motion.section
@@ -816,6 +1007,91 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
             ))}
           </motion.div>
         </motion.section>
+      </motion.section>
+
+      {/* Usage Limits & Best Practices */}
+      <motion.section className="mb-12" variants={itemVariants}>
+        <Card className="rounded-2xl overflow-hidden">
+          <CardContent className="p-6">
+            <motion.h3
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <AlertCircle className="h-5 w-5" />
+              Usage Limits & Best Practices
+            </motion.h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <h4 className="font-semibold mb-3 text-amber-600">
+                  ⚠️ Limitations
+                </h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>
+                      Increases data size by ~33% (4 chars per 3 bytes)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>
+                      Not suitable for large files (use binary protocols
+                      instead)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>
+                      Not encryption - easily reversible, don't use for
+                      sensitive data
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Browser memory limits for very large inputs</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-3 text-green-600">
+                  ✅ Best Practices
+                </h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>
+                      Use for small binary data (images, files &lt; 10MB)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Combine with compression (gzip) for efficiency</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Use URL-safe Base64 (+/-) for web applications</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Always validate Base64 input before decoding</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-xl border border-blue-200 dark:border-blue-800">
+              <h4 className="font-semibold mb-2 text-blue-800 dark:text-blue-200">
+                🔒 Security Note
+              </h4>
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                Base64 is NOT encryption. It provides no security or privacy.
+                Only use for data format conversion, never for protecting
+                sensitive information. For encryption, use proper cryptographic
+                algorithms like AES.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </motion.section>
 
       {/* FAQ Section */}

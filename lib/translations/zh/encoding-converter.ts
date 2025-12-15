@@ -1,6 +1,7 @@
 export const encodingConverter = {
   "encodingConverter.title": "字符编码转换器",
-  "encodingConverter.description": "在 UTF-8、GBK、ISO-8859-1 等不同字符编码间转换文本",
+  "encodingConverter.description":
+    "在 UTF-8、GBK、ISO-8859-1 等不同字符编码间转换文本",
   "encodingConverter.pageTitle": "字符编码转换器",
   "encodingConverter.pageSubtitle": "在 UTF-8、GBK 和其他编码之间转换文本",
   "encodingConverter.inputLabel": "输入文本",

@@ -13,7 +13,6 @@ import {
 import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CodeHighlighter } from "@/components/ui/code-highlighter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useCat } from "@/context/cat-context";
@@ -53,8 +52,17 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [showFaq, setShowFaq] = useState(false);
+  const [showFaq, setShowFaq] = useState(true); // FAQ默认展开
   const [activeTab, setActiveTab] = useState("encode");
+  const [needsUpdate, setNeedsUpdate] = useState(false);
+
+  // 使用统计状态
+  const [conversionStats, setConversionStats] = useState({
+    totalConversions: 0,
+    encodeCount: 0,
+    decodeCount: 0,
+    lastUsed: null as Date | null,
+  });
 
   const toolSectionRef = useRef<HTMLDivElement>(null);
 
@@ -76,6 +84,16 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
       const encoded = encodeURIComponent(input);
       setOutput(encoded);
       setError(null);
+      setNeedsUpdate(false); // Clear update flag when conversion is done
+
+      // 更新统计信息
+      setConversionStats((prev) => ({
+        totalConversions: prev.totalConversions + 1,
+        encodeCount: prev.encodeCount + 1,
+        decodeCount: prev.decodeCount,
+        lastUsed: new Date(),
+      }));
+
       // 只有在冷却时间结束后才生成物品
       if (input.trim() && shouldSpawnItem()) {
         spawnItem("fish");
@@ -91,6 +109,16 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
       const decoded = decodeURIComponent(input);
       setOutput(decoded);
       setError(null);
+      setNeedsUpdate(false); // Clear update flag when conversion is done
+
+      // 更新统计信息
+      setConversionStats((prev) => ({
+        totalConversions: prev.totalConversions + 1,
+        encodeCount: prev.encodeCount,
+        decodeCount: prev.decodeCount + 1,
+        lastUsed: new Date(),
+      }));
+
       // 只有在冷却时间结束后才生成物品
       if (input.trim() && shouldSpawnItem()) {
         spawnItem("fish");
@@ -117,17 +145,26 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
     }
   }, [output]);
 
-  const loadExample = useCallback((data: string) => {
-    setInput(data);
-    setError(null);
-    setActiveTab("encode");
-    setTimeout(() => {
-      toolSectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  }, []);
+  const loadExample = useCallback(
+    (data: string) => {
+      setInput(data);
+      setError(null);
+      setActiveTab("encode");
+
+      // Only mark as needing update if the input is different from current input and we have existing output
+      if (output && data !== input) {
+        setNeedsUpdate(true);
+      }
+
+      setTimeout(() => {
+        toolSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    },
+    [output, input],
+  );
 
   const swapInputOutput = useCallback(() => {
     setInput(output);
@@ -219,48 +256,77 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
                 <TabsTrigger value="encode" className="rounded-lg">
                   {t("urlEncoder.encodeTab", lang)}
                 </TabsTrigger>
-                <TabsTrigger value="examples" className="rounded-lg">
-                  {t("urlEncoder.examplesTab", lang)}
-                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="encode" className="space-y-6">
                 {/* Mode toggle buttons */}
-                <div className="flex items-center gap-3 mb-4">
-                  <motion.button
-                    onClick={() => setMode("encode")}
-                    className={`px-4 py-2 text-sm font-semibold rounded-full border-2 transition-all ${
-                      mode === "encode"
-                        ? "bg-primary text-primary-foreground border-foreground/60 dark:border-primary/50"
-                        : "bg-transparent border-foreground/30 dark:border-primary/30 hover:bg-accent"
-                    }`}
-                    style={
-                      mode === "encode"
-                        ? { boxShadow: "3px 3px 0 0 var(--foreground)" }
-                        : {}
-                    }
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                <div className="flex items-center justify-between gap-4 mb-4">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <motion.button
+                      onClick={() => setMode("encode")}
+                      className={`px-4 py-2 text-sm font-semibold rounded-full border-2 transition-all ${
+                        mode === "encode"
+                          ? "bg-primary text-primary-foreground border-foreground/60 dark:border-primary/50"
+                          : "bg-transparent border-foreground/30 dark:border-primary/30 hover:bg-accent"
+                      }`}
+                      style={
+                        mode === "encode"
+                          ? { boxShadow: "3px 3px 0 0 var(--foreground)" }
+                          : {}
+                      }
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Encode
+                    </motion.button>
+                    <motion.button
+                      onClick={() => setMode("decode")}
+                      className={`px-4 py-2 text-sm font-semibold rounded-full border-2 transition-all ${
+                        mode === "decode"
+                          ? "bg-primary text-primary-foreground border-foreground/60 dark:border-primary/50"
+                          : "bg-transparent border-foreground/30 dark:border-primary/30 hover:bg-accent"
+                      }`}
+                      style={
+                        mode === "decode"
+                          ? { boxShadow: "3px 3px 0 0 var(--foreground)" }
+                          : {}
+                      }
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Decode
+                    </motion.button>
+                  </div>
+
+                  {/* Usage Analysis Tags - 右侧 */}
+                  <motion.div
+                    className="flex flex-wrap gap-2"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
                   >
-                    Encode
-                  </motion.button>
-                  <motion.button
-                    onClick={() => setMode("decode")}
-                    className={`px-4 py-2 text-sm font-semibold rounded-full border-2 transition-all ${
-                      mode === "decode"
-                        ? "bg-primary text-primary-foreground border-foreground/60 dark:border-primary/50"
-                        : "bg-transparent border-foreground/30 dark:border-primary/30 hover:bg-accent"
-                    }`}
-                    style={
-                      mode === "decode"
-                        ? { boxShadow: "3px 3px 0 0 var(--foreground)" }
-                        : {}
-                    }
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Decode
-                  </motion.button>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      {conversionStats.totalConversions} URLs
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      {conversionStats.encodeCount} Encodes
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      {conversionStats.decodeCount} Decodes
+                    </motion.div>
+                  </motion.div>
                 </div>
 
                 <div className="grid gap-6 lg:grid-cols-2 items-start">
@@ -290,7 +356,18 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
                       }
                       className="min-h-[220px] font-mono text-sm pixel-input resize-none rounded-xl"
                       value={input}
-                      onChange={(e) => setInput(e.target.value)}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        setInput(newValue);
+
+                        // Mark as needing update if input changes and we have output
+                        if (newValue !== input && output) {
+                          setNeedsUpdate(true);
+                        }
+
+                        // Clear error when input changes
+                        setError(null);
+                      }}
                     />
                     <AnimatePresence>
                       {error && (
@@ -355,17 +432,42 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
                         </Button>
                       </motion.div>
                     </div>
-                    <div className="min-h-[220px] rounded-xl border-2 border-foreground/20 dark:border-primary/20 bg-muted/30 overflow-hidden">
+                    <div
+                      className={`
+                      min-h-[220px] p-4 text-sm font-mono whitespace-pre-wrap break-words overflow-auto rounded-xl border-2 transition-all duration-300
+                      ${
+                        needsUpdate
+                          ? "border-amber-300 bg-amber-50/30 dark:border-amber-600/30 dark:bg-amber-950/20"
+                          : "border-foreground/20 dark:border-primary/20 bg-muted/30"
+                      }
+                    `}
+                    >
                       {output ? (
-                        <CodeHighlighter
-                          code={output}
-                          language="url"
-                          className="min-h-[220px] max-h-[300px]"
-                        />
+                        <>
+                          {needsUpdate && (
+                            <div className="flex items-center gap-2 p-3 mb-4 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30 rounded-lg">
+                              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                              <span className="text-sm text-amber-800 dark:text-amber-200">
+                                {t("common.needsUpdate", lang)}
+                              </span>
+                            </div>
+                          )}
+                          {output}
+                        </>
                       ) : (
-                        <div className="p-4 text-sm text-muted-foreground font-mono">
-                          Result will appear here...
-                        </div>
+                        <>
+                          <span className="text-muted-foreground">
+                            Result will appear here...
+                          </span>
+                          <br />
+                          <span className="text-muted-foreground">
+                            Your encoded/decoded URL
+                          </span>
+                          <br />
+                          <span className="text-muted-foreground">
+                            will be displayed here.
+                          </span>
+                        </>
                       )}
                     </div>
                   </motion.div>
@@ -425,32 +527,87 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
                   </motion.button>
                 </motion.div>
               </TabsContent>
-
-              <TabsContent value="examples" className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Click on an example to load it:
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {exampleUrlData.map((example, index) => (
-                    <motion.div
-                      key={example.title}
-                      className="cursor-pointer pixel-card p-4"
-                      onClick={() => loadExample(example.data)}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.03, y: -4 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <h4 className="text-sm font-semibold">{example.title}</h4>
-                      <p className="text-xs font-mono text-muted-foreground truncate mt-1">
-                        {example.data}
-                      </p>
-                    </motion.div>
-                  ))}
-                </div>
-              </TabsContent>
             </Tabs>
+          </CardContent>
+        </Card>
+      </motion.section>
+
+      {/* Examples Section */}
+      <motion.section className="mb-12" variants={itemVariants}>
+        <Card className="rounded-2xl overflow-hidden">
+          <CardContent className="p-6">
+            <motion.h3
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Sparkles className="h-5 w-5" />
+              Example URLs
+            </motion.h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              Click on any example to load it into the input field, or use
+              "Quick Run" to automatically convert:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {exampleUrlData.map((example, index) => (
+                <motion.div
+                  key={example.title}
+                  className="pixel-card p-4 space-y-3 cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  onClick={() => loadExample(example.data)}
+                >
+                  <div className="flex items-start justify-between">
+                    <h4 className="text-sm font-semibold flex-1">
+                      {example.title}
+                    </h4>
+                    <div className="flex gap-1 ml-2">
+                      <motion.button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          loadExample(example.data);
+                          // Note: Do NOT auto-convert, let user manually click convert button
+                        }}
+                        className="pixel-btn px-3 py-1 text-xs h-7"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Load Example & Convert"
+                      >
+                        <motion.span
+                          animate={{ rotate: [0, 15, -15, 0] }}
+                          transition={{
+                            duration: 2,
+                            repeat: Number.POSITIVE_INFINITY,
+                            repeatDelay: 4,
+                          }}
+                        >
+                          <Sparkles className="h-3 w-3" />
+                        </motion.span>
+                      </motion.button>
+                      <motion.button
+                        onClick={async (e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          await navigator.clipboard.writeText(example.data);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="px-3 py-1 text-xs h-7 rounded-full border-2 border-foreground/30 dark:border-primary/30 bg-transparent hover:bg-accent transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Copy Example"
+                      >
+                        <Copy className="h-3 w-3" />
+                      </motion.button>
+                    </div>
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground break-all bg-muted/30 p-2 rounded border">
+                    {example.data}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </motion.section>
@@ -477,6 +634,45 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
           URL encoder/decoder helps you convert URLs and query parameters
           instantly without any installation or signup.
         </motion.p>
+
+        {/* Technical Implementation Details */}
+        <motion.div
+          className="mb-8 p-6 bg-muted/20 rounded-xl border border-border/50"
+          variants={itemVariants}
+        >
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-sm font-bold">
+              ⚡
+            </span>
+            Technical Implementation
+          </h3>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <h4 className="font-semibold mb-2 text-sm">
+                JavaScript Functions
+              </h4>
+              <div className="bg-background p-3 rounded border font-mono text-xs space-y-2">
+                <div className="text-muted-foreground">
+                  {"/* Encode URL components */"}
+                </div>
+                <div>encodeURIComponent(input)</div>
+                <div className="text-muted-foreground mt-3">
+                  {"/* Decode URL components */"}
+                </div>
+                <div>decodeURIComponent(input)</div>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2 text-sm">Algorithm Details</h4>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• Converts characters to UTF-8 bytes</li>
+                <li>• Each byte becomes %XX (hexadecimal)</li>
+                <li>• Reserved characters are encoded</li>
+                <li>• Unreserved characters remain unchanged</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
 
         <motion.h3
           className="text-lg font-semibold mt-8 mb-4"
@@ -551,6 +747,43 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
           ))}
         </motion.ul>
 
+        {/* Usage Boundaries */}
+        <motion.div
+          className="mt-6 p-6 bg-amber-50 dark:bg-amber-950/20 rounded-xl border border-amber-200 dark:border-amber-800"
+          variants={itemVariants}
+        >
+          <h4 className="text-sm font-semibold mb-3 text-amber-800 dark:text-amber-200 flex items-center gap-2">
+            <span className="w-5 h-5 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full flex items-center justify-center text-xs font-bold">
+              !
+            </span>
+            Usage Boundaries & Limitations
+          </h4>
+          <div className="grid gap-3 md:grid-cols-2">
+            <div>
+              <h5 className="font-medium text-amber-700 dark:text-amber-300 text-xs mb-2">
+                ✅ Appropriate For:
+              </h5>
+              <ul className="text-xs text-amber-600 dark:text-amber-400 space-y-1">
+                <li>• Query parameters and form data</li>
+                <li>• API requests and web services</li>
+                <li>• URL parameters with special characters</li>
+                <li>• Multilingual content in URLs</li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="font-medium text-amber-700 dark:text-amber-300 text-xs mb-2">
+                ⚠️ Not Suitable For:
+              </h5>
+              <ul className="text-xs text-amber-600 dark:text-amber-400 space-y-1">
+                <li>• Complete URL structure encoding</li>
+                <li>• Domain names or protocols</li>
+                <li>• Already encoded content (double encoding)</li>
+                <li>• HTML entity encoding</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Real-World Scenarios */}
         <motion.section
           className="mt-12"
@@ -577,7 +810,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
             <p className="text-muted-foreground mb-4">
               {t("urlEncoder.scenarios.scenario1.desc", lang)}
             </p>
-            <div className="bg-background p-4 rounded-lg border font-mono text-sm">
+            <div className="bg-background p-4 rounded-lg border font-mono text-sm whitespace-pre-wrap break-words">
               <div className="text-muted-foreground mb-2">
                 ❌ {t("urlEncoder.scenarios.scenario1.problem", lang)}
               </div>
@@ -612,7 +845,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
               Your web app needs to handle user searches containing Chinese,
               Japanese, or other Unicode characters.
             </p>
-            <div className="bg-background p-4 rounded-lg border font-mono text-sm">
+            <div className="bg-background p-4 rounded-lg border font-mono text-sm whitespace-pre-wrap break-words">
               <div className="text-muted-foreground mb-2">
                 Original Search Term:
               </div>
@@ -643,7 +876,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
               Creating shareable links for social media posts that include
               dynamic content.
             </p>
-            <div className="bg-background p-4 rounded-lg border font-mono text-sm">
+            <div className="bg-background p-4 rounded-lg border font-mono text-sm whitespace-pre-wrap break-words">
               <div className="text-muted-foreground mb-2">
                 Dynamic Share URL:
               </div>

@@ -1,8 +1,10 @@
 export const encodingConverter = {
   "encodingConverter.title": "Character Encoding Converter",
-  "encodingConverter.description": "Convert text between different character encodings like UTF-8, GBK, ISO-8859-1",
+  "encodingConverter.description":
+    "Convert text between different character encodings like UTF-8, GBK, ISO-8859-1",
   "encodingConverter.pageTitle": "Character Encoding Converter",
-  "encodingConverter.pageSubtitle": "Convert text between UTF-8, GBK, and other encodings",
+  "encodingConverter.pageSubtitle":
+    "Convert text between UTF-8, GBK, and other encodings",
   "encodingConverter.inputLabel": "Input Text",
   "encodingConverter.inputPlaceholder": "Enter or paste text here...",
   "encodingConverter.outputLabel": "Converted Output",

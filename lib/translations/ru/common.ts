@@ -31,6 +31,7 @@ export const common = {
   "common.result": "Результат",
   "common.examples": "Примеры",
   "common.faq": "Частые вопросы",
+  "common.needsUpdate": "Ввод изменен, необходимо повторить преобразование",
 
   // Badges
   "badge.free": "Бесплатно",

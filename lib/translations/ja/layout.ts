@@ -10,6 +10,7 @@ export const layout = {
   "footer.legal": "法的情報",
   "footer.privacyPolicy": "プライバシーポリシー",
   "footer.termsOfService": "利用規約",
+  "footer.disclaimer": "免責事項",
   "footer.developer": "開発者",
   "footer.sourceCode": "ソースコード",
   "footer.githubProfile": "GitHub",

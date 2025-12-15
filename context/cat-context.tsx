@@ -9,18 +9,83 @@ import {
   useState,
 } from "react";
 
-// Item types that can be earned from tools
-export type CatItemType =
-  | "fish" // URL Encoder success
-  | "yarn" // JSON Formatter success
-  | "book" // Base64 success
-  | "keyboard" // Hash Generator success
-  | "coffee" // UUID Generator success
-  | "cookie" // Color Converter success
-  | "qr" // QR Generator success
-  | "sparkles" // Regex Tester success
-  | "star"; // Special achievements
+// ============================================================================
+// Item Registry - Single source of truth for all items
+// To add a new item: just add it to this array
+// ============================================================================
+export const CAT_ITEMS = [
+  { id: "fish", emoji: "🐟", tool: "URL Encoder" },
+  { id: "yarn", emoji: "🧶", tool: "Encoding Converter" },
+  { id: "book", emoji: "📖", tool: "Base64 Encoder" },
+  { id: "keyboard", emoji: "⌨", tool: "MD5 Generator" },
+  { id: "coffee", emoji: "☕", tool: "UUID Generator" },
+  { id: "sparkles", emoji: "✨", tool: "Password Generator" },
+] as const;
 
+// Derive types from the registry
+export type CatItemType = (typeof CAT_ITEMS)[number]["id"];
+export type CatInventory = Record<CatItemType, boolean>;
+
+// Storage version for future migrations
+const STORAGE_VERSION = 1;
+const STORAGE_KEY = "cat-inventory-v1";
+
+interface StoredData {
+  version: number;
+  inventory: Partial<Record<string, boolean>>;
+}
+
+// Generate default inventory from registry
+function createDefaultInventory(): CatInventory {
+  return CAT_ITEMS.reduce(
+    (acc, item) => {
+      acc[item.id] = false;
+      return acc;
+    },
+    {} as Record<CatItemType, boolean>,
+  );
+}
+
+// Load inventory with migration support
+function loadInventory(): CatInventory {
+  const defaultInventory = createDefaultInventory();
+
+  try {
+    // Try new format first
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const data: StoredData = JSON.parse(saved);
+      if (data.version === STORAGE_VERSION && data.inventory) {
+        return { ...defaultInventory, ...data.inventory };
+      }
+    }
+
+    // Migrate from old format
+    const oldSaved = localStorage.getItem("cat-inventory");
+    if (oldSaved) {
+      const oldData = JSON.parse(oldSaved);
+      localStorage.removeItem("cat-inventory");
+      return { ...defaultInventory, ...oldData };
+    }
+  } catch {
+    console.error("Failed to load cat inventory");
+  }
+
+  return defaultInventory;
+}
+
+// Save inventory
+function saveInventory(inventory: CatInventory): void {
+  const data: StoredData = {
+    version: STORAGE_VERSION,
+    inventory,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// ============================================================================
+// Context Types
+// ============================================================================
 export type CatMood = "idle" | "happy" | "curious" | "sleepy" | "excited";
 
 interface FallingItem {
@@ -28,18 +93,6 @@ interface FallingItem {
   type: CatItemType;
   x: number;
   y: number;
-}
-
-interface CatInventory {
-  fish: boolean;
-  yarn: boolean;
-  book: boolean;
-  keyboard: boolean;
-  coffee: boolean;
-  cookie: boolean;
-  qr: boolean;
-  sparkles: boolean;
-  star: boolean;
 }
 
 interface CatState {
@@ -62,25 +115,19 @@ interface CatContextType extends CatState {
   getUnlockedCount: () => number;
   getTotalItems: () => number;
   setIsCatDragging: (dragging: boolean) => void;
+  getItemInfo: (id: CatItemType) => (typeof CAT_ITEMS)[number] | undefined;
 }
 
-const defaultInventory: CatInventory = {
-  fish: false,
-  yarn: false,
-  book: false,
-  keyboard: false,
-  coffee: false,
-  cookie: false,
-  qr: false,
-  sparkles: false,
-  star: false,
-};
-
+// ============================================================================
+// Context Provider
+// ============================================================================
 const CatContext = createContext<CatContextType | null>(null);
 
 export function CatProvider({ children }: { children: ReactNode }) {
   const [mood, setMoodState] = useState<CatMood>("idle");
-  const [inventory, setInventory] = useState<CatInventory>(defaultInventory);
+  const [inventory, setInventory] = useState<CatInventory>(
+    createDefaultInventory,
+  );
   const [itemsOnGround, setItemsOnGround] = useState<FallingItem[]>([]);
   const [isHomeOpen, setIsHomeOpen] = useState(false);
   const [catPosition, setCatPosition] = useState({ x: 0, y: 0 });
@@ -88,42 +135,30 @@ export function CatProvider({ children }: { children: ReactNode }) {
 
   // Load inventory from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem("cat-inventory");
-    if (saved) {
-      try {
-        setInventory(JSON.parse(saved));
-      } catch {
-        console.error("Failed to load cat inventory");
-      }
-    }
+    setInventory(loadInventory());
   }, []);
 
   // Save inventory to localStorage when it changes
   useEffect(() => {
-    localStorage.setItem("cat-inventory", JSON.stringify(inventory));
+    saveInventory(inventory);
   }, [inventory]);
 
   const spawnItem = useCallback((type: CatItemType) => {
     const id = `${type}-${Date.now()}`;
-    const x = Math.random() * 60 + 20; // 20-80% of screen width
+    const x = Math.random() * 60 + 20;
     setItemsOnGround((prev) => [...prev, { id, type, x, y: -50 }]);
   }, []);
 
   const feedCat = useCallback((itemId: string) => {
-    // 通过setItemsOnGround的回调函数来同时更新inventory和移除物品
     setItemsOnGround((prevItems) => {
       const item = prevItems.find((i) => i.id === itemId);
       if (item) {
-        // 更新inventory
         setInventory((prev) => ({ ...prev, [item.type]: true }));
-        // 移除物品
         return prevItems.filter((i) => i.id !== itemId);
       }
       return prevItems;
     });
-    // Make cat happy
     setMoodState("happy");
-    // Reset mood after delay
     setTimeout(() => setMoodState("idle"), 3000);
   }, []);
 
@@ -148,8 +183,12 @@ export function CatProvider({ children }: { children: ReactNode }) {
   }, [inventory]);
 
   const getTotalItems = useCallback(() => {
-    return Object.keys(inventory).length;
-  }, [inventory]);
+    return CAT_ITEMS.length;
+  }, []);
+
+  const getItemInfo = useCallback((id: CatItemType) => {
+    return CAT_ITEMS.find((item) => item.id === id);
+  }, []);
 
   return (
     <CatContext.Provider
@@ -170,6 +209,7 @@ export function CatProvider({ children }: { children: ReactNode }) {
         getUnlockedCount,
         getTotalItems,
         setIsCatDragging,
+        getItemInfo,
       }}
     >
       {children}

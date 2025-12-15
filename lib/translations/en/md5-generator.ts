@@ -1,6 +1,7 @@
 export const md5Generator = {
   "md5Generator.title": "MD5 Hash Generator",
-  "md5Generator.description": "Generate MD5 hash values from text or files for checksums and verification",
+  "md5Generator.description":
+    "Generate MD5 hash values from text or files for checksums and verification",
   "md5Generator.pageTitle": "MD5 Hash Generator",
   "md5Generator.pageSubtitle": "Generate MD5 hash for text strings instantly",
   "md5Generator.inputLabel": "Input Text",

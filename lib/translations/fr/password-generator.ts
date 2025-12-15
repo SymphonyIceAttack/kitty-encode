@@ -1,10 +1,13 @@
 export const passwordGenerator = {
   "passwordGenerator.title": "Password Generator",
-  "passwordGenerator.description": "Generate secure random passwords and API keys with customizable options",
+  "passwordGenerator.description":
+    "Generate secure random passwords and API keys with customizable options",
   "passwordGenerator.pageTitle": "Password & Key Generator",
-  "passwordGenerator.pageSubtitle": "Generate secure random passwords, API keys, and tokens",
+  "passwordGenerator.pageSubtitle":
+    "Generate secure random passwords, API keys, and tokens",
   "passwordGenerator.outputLabel": "Generated Password",
-  "passwordGenerator.outputPlaceholder": "Click generate to create a password...",
+  "passwordGenerator.outputPlaceholder":
+    "Click generate to create a password...",
   "passwordGenerator.generate": "Generate",
   "passwordGenerator.regenerate": "Regenerate",
   "passwordGenerator.length": "Length",

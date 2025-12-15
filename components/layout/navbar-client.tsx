@@ -160,7 +160,9 @@ export function Navbar({ lang }: NavbarProps) {
           </motion.div>
 
           <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-tight">KittyEncode</span>
+            <span className="text-xl font-bold tracking-tight">
+              KittyEncode
+            </span>
             <AnimatePresence>
               {isCatDragging && (
                 <motion.span

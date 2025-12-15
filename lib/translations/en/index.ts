@@ -1,12 +1,18 @@
+import { about } from "./about";
 import { base64Encoder } from "./base64-encoder";
 import { common } from "./common";
+import { contact } from "./contact";
+import { disclaimer } from "./disclaimer";
 import { encodingConverter } from "./encoding-converter";
 import { home } from "./home";
 import { layout } from "./layout";
 import { md5Generator } from "./md5-generator";
 import { passwordGenerator } from "./password-generator";
+import { privacy } from "./privacy";
+import { terms } from "./terms";
 import { tools } from "./tools";
 import { urlEncoder } from "./url-encoder";
+import { uuidGenerator } from "./uuid-generator";
 
 export const translations_en: { [key: string]: string } = {
   ...common,
@@ -18,6 +24,12 @@ export const translations_en: { [key: string]: string } = {
   ...md5Generator,
   ...encodingConverter,
   ...passwordGenerator,
+  ...uuidGenerator,
+  ...about,
+  ...privacy,
+  ...terms,
+  ...contact,
+  ...disclaimer,
 };
 
 export default translations_en;

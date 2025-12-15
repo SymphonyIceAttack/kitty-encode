@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import type React from "react";
 import { Button } from "@/components/ui/button";
-import { type CatItemType, useCat } from "@/context/cat-context";
+import { CAT_ITEMS, type CatItemType, useCat } from "@/context/cat-context";
 
 const GhibliIcons: Record<CatItemType, React.ReactNode> = {
   fish: (
@@ -172,43 +172,6 @@ const GhibliIcons: Record<CatItemType, React.ReactNode> = {
       />
     </svg>
   ),
-  cookie: (
-    <svg width="40" height="40" viewBox="0 0 32 32">
-      <circle cx="16" cy="16" r="12" fill="hsl(35, 55%, 60%)" />
-      <circle cx="12" cy="12" r="2" fill="hsl(155, 40%, 35%)" />
-      <circle cx="20" cy="14" r="2" fill="hsl(155, 40%, 35%)" />
-      <circle cx="14" cy="20" r="2" fill="hsl(155, 40%, 35%)" />
-      <circle cx="20" cy="20" r="1.5" fill="hsl(155, 40%, 35%)" />
-      <circle cx="10" cy="17" r="1.5" fill="hsl(155, 40%, 35%)" />
-    </svg>
-  ),
-  star: (
-    <svg width="40" height="40" viewBox="0 0 32 32">
-      <path
-        d="M16 2 L19 12 L30 12 L21 18 L24 28 L16 22 L8 28 L11 18 L2 12 L13 12 Z"
-        fill="hsl(50, 80%, 55%)"
-        stroke="hsl(45, 70%, 45%)"
-        strokeWidth="1"
-      />
-      <circle cx="16" cy="14" r="3" fill="hsl(50, 90%, 75%)" />
-    </svg>
-  ),
-  qr: (
-    <svg width="40" height="40" viewBox="0 0 32 32">
-      <rect x="6" y="6" width="8" height="8" fill="hsl(180, 30%, 30%)" />
-      <rect x="18" y="6" width="8" height="8" fill="hsl(180, 30%, 30%)" />
-      <rect x="6" y="18" width="8" height="8" fill="hsl(180, 30%, 30%)" />
-      <rect x="16" y="16" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="20" y="16" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="24" y="16" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="16" y="20" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="20" y="20" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="24" y="20" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="16" y="24" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="20" y="24" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-      <rect x="24" y="24" width="2" height="2" fill="hsl(180, 30%, 30%)" />
-    </svg>
-  ),
   sparkles: (
     <svg width="40" height="40" viewBox="0 0 32 32">
       <path
@@ -230,7 +193,7 @@ const itemConfig: Record<CatItemType, { name: string; description: string }> = {
   },
   yarn: {
     name: "Leaf Yarn",
-    description: "Earned from JSON formatting",
+    description: "Earned from Encoding conversion",
   },
   book: {
     name: "Wisdom Book",
@@ -238,27 +201,15 @@ const itemConfig: Record<CatItemType, { name: string; description: string }> = {
   },
   keyboard: {
     name: "Nature Keys",
-    description: "Earned from Hash generation",
+    description: "Earned from MD5 generation",
   },
   coffee: {
     name: "Herb Tea",
     description: "Earned from UUID generation",
   },
-  cookie: {
-    name: "Acorn Cookie",
-    description: "Earned from Color conversion",
-  },
-  qr: {
-    name: "Mystic QR",
-    description: "Earned from QR generation",
-  },
   sparkles: {
     name: "Magic Sparkles",
-    description: "Earned from Regex testing",
-  },
-  star: {
-    name: "Forest Star",
-    description: "Special achievement",
+    description: "Earned from Password generation",
   },
 };
 
@@ -276,11 +227,15 @@ function ItemSlot({
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 200 }}
-      whileHover={unlocked ? { 
-        scale: 1.1, 
-        y: -5,
-        transition: { duration: 0.2, ease: "easeOut" }
-      } : undefined}
+      whileHover={
+        unlocked
+          ? {
+              scale: 1.1,
+              y: -5,
+              transition: { duration: 0.2, ease: "easeOut" },
+            }
+          : undefined
+      }
       className={`
         group relative p-4 rounded-2xl border-2 transition-all
         ${
@@ -463,18 +418,16 @@ export function CatHomeModal() {
             {/* Items grid */}
             <div className="p-6">
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-                {(Object.keys(inventory) as CatItemType[]).map(
-                  (type, index) => (
-                    <motion.div
-                      key={type}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <ItemSlot type={type} unlocked={inventory[type]} />
-                    </motion.div>
-                  ),
-                )}
+                {CAT_ITEMS.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <ItemSlot type={item.id} unlocked={inventory[item.id]} />
+                  </motion.div>
+                ))}
               </div>
 
               <div className="mt-6 pt-4 border-t border-primary/20">

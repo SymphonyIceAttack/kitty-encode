@@ -31,6 +31,7 @@ export const common = {
   "common.result": "Resultado",
   "common.examples": "Ejemplos",
   "common.faq": "Preguntas frecuentes",
+  "common.needsUpdate": "Entrada cambiada, necesita reconvertir",
 
   // Badges
   "badge.free": "Gratis",

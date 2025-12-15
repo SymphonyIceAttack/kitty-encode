@@ -28,6 +28,7 @@ export const common = {
   "common.result": "結果",
   "common.examples": "サンプル",
   "common.faq": "よくある質問",
+  "common.needsUpdate": "入力変更、再変換が必要",
   "badge.free": "無料",
   "badge.noSignup": "登録不要",
   "badge.offline": "オフライン対応",

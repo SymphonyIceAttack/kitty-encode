@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  AlertCircle,
   Check,
   ChevronDown,
   Copy,
@@ -11,13 +12,7 @@ import {
 } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { CodeHighlighter } from "@/components/ui/code-highlighter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -95,7 +90,7 @@ function md5(input: string): string {
     d: number,
     x: number,
     s: number,
-    ac: number
+    ac: number,
   ): number {
     a = addUnsigned(a, addUnsigned(addUnsigned(f(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
@@ -107,7 +102,7 @@ function md5(input: string): string {
     d: number,
     x: number,
     s: number,
-    ac: number
+    ac: number,
   ): number {
     a = addUnsigned(a, addUnsigned(addUnsigned(g(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
@@ -119,7 +114,7 @@ function md5(input: string): string {
     d: number,
     x: number,
     s: number,
-    ac: number
+    ac: number,
   ): number {
     a = addUnsigned(a, addUnsigned(addUnsigned(h(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
@@ -131,7 +126,7 @@ function md5(input: string): string {
     d: number,
     x: number,
     s: number,
-    ac: number
+    ac: number,
   ): number {
     a = addUnsigned(a, addUnsigned(addUnsigned(i(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
@@ -151,12 +146,14 @@ function md5(input: string): string {
       const lWordPosition = (lByteCount - (lByteCount % 4)) / 4;
       lBytePosition = (lByteCount % 4) * 8;
       lWordCount[lWordPosition] =
-        lWordCount[lWordPosition] | (str.charCodeAt(lByteCount) << lBytePosition);
+        lWordCount[lWordPosition] |
+        (str.charCodeAt(lByteCount) << lBytePosition);
       lByteCount++;
     }
     const lWordPosition = (lByteCount - (lByteCount % 4)) / 4;
     lBytePosition = (lByteCount % 4) * 8;
-    lWordCount[lWordPosition] = lWordCount[lWordPosition] | (0x80 << lBytePosition);
+    lWordCount[lWordPosition] =
+      lWordCount[lWordPosition] | (0x80 << lBytePosition);
     lWordCount[lNumberOfWords - 2] = lMessageLength << 3;
     lWordCount[lNumberOfWords - 1] = lMessageLength >>> 29;
     return lWordCount;
@@ -288,7 +285,12 @@ function md5(input: string): string {
     d = addUnsigned(d, DD);
   }
 
-  return (wordToHex(a) + wordToHex(b) + wordToHex(c) + wordToHex(d)).toLowerCase();
+  return (
+    wordToHex(a) +
+    wordToHex(b) +
+    wordToHex(c) +
+    wordToHex(d)
+  ).toLowerCase();
 }
 
 export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
@@ -311,33 +313,91 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
   const [uppercase, setUppercase] = useState(false);
   const [bit16, setBit16] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [showFaq, setShowFaq] = useState(false);
   const [activeTab, setActiveTab] = useState("generate");
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [batchMode, setBatchMode] = useState(false);
+  const [batchInputs, setBatchInputs] = useState<string[]>([""]);
+  const [batchOutputs, setBatchOutputs] = useState<string[]>([]);
+  const [needsUpdate, setNeedsUpdate] = useState(false);
+  const [showFaq, setShowFaq] = useState(true); // 默认展开FAQ
+  const [generationStats, setGenerationStats] = useState({
+    totalGenerations: 0,
+    uppercaseCount: 0,
+    bit16Count: 0,
+    batchCount: 0,
+    lastUsed: null as Date | null,
+  });
 
   const toolSectionRef = useRef<HTMLDivElement>(null);
 
   const generateMd5 = useCallback(() => {
-    if (!input.trim()) {
-      setOutput("");
-      return;
+    if (batchMode) {
+      // Batch mode
+      const validInputs = batchInputs.filter((input) => input.trim());
+      if (validInputs.length === 0) {
+        setBatchOutputs([]);
+        return;
+      }
+
+      const results = validInputs.map((text) => {
+        let hash = md5(text);
+
+        if (bit16) {
+          hash = hash.substring(8, 24);
+        }
+
+        if (uppercase) {
+          hash = hash.toUpperCase();
+        }
+
+        return hash;
+      });
+
+      setBatchOutputs(results);
+    } else {
+      // Single mode
+      if (!input.trim()) {
+        setOutput("");
+        return;
+      }
+
+      let hash = md5(input);
+
+      if (bit16) {
+        hash = hash.substring(8, 24);
+      }
+
+      if (uppercase) {
+        hash = hash.toUpperCase();
+      }
+
+      setOutput(hash);
     }
-
-    let hash = md5(input);
-
-    if (bit16) {
-      hash = hash.substring(8, 24);
-    }
-
-    if (uppercase) {
-      hash = hash.toUpperCase();
-    }
-
-    setOutput(hash);
 
     if (shouldSpawnItem()) {
-      spawnItem("fish");
+      spawnItem("keyboard");
     }
-  }, [input, uppercase, bit16, spawnItem, shouldSpawnItem]);
+
+    // Update statistics
+    setGenerationStats((prev) => ({
+      totalGenerations: prev.totalGenerations + 1,
+      uppercaseCount: uppercase ? prev.uppercaseCount + 1 : prev.uppercaseCount,
+      bit16Count: bit16 ? prev.bit16Count + 1 : prev.bit16Count,
+      batchCount: batchMode ? prev.batchCount + 1 : prev.batchCount,
+      lastUsed: new Date(),
+    }));
+
+    // Clear the needs update flag after successful generation
+    setNeedsUpdate(false);
+  }, [
+    input,
+    batchMode,
+    batchInputs,
+    uppercase,
+    bit16,
+    spawnItem,
+    shouldSpawnItem,
+  ]);
 
   const copyToClipboard = useCallback(async () => {
     if (output) {
@@ -347,16 +407,61 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
     }
   }, [output]);
 
-  const loadExample = useCallback((data: string) => {
-    setInput(data);
-    setActiveTab("generate");
-    setTimeout(() => {
-      toolSectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+  const copyToClipboardText = useCallback(async (text: string) => {
+    if (text) {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   }, []);
+
+  const loadExample = useCallback(
+    (data: string) => {
+      setInput(data);
+      setActiveTab("generate");
+
+      // Only mark as needing update if the input is different from current input and we have existing output
+      if (output && data !== input) {
+        setNeedsUpdate(true);
+      }
+
+      setTimeout(() => {
+        toolSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    },
+    [output, input],
+  );
+
+  const handleFileUpload = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        // For small files, read as text and hash the content
+        if (file.size <= 10 * 1024 * 1024) {
+          // 10MB limit for text processing
+          const text = await file.text();
+          setInput(text);
+          setUploadedFileName(file.name);
+          setActiveTab("generate");
+        } else {
+          // For larger files, we would need a different approach
+          // For now, show an error message
+          alert(
+            "File too large for text processing. Please use a file smaller than 10MB.",
+          );
+        }
+      } catch (error) {
+        console.error("Error reading file:", error);
+        alert("Error reading file. Please try again.");
+      }
+    },
+    [],
+  );
 
   return (
     <motion.div
@@ -407,21 +512,24 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
             },
           }}
         >
-          {["Free", "No Signup", "Works Offline", "Privacy First"].map(
-            (tag) => (
-              <motion.span
-                key={tag}
-                className="pixel-badge"
-                variants={{
-                  hidden: { opacity: 0, scale: 0.8 },
-                  visible: { opacity: 1, scale: 1 },
-                }}
-                whileHover={{ scale: 1.1, y: -2 }}
-              >
-                {tag}
-              </motion.span>
-            )
-          )}
+          {[
+            "File Checksums",
+            "Batch Processing",
+            "File Upload",
+            "Privacy First",
+          ].map((tag) => (
+            <motion.span
+              key={tag}
+              className="pixel-badge"
+              variants={{
+                hidden: { opacity: 0, scale: 0.8 },
+                visible: { opacity: 1, scale: 1 },
+              }}
+              whileHover={{ scale: 1.1, y: -2 }}
+            >
+              {tag}
+            </motion.span>
+          ))}
         </motion.div>
       </motion.section>
 
@@ -441,36 +549,99 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
                 <TabsTrigger value="generate" className="rounded-lg">
                   {t("md5Generator.generate")}
                 </TabsTrigger>
-                <TabsTrigger value="examples" className="rounded-lg">
-                  {t("md5Generator.examples")}
+                <TabsTrigger value="file" className="rounded-lg">
+                  File Upload
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="generate" className="space-y-4">
-                <div className="flex items-center gap-4 mb-4">
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Button
-                      variant={uppercase ? "default" : "outline"}
-                      onClick={() => setUppercase(!uppercase)}
-                      className="gap-2 rounded-xl h-11"
+                <div className="flex items-center justify-between gap-4 mb-4">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                     >
-                      {t("md5Generator.uppercase")}
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Button
-                      variant={bit16 ? "default" : "outline"}
-                      onClick={() => setBit16(!bit16)}
-                      className="gap-2 rounded-xl h-11"
+                      <Button
+                        variant={uppercase ? "default" : "outline"}
+                        onClick={() => setUppercase(!uppercase)}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        {t("md5Generator.uppercase")}
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                     >
-                      {bit16 ? t("md5Generator.bit16") : t("md5Generator.bit32")}
-                    </Button>
+                      <Button
+                        variant={bit16 ? "default" : "outline"}
+                        onClick={() => setBit16(!bit16)}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        {bit16
+                          ? t("md5Generator.bit16")
+                          : t("md5Generator.bit32")}
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      <Button
+                        variant={batchMode ? "default" : "outline"}
+                        onClick={() => {
+                          setBatchMode(!batchMode);
+                          if (!batchMode) {
+                            setBatchInputs([""]);
+                            setBatchOutputs([]);
+                            setOutput("");
+                          }
+                        }}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        {batchMode ? "Single Mode" : "Batch Mode"}
+                      </Button>
+                    </motion.div>
+                  </div>
+
+                  {/* Usage Analysis Tags - 右侧 */}
+                  <motion.div
+                    className="flex flex-wrap gap-2"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      {generationStats.totalGenerations} Generated
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-purple-500/10 text-purple-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      {generationStats.batchCount} Batch
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 text-orange-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                      {generationStats.uppercaseCount} Upper
+                    </motion.div>
+                    {generationStats.lastUsed && (
+                      <motion.div
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium"
+                        whileHover={{ scale: 1.05 }}
+                        title={`Last used: ${generationStats.lastUsed.toLocaleString()}`}
+                      >
+                        <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                        {generationStats.lastUsed.toLocaleTimeString()}
+                      </motion.div>
+                    )}
                   </motion.div>
                 </div>
 
@@ -483,15 +654,71 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
                   >
                     <div className="flex items-center justify-between h-8">
                       <span className="text-sm font-medium">
-                        {t("md5Generator.inputLabel")}
+                        {batchMode
+                          ? "Batch Input"
+                          : t("md5Generator.inputLabel")}
                       </span>
+                      {batchMode && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setBatchInputs([...batchInputs, ""])}
+                          className="rounded-lg h-7"
+                        >
+                          Add Row
+                        </Button>
+                      )}
                     </div>
-                    <Textarea
-                      placeholder={t("md5Generator.inputPlaceholder")}
-                      className="min-h-[300px] font-mono text-sm rounded-xl"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                    />
+
+                    {!batchMode ? (
+                      <Textarea
+                        placeholder={t("md5Generator.inputPlaceholder")}
+                        className="min-h-[300px] font-mono text-sm rounded-xl"
+                        value={input}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setInput(newValue);
+
+                          // Mark as needing update if input changes and we have output
+                          if (newValue !== input && output) {
+                            setNeedsUpdate(true);
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div className="space-y-2 max-h-[300px] overflow-auto">
+                        {batchInputs.map((batchInput, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Textarea
+                              placeholder={`Input ${index + 1}`}
+                              className="font-mono text-sm rounded-xl"
+                              value={batchInput}
+                              onChange={(e) => {
+                                const newInputs = [...batchInputs];
+                                newInputs[index] = e.target.value;
+                                setBatchInputs(newInputs);
+                                setBatchOutputs([]); // Clear batch outputs when input changes
+                              }}
+                            />
+                            {batchInputs.length > 1 && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const newInputs = batchInputs.filter(
+                                    (_, i) => i !== index,
+                                  );
+                                  setBatchInputs(newInputs);
+                                }}
+                                className="rounded-lg h-10 w-10 p-0"
+                              >
+                                ×
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
 
                   <motion.div
@@ -502,60 +729,108 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
                   >
                     <div className="flex items-center justify-between h-8">
                       <span className="text-sm font-medium">
-                        {t("md5Generator.outputLabel")}
+                        {batchMode
+                          ? "Batch Output"
+                          : t("md5Generator.outputLabel")}
                       </span>
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
+                      {batchMode && batchOutputs.length > 0 && (
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={copyToClipboard}
-                          disabled={!output}
+                          onClick={() =>
+                            copyToClipboardText(batchOutputs.join("\n"))
+                          }
                           className="rounded-lg"
                         >
-                          <AnimatePresence mode="wait">
-                            {copied ? (
-                              <motion.span
-                                key="copied"
-                                className="flex items-center"
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
-                              >
-                                <Check className="h-4 w-4 mr-1" />{" "}
-                                {t("common.copied")}
-                              </motion.span>
-                            ) : (
-                              <motion.span
-                                key="copy"
-                                className="flex items-center"
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
-                              >
-                                <Copy className="h-4 w-4 mr-1" />{" "}
-                                {t("common.copy")}
-                              </motion.span>
-                            )}
-                          </AnimatePresence>
+                          <Copy className="h-4 w-4 mr-1" /> Copy All
                         </Button>
-                      </motion.div>
-                    </div>
-                    <div className="min-h-[300px] rounded-xl border-2 border-border bg-muted/30 overflow-hidden">
-                      {output ? (
-                        <CodeHighlighter
-                          code={output}
-                          language="javascript"
-                          className="min-h-[300px] max-h-[400px]"
-                        />
-                      ) : (
-                        <div className="p-4 text-sm text-muted-foreground font-mono">
-                          {t("md5Generator.outputPlaceholder")}
-                        </div>
                       )}
                     </div>
+
+                    {!batchMode ? (
+                      <div
+                        className={`
+                        min-h-[300px] rounded-xl border-2 overflow-hidden transition-all duration-300
+                        ${
+                          needsUpdate
+                            ? "border-amber-300 bg-amber-50/30 dark:border-amber-600/30 dark:bg-amber-950/20"
+                            : "border-foreground/20 bg-muted/30"
+                        }
+                      `}
+                      >
+                        {output ? (
+                          <div>
+                            {needsUpdate && (
+                              <div className="flex items-center gap-2 p-3 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30">
+                                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                                <span className="text-sm text-amber-800 dark:text-amber-200">
+                                  {t("common.needsUpdate")}
+                                </span>
+                              </div>
+                            )}
+                            <CodeHighlighter
+                              code={output}
+                              language="javascript"
+                              className={`min-h-[300px] max-h-[400px] ${needsUpdate ? "opacity-90" : ""}`}
+                            />
+                          </div>
+                        ) : (
+                          <div className="p-4 text-sm text-muted-foreground font-mono whitespace-pre-wrap break-words">
+                            {t("md5Generator.outputPlaceholder")}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div
+                        className={`
+                        min-h-[300px] rounded-xl border-2 overflow-hidden transition-all duration-300 p-4
+                        ${
+                          needsUpdate
+                            ? "border-amber-300 bg-amber-50/30 dark:border-amber-600/30 dark:bg-amber-950/20"
+                            : "border-foreground/20 bg-muted/30"
+                        }
+                      `}
+                      >
+                        {batchOutputs.length > 0 ? (
+                          <div>
+                            {needsUpdate && (
+                              <div className="flex items-center gap-2 p-3 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30 mb-4">
+                                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                                <span className="text-sm text-amber-800 dark:text-amber-200">
+                                  {t("common.needsUpdate")}
+                                </span>
+                              </div>
+                            )}
+                            <div className="space-y-2">
+                              {batchOutputs.map((hash, index) => (
+                                <div
+                                  key={index}
+                                  className="flex items-center justify-between py-1 font-mono text-sm"
+                                >
+                                  <span className="flex-1 mr-2">{hash}</span>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => copyToClipboardText(hash)}
+                                    className="h-6 w-6 p-0"
+                                  >
+                                    <Copy className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-sm text-muted-foreground font-mono whitespace-pre-wrap break-words">
+                            Batch results will appear here...
+                            <br />
+                            Your MD5 hashes
+                            <br />
+                            will be displayed here.
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </motion.div>
                 </div>
 
@@ -605,38 +880,303 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
                 </motion.div>
               </TabsContent>
 
-              <TabsContent value="examples" className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  {t("md5Generator.examplesHint")}
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {exampleData.map((example, index) => (
+              <TabsContent value="file" className="space-y-4">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 mb-4">
                     <motion.div
-                      key={example.titleKey}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -4, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                     >
-                      <Card
-                        className="cursor-pointer hover:border-accent transition-colors rounded-xl"
-                        onClick={() => loadExample(example.data)}
+                      <Button
+                        variant={uppercase ? "default" : "outline"}
+                        onClick={() => setUppercase(!uppercase)}
+                        className="gap-2 rounded-xl h-11"
                       >
-                        <CardHeader className="p-4">
-                          <CardTitle className="text-sm">
-                            {t(example.titleKey)}
-                          </CardTitle>
-                          <CardDescription className="text-xs font-mono truncate">
-                            {example.data}
-                          </CardDescription>
-                        </CardHeader>
-                      </Card>
+                        {t("md5Generator.uppercase")}
+                      </Button>
                     </motion.div>
-                  ))}
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      <Button
+                        variant={bit16 ? "default" : "outline"}
+                        onClick={() => setBit16(!bit16)}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        {bit16
+                          ? t("md5Generator.bit16")
+                          : t("md5Generator.bit32")}
+                      </Button>
+                    </motion.div>
+                  </div>
+
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <motion.div
+                      className="space-y-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <div className="flex items-center justify-between h-8">
+                        <span className="text-sm font-medium">Upload File</span>
+                      </div>
+                      <div className="border-2 border-dashed border-border rounded-xl p-8 text-center">
+                        <input
+                          type="file"
+                          onChange={handleFileUpload}
+                          accept=".txt,.md,.json,.csv,.xml,.html,.css,.js,.ts,.jsx,.tsx,.py,.java,.cpp,.c,.cs,.php,.rb,.go,.rs,.swift,.kt,.scala,.clj,.erl,.ex"
+                          className="hidden"
+                          id="file-upload"
+                        />
+                        <label
+                          htmlFor="file-upload"
+                          className="cursor-pointer flex flex-col items-center gap-2"
+                        >
+                          <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+                            <svg
+                              className="w-6 h-6 text-muted-foreground"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                              />
+                            </svg>
+                          </div>
+                          <span className="text-sm font-medium">
+                            Click to upload file
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            Max 10MB • Text files only
+                          </span>
+                        </label>
+                      </div>
+                      {uploadedFileName && (
+                        <p className="text-sm text-muted-foreground">
+                          Uploaded: {uploadedFileName}
+                        </p>
+                      )}
+                    </motion.div>
+
+                    <motion.div
+                      className="space-y-2"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <div className="flex items-center justify-between h-8">
+                        <span className="text-sm font-medium">
+                          {t("md5Generator.outputLabel")}
+                        </span>
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={copyToClipboard}
+                            disabled={!output}
+                            className="rounded-lg"
+                          >
+                            <AnimatePresence mode="wait">
+                              {copied ? (
+                                <motion.span
+                                  key="copied"
+                                  className="flex items-center"
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.8 }}
+                                >
+                                  <Check className="h-4 w-4 mr-1" />{" "}
+                                  {t("common.copied")}
+                                </motion.span>
+                              ) : (
+                                <motion.span
+                                  key="copy"
+                                  className="flex items-center"
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.8 }}
+                                >
+                                  <Copy className="h-4 w-4 mr-1" />{" "}
+                                  {t("common.copy")}
+                                </motion.span>
+                              )}
+                            </AnimatePresence>
+                          </Button>
+                        </motion.div>
+                      </div>
+                      <div
+                        className={`
+                        min-h-[200px] rounded-xl border-2 overflow-hidden transition-all duration-300
+                        ${
+                          needsUpdate
+                            ? "border-amber-300 bg-amber-50/30 dark:border-amber-600/30 dark:bg-amber-950/20"
+                            : "border-foreground/20 bg-muted/30"
+                        }
+                      `}
+                      >
+                        {output ? (
+                          <div>
+                            {needsUpdate && (
+                              <div className="flex items-center gap-2 p-3 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30">
+                                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                                <span className="text-sm text-amber-800 dark:text-amber-200">
+                                  {t("common.needsUpdate")}
+                                </span>
+                              </div>
+                            )}
+                            <CodeHighlighter
+                              code={output}
+                              language="javascript"
+                              className={`min-h-[200px] max-h-[300px] ${needsUpdate ? "opacity-90" : ""}`}
+                            />
+                          </div>
+                        ) : (
+                          <div className="p-4 text-sm text-muted-foreground font-mono whitespace-pre-wrap break-words">
+                            {t("md5Generator.outputPlaceholder")}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  <motion.div
+                    className="flex flex-wrap items-center gap-3"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      <Button
+                        onClick={generateMd5}
+                        className="gap-2 rounded-xl h-11"
+                        disabled={!input.trim()}
+                      >
+                        <motion.div
+                          animate={{ rotate: [0, 360] }}
+                          transition={{
+                            duration: 3,
+                            repeat: Number.POSITIVE_INFINITY,
+                            ease: "linear",
+                          }}
+                        >
+                          <Sparkles className="h-4 w-4" />
+                        </motion.div>
+                        {t("md5Generator.generate")}
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      <Button
+                        variant="outline"
+                        className="rounded-xl bg-transparent h-11"
+                        onClick={() => {
+                          setInput("");
+                          setOutput("");
+                          setUploadedFileName("");
+                        }}
+                      >
+                        <RotateCcw className="h-4 w-4 mr-2" />
+                        {t("common.clear")}
+                      </Button>
+                    </motion.div>
+                  </motion.div>
                 </div>
               </TabsContent>
             </Tabs>
+          </CardContent>
+        </Card>
+      </motion.section>
+
+      {/* Examples Section */}
+      <motion.section className="mb-12" variants={itemVariants}>
+        <Card className="rounded-2xl overflow-hidden">
+          <CardContent className="p-6">
+            <motion.h3
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Sparkles className="h-5 w-5" />
+              Example Inputs
+            </motion.h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              {t("md5Generator.examplesHint")} Click on any example to load it
+              into the input field, or use "Quick Run" to automatically generate
+              MD5:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {exampleData.map((example, index) => (
+                <motion.div
+                  key={example.titleKey}
+                  className="pixel-card p-4 space-y-3 cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  onClick={() => loadExample(example.data)}
+                >
+                  <div className="flex items-start justify-between">
+                    <h4 className="text-sm font-semibold flex-1">
+                      {t(example.titleKey)}
+                    </h4>
+                    <div className="flex gap-1 ml-2">
+                      <motion.button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          loadExample(example.data);
+                          // Note: Do NOT auto-generate, let user manually click generate button
+                        }}
+                        className="pixel-btn px-3 py-1 text-xs h-7"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Load Example Only"
+                      >
+                        <motion.span
+                          animate={{ rotate: [0, 15, -15, 0] }}
+                          transition={{
+                            duration: 2,
+                            repeat: Number.POSITIVE_INFINITY,
+                            repeatDelay: 4,
+                          }}
+                        >
+                          <Sparkles className="h-3 w-3" />
+                        </motion.span>
+                      </motion.button>
+                      <motion.button
+                        onClick={async (e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          await navigator.clipboard.writeText(example.data);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="px-3 py-1 text-xs h-7 rounded-full border-2 border-foreground/30 dark:border-primary/30 bg-transparent hover:bg-accent transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Copy"
+                      >
+                        <Copy className="h-3 w-3" />
+                      </motion.button>
+                    </div>
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground break-all bg-muted/30 p-2 rounded border">
+                    {example.data}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </motion.section>
@@ -650,49 +1190,149 @@ export function Md5GeneratorTool({ lang }: Md5GeneratorToolProps) {
         variants={containerVariants}
       >
         <motion.h2 className="text-xl font-bold mb-4" variants={itemVariants}>
-          What is MD5 Hashing?
+          What is MD5 Hashing? How is it Implemented?
         </motion.h2>
         <motion.p
           className="text-muted-foreground leading-relaxed mb-6"
           variants={itemVariants}
         >
-          <strong className="text-foreground">MD5 (Message-Digest Algorithm 5)</strong>{" "}
+          <strong className="text-foreground">
+            MD5 (Message-Digest Algorithm 5)
+          </strong>{" "}
           is a widely used cryptographic hash function that produces a 128-bit
-          (16-byte) hash value, typically expressed as a 32-character hexadecimal
-          number. While no longer recommended for security purposes, MD5 remains
-          useful for checksums and non-cryptographic applications.
+          (16-byte) hash value, typically expressed as a 32-character
+          hexadecimal number. Our implementation uses pure JavaScript with
+          bitwise operations, performing 4 rounds of 16 operations each on
+          512-bit data blocks.
         </motion.p>
 
         <motion.h3
           className="text-lg font-semibold mt-8 mb-4"
           variants={itemVariants}
         >
-          Common Use Cases
+          Technical Implementation
+        </motion.h3>
+        <motion.div
+          className="bg-muted/30 rounded-xl p-4 mb-6"
+          variants={itemVariants}
+        >
+          <div className="grid gap-4 text-sm">
+            <div>
+              <strong>Core Functions:</strong>
+              <ul className="list-disc list-inside text-muted-foreground mt-1 space-y-1">
+                <li>F(x,y,z) = (x ∧ y) ∨ (¬x ∧ z) - Round 1</li>
+                <li>G(x,y,z) = (x ∧ z) ∨ (y ∧ ¬z) - Round 2</li>
+                <li>H(x,y,z) = x ⊕ y ⊕ z - Round 3</li>
+                <li>I(x,y,z) = y ⊕ (x ∨ ¬z) - Round 4</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Processing Steps:</strong>
+              <ul className="list-disc list-inside text-muted-foreground mt-1 space-y-1">
+                <li>1. Message preprocessing (padding and length appending)</li>
+                <li>2. Divide message into 512-bit blocks</li>
+                <li>3. Process each block through 4 rounds of 16 operations</li>
+                <li>4. Use 32-bit arithmetic and bitwise operations</li>
+                <li>5. Combine results to produce final 128-bit hash</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Key Features
+        </motion.h3>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              title: "File Checksums",
+              desc: "Generate MD5 for files up to 10MB",
+            },
+            {
+              title: "Batch Processing",
+              desc: "Hash multiple strings simultaneously",
+            },
+            {
+              title: "File Upload",
+              desc: "Drag & drop files for instant hashing",
+            },
+            {
+              title: "100% Private",
+              desc: "All processing happens in your browser",
+            },
+          ].map((feature) => (
+            <motion.div
+              key={feature.title}
+              className="pixel-card p-4"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03, y: -4 }}
+            >
+              <h4 className="font-semibold text-sm">{feature.title}</h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                {feature.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Common Use Cases & Usage Boundaries
         </motion.h3>
         <motion.ul
           className="text-muted-foreground space-y-2"
           variants={containerVariants}
         >
           {[
-            "File integrity verification and checksums",
-            "Database password storage (with salt)",
-            "Generating unique identifiers",
-            "Detecting duplicate files",
-            "API signature verification",
+            {
+              case: "File integrity verification and checksums",
+              boundary:
+                "✅ Suitable - Perfect for detecting accidental file corruption during transmission",
+            },
+            {
+              case: "Database password storage (with salt)",
+              boundary:
+                "⚠️ Not recommended - Use bcrypt, Argon2, or scrypt instead",
+            },
+            {
+              case: "Generating unique identifiers",
+              boundary:
+                "⚠️ Use with caution - Consider UUID v4 for better uniqueness guarantees",
+            },
+            {
+              case: "Detecting duplicate files",
+              boundary:
+                "✅ Suitable - Good for non-critical duplicate detection in local systems",
+            },
+            {
+              case: "API signature verification",
+              boundary:
+                "❌ Not secure - Vulnerable to collision attacks, use HMAC with SHA-256",
+            },
           ].map((item, index) => (
             <motion.li
-              key={item}
-              className="flex items-center gap-3 text-sm"
+              key={item.case}
+              className="flex items-start gap-3 text-sm"
               variants={itemVariants}
               whileHover={{ x: 4 }}
             >
               <motion.span
-                className="w-2 h-2 bg-primary rounded-full"
+                className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: index * 0.1 }}
               />
-              {item}
+              <div>
+                <div className="font-medium">{item.case}</div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {item.boundary}
+                </div>
+              </div>
             </motion.li>
           ))}
         </motion.ul>

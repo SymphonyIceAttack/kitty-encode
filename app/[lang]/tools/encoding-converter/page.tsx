@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { EncodingConverterStructuredData } from "@/components/structured-data/encoding-converter";
 import { EncodingConverterTool } from "@/components/tools/encoding-converter-tool";
 import type { LanguageType } from "@/lib/translations";
 import { generateHreflangLinks } from "@/lib/translations";
@@ -20,7 +21,13 @@ const metadataConfig = {
     title: "字符编码转换器 - UTF-8, GBK, 十六进制在线工具",
     description:
       "免费的在线字符编码转换器。在 UTF-8、GBK、十六进制、二进制和 Unicode 之间转换文本。即时修复乱码和编码问题。",
-    keywords: ["编码转换器", "UTF-8 转换器", "GBK 转换器", "十六进制转换器", "字符编码"],
+    keywords: [
+      "编码转换器",
+      "UTF-8 转换器",
+      "GBK 转换器",
+      "十六进制转换器",
+      "字符编码",
+    ],
   },
 };
 
@@ -33,13 +40,15 @@ export async function generateMetadata({
   const langData =
     metadataConfig[lang as keyof typeof metadataConfig] || metadataConfig.en;
   const hreflangLinks = generateHreflangLinks("/tools/encoding-converter");
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://kitty-encode.top";
 
   return {
     title: langData.title,
     description: langData.description,
     keywords: langData.keywords,
     alternates: {
-      canonical: "https://devtools.app/tools/encoding-converter",
+      canonical: `${baseUrl}/tools/encoding-converter`,
       languages: hreflangLinks,
     },
   };
@@ -51,5 +60,10 @@ export default async function EncodingConverterPage({
   params: Promise<{ lang: LanguageType }>;
 }) {
   const { lang } = await params;
-  return <EncodingConverterTool lang={lang as LanguageType} />;
+  return (
+    <>
+      <EncodingConverterStructuredData />
+      <EncodingConverterTool lang={lang as LanguageType} />
+    </>
+  );
 }

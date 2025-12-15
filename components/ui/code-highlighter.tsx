@@ -34,7 +34,7 @@ export function CodeHighlighter({
         getTokenProps,
       }) => (
         <pre
-          className={`${highlightClassName} ${className} overflow-auto p-4 rounded-xl text-sm font-mono`}
+          className={`${highlightClassName} ${className} overflow-auto p-4 rounded-xl text-sm font-mono whitespace-pre-wrap break-words`}
           style={{ ...style, backgroundColor: "transparent" }}
         >
           {tokens.map((line, i) => (
@@ -78,7 +78,7 @@ export function InlineCodeHighlighter({
         getTokenProps,
       }) => (
         <pre
-          className={`${highlightClassName} ${className} overflow-auto text-sm font-mono whitespace-pre-wrap break-all`}
+          className={`${highlightClassName} ${className} overflow-auto text-sm font-mono whitespace-pre-wrap break-words`}
           style={{
             ...style,
             backgroundColor: "transparent",
@@ -93,6 +93,53 @@ export function InlineCodeHighlighter({
               ))}
               {i < tokens.length - 1 && "\n"}
             </span>
+          ))}
+        </pre>
+      )}
+    </Highlight>
+  );
+}
+
+// Continuous text display for URL encoding and similar tools
+export function ContinuousTextDisplay({
+  code,
+  language,
+  className = "",
+  showLineNumbers = false,
+}: CodeHighlighterProps & { showLineNumbers?: boolean }) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const prismLanguage = language === "url" ? "uri" : language;
+
+  return (
+    <Highlight
+      theme={isDark ? themes.nightOwl : themes.github}
+      code={code}
+      language={prismLanguage}
+    >
+      {({
+        className: highlightClassName,
+        style,
+        tokens,
+        getLineProps,
+        getTokenProps,
+      }) => (
+        <pre
+          className={`${highlightClassName} ${className} overflow-auto p-4 rounded-xl text-sm font-mono whitespace-pre-wrap break-words`}
+          style={{ ...style, backgroundColor: "transparent" }}
+        >
+          {tokens.map((line, i) => (
+            <div key={i} {...getLineProps({ line })}>
+              {showLineNumbers && (
+                <span className="inline-block w-8 text-muted-foreground/50 select-none text-right mr-4">
+                  {i + 1}
+                </span>
+              )}
+              {line.map((token, key) => (
+                <span key={key} {...getTokenProps({ token })} />
+              ))}
+            </div>
           ))}
         </pre>
       )}

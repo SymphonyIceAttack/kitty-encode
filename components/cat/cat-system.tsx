@@ -1,27 +1,28 @@
 "use client";
 
-import { AnimatePresence } from "framer-motion";
 import { useCat } from "@/context/cat-context";
 import { CatHomeModal } from "./cat-home-modal";
 import { CatMascot } from "./cat-mascot";
-import { FallingItem } from "./falling-item";
+import { FallingItems } from "./falling-item";
 
 export function CatSystem() {
-  const { itemsOnGround } = useCat();
+  const { itemsOnGround, removeItem } = useCat();
+
+  const handleCollect = (type: string) => {
+    // Find the first item of this type and remove it
+    const itemToRemove = itemsOnGround.find((item) => item.type === type);
+    if (itemToRemove) {
+      removeItem(itemToRemove.id);
+    }
+  };
 
   return (
     <>
       {/* Falling items */}
-      <AnimatePresence>
-        {itemsOnGround.map((item) => (
-          <FallingItem
-            key={item.id}
-            id={item.id}
-            type={item.type}
-            initialX={item.x}
-          />
-        ))}
-      </AnimatePresence>
+      <FallingItems
+        items={itemsOnGround.map((item) => item.type)}
+        onCollect={handleCollect}
+      />
 
       {/* Cat mascot */}
       <CatMascot />

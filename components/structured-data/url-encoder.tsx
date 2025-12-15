@@ -3,16 +3,18 @@
 import type { FAQPage, WebApplication, WebSite, WithContext } from "schema-dts";
 
 export function StructuredDataScripts() {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://kitty-encode.top";
   const websiteSchema: WithContext<WebSite> = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "KittyEncode",
     description:
       "Free online developer tools for JSON, Base64, Hash, UUID and more",
-    url: "https://devtools.app",
+    url: baseUrl,
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://devtools.app/tools?q={search_term_string}",
+      target: `${baseUrl}/tools?q={search_term_string}`,
     },
   };
 
@@ -22,7 +24,7 @@ export function StructuredDataScripts() {
     name: "URL Encoder / Decoder",
     description:
       "Free online URL encoder and decoder tool. Encode or decode URLs and query parameters instantly.",
-    url: "https://devtools.app",
+    url: baseUrl,
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Any",
     offers: {

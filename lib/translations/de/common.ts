@@ -28,6 +28,7 @@ export const common = {
   "common.result": "Ergebnis",
   "common.examples": "Beispiele",
   "common.faq": "Häufig gestellte Fragen",
+  "common.needsUpdate": "Eingabe geändert, muss neu konvertiert werden",
   "badge.free": "Kostenlos",
   "badge.noSignup": "Keine Anmeldung",
   "badge.offline": "Funktioniert offline",

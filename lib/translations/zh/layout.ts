@@ -11,6 +11,7 @@ export const layout = {
   "footer.legal": "法律",
   "footer.privacyPolicy": "隐私政策",
   "footer.termsOfService": "服务条款",
+  "footer.disclaimer": "免责声明",
   "footer.developer": "开发者",
   "footer.sourceCode": "源代码",
   "footer.githubProfile": "GitHub",

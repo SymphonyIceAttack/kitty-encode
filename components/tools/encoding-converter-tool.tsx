@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  AlertCircle,
   ArrowRightLeft,
   Check,
   ChevronDown,
@@ -11,13 +12,7 @@ import {
 } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { CodeHighlighter } from "@/components/ui/code-highlighter";
 import {
   Select,
@@ -64,7 +59,10 @@ const encodings = [
 ];
 
 const exampleData = [
-  { titleKey: "encodingConverter.examples.chinese", data: "你好世界！Hello World!" },
+  {
+    titleKey: "encodingConverter.examples.chinese",
+    data: "你好世界！Hello World!",
+  },
   { titleKey: "encodingConverter.examples.japanese", data: "こんにちは世界" },
   { titleKey: "encodingConverter.examples.mixed", data: "Héllo Wörld 你好 🌍" },
 ];
@@ -77,7 +75,7 @@ function textToHex(text: string): string {
         // Handle surrogate pairs for emoji
         const hi = Math.floor((code - 0x10000) / 0x400) + 0xd800;
         const lo = ((code - 0x10000) % 0x400) + 0xdc00;
-        return hi.toString(16).padStart(4, "0") + " " + lo.toString(16).padStart(4, "0");
+        return `${hi.toString(16).padStart(4, "0")} ${lo.toString(16).padStart(4, "0")}`;
       }
       return code.toString(16).padStart(code > 255 ? 4 : 2, "0");
     })
@@ -85,7 +83,10 @@ function textToHex(text: string): string {
 }
 
 function hexToText(hex: string): string {
-  const codes = hex.trim().split(/\s+/).map((h) => parseInt(h, 16));
+  const codes = hex
+    .trim()
+    .split(/\s+/)
+    .map((h) => parseInt(h, 16));
   let result = "";
   for (let i = 0; i < codes.length; i++) {
     if (codes[i] >= 0xd800 && codes[i] <= 0xdbff && i + 1 < codes.length) {
@@ -93,7 +94,9 @@ function hexToText(hex: string): string {
       const hi = codes[i];
       const lo = codes[i + 1];
       if (lo >= 0xdc00 && lo <= 0xdfff) {
-        result += String.fromCodePoint((hi - 0xd800) * 0x400 + (lo - 0xdc00) + 0x10000);
+        result += String.fromCodePoint(
+          (hi - 0xd800) * 0x400 + (lo - 0xdc00) + 0x10000,
+        );
         i++;
         continue;
       }
@@ -110,7 +113,10 @@ function textToBinary(text: string): string {
 }
 
 function binaryToText(binary: string): string {
-  const bytes = binary.trim().split(/\s+/).map((b) => parseInt(b, 2));
+  const bytes = binary
+    .trim()
+    .split(/\s+/)
+    .map((b) => parseInt(b, 2));
   return new TextDecoder().decode(new Uint8Array(bytes));
 }
 
@@ -131,9 +137,12 @@ function textToUnicodeEscape(text: string): string {
 }
 
 function unicodeEscapeToText(escaped: string): string {
-  return escaped.replace(/\\u\{([0-9A-Fa-f]+)\}|\\u([0-9A-Fa-f]{4})/g, (_, p1, p2) => {
-    return String.fromCodePoint(parseInt(p1 || p2, 16));
-  });
+  return escaped.replace(
+    /\\u\{([0-9A-Fa-f]+)\}|\\u([0-9A-Fa-f]{4})/g,
+    (_, p1, p2) => {
+      return String.fromCodePoint(parseInt(p1 || p2, 16));
+    },
+  );
 }
 
 export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
@@ -157,9 +166,16 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
   const [targetEncoding, setTargetEncoding] = useState("hex");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [showFaq, setShowFaq] = useState(false);
+  const [showFaq, setShowFaq] = useState(true); // 默认展开FAQ
   const [activeTab, setActiveTab] = useState("convert");
   const [viewMode, setViewMode] = useState<"text" | "hex">("text");
+  const [needsUpdate, setNeedsUpdate] = useState(false);
+  const [conversionStats, setConversionStats] = useState({
+    totalConversions: 0,
+    encodeCount: 0,
+    decodeCount: 0,
+    lastUsed: null as Date | null,
+  });
 
   const toolSectionRef = useRef<HTMLDivElement>(null);
 
@@ -195,7 +211,9 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
         result = text;
       } else if (targetEncoding === "utf-16") {
         result = Array.from(text)
-          .map((char) => `\\u${char.charCodeAt(0).toString(16).padStart(4, "0")}`)
+          .map(
+            (char) => `\\u${char.charCodeAt(0).toString(16).padStart(4, "0")}`,
+          )
           .join("");
       } else if (targetEncoding === "ascii") {
         // biome-ignore lint/suspicious/noControlCharactersInRegex: intentional ASCII range check
@@ -210,8 +228,19 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
       setOutput(result);
 
       if (shouldSpawnItem()) {
-        spawnItem("book");
+        spawnItem("yarn");
       }
+
+      // Update statistics
+      setConversionStats((prev) => ({
+        totalConversions: prev.totalConversions + 1,
+        encodeCount: prev.encodeCount + 1,
+        decodeCount: prev.decodeCount,
+        lastUsed: new Date(),
+      }));
+
+      // Clear the needs update flag after successful conversion
+      setNeedsUpdate(false);
     } catch {
       setError(t("encodingConverter.error.converting"));
       setOutput("");
@@ -226,17 +255,26 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
     }
   }, [output]);
 
-  const loadExample = useCallback((data: string) => {
-    setInput(data);
-    setError(null);
-    setActiveTab("convert");
-    setTimeout(() => {
-      toolSectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  }, []);
+  const loadExample = useCallback(
+    (data: string) => {
+      setInput(data);
+      setError(null);
+      setActiveTab("convert");
+
+      // Only mark as needing update if the input is different from current input and we have existing output
+      if (output && data !== input) {
+        setNeedsUpdate(true);
+      }
+
+      setTimeout(() => {
+        toolSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    },
+    [output, input],
+  );
 
   const swapEncodings = useCallback(() => {
     setSourceEncoding(targetEncoding);
@@ -294,7 +332,12 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
             },
           }}
         >
-          {["Free", "No Signup", "Works Offline", "Privacy First"].map((tag) => (
+          {[
+            "Multi-Encoding",
+            "Real-time Conversion",
+            "Format Support",
+            "Privacy First",
+          ].map((tag) => (
             <motion.span
               key={tag}
               className="pixel-badge"
@@ -317,13 +360,14 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
       >
         <Card className="rounded-2xl overflow-hidden">
           <CardContent className="p-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <TabsList className="mb-4 rounded-xl">
                 <TabsTrigger value="convert" className="rounded-lg">
                   {t("encodingConverter.convert")}
-                </TabsTrigger>
-                <TabsTrigger value="examples" className="rounded-lg">
-                  {t("encodingConverter.examples")}
                 </TabsTrigger>
               </TabsList>
 
@@ -334,7 +378,10 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                     <span className="text-sm font-medium block mb-2">
                       {t("encodingConverter.sourceEncoding")}
                     </span>
-                    <Select value={sourceEncoding} onValueChange={setSourceEncoding}>
+                    <Select
+                      value={sourceEncoding}
+                      onValueChange={setSourceEncoding}
+                    >
                       <SelectTrigger className="rounded-xl">
                         <SelectValue />
                       </SelectTrigger>
@@ -367,7 +414,10 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                     <span className="text-sm font-medium block mb-2">
                       {t("encodingConverter.targetEncoding")}
                     </span>
-                    <Select value={targetEncoding} onValueChange={setTargetEncoding}>
+                    <Select
+                      value={targetEncoding}
+                      onValueChange={setTargetEncoding}
+                    >
                       <SelectTrigger className="rounded-xl">
                         <SelectValue />
                       </SelectTrigger>
@@ -398,7 +448,18 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                       placeholder={t("encodingConverter.inputPlaceholder")}
                       className="min-h-[300px] font-mono text-sm rounded-xl"
                       value={input}
-                      onChange={(e) => setInput(e.target.value)}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        setInput(newValue);
+
+                        // Mark as needing update if input changes and we have output
+                        if (newValue !== input && output) {
+                          setNeedsUpdate(true);
+                        }
+
+                        // Clear error when input changes
+                        setError(null);
+                      }}
                     />
                     <AnimatePresence>
                       {error && (
@@ -464,7 +525,8 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.8 }}
                               >
-                                <Check className="h-4 w-4 mr-1" /> {t("common.copied")}
+                                <Check className="h-4 w-4 mr-1" />{" "}
+                                {t("common.copied")}
                               </motion.span>
                             ) : (
                               <motion.span
@@ -474,22 +536,44 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.8 }}
                               >
-                                <Copy className="h-4 w-4 mr-1" /> {t("common.copy")}
+                                <Copy className="h-4 w-4 mr-1" />{" "}
+                                {t("common.copy")}
                               </motion.span>
                             )}
                           </AnimatePresence>
                         </Button>
                       </motion.div>
                     </div>
-                    <div className="min-h-[300px] rounded-xl border-2 border-border bg-muted/30 overflow-hidden">
+                    <div
+                      className={`
+                      min-h-[300px] rounded-xl border-2 overflow-hidden transition-all duration-300
+                      ${
+                        needsUpdate
+                          ? "border-amber-300 bg-amber-50/30 dark:border-amber-600/30 dark:bg-amber-950/20"
+                          : "border-foreground/20 bg-muted/30"
+                      }
+                    `}
+                    >
                       {output ? (
-                        <CodeHighlighter
-                          code={viewMode === "hex" ? textToHex(output) : output}
-                          language="javascript"
-                          className="min-h-[300px] max-h-[400px]"
-                        />
+                        <div>
+                          {needsUpdate && (
+                            <div className="flex items-center gap-2 p-3 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30">
+                              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                              <span className="text-sm text-amber-800 dark:text-amber-200">
+                                {t("common.needsUpdate")}
+                              </span>
+                            </div>
+                          )}
+                          <CodeHighlighter
+                            code={
+                              viewMode === "hex" ? textToHex(output) : output
+                            }
+                            language="javascript"
+                            className={`min-h-[300px] max-h-[400px] ${needsUpdate ? "opacity-90" : ""}`}
+                          />
+                        </div>
                       ) : (
-                        <div className="p-4 text-sm text-muted-foreground font-mono">
+                        <div className="p-4 text-sm text-muted-foreground font-mono whitespace-pre-wrap break-words">
                           {t("encodingConverter.outputPlaceholder")}
                         </div>
                       )}
@@ -498,74 +582,174 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                 </div>
 
                 <motion.div
-                  className="flex flex-wrap items-center gap-3"
+                  className="flex items-center justify-between gap-3"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                    <Button onClick={convert} className="gap-2 rounded-xl h-11">
-                      <motion.div
-                        animate={{ rotate: [0, 360] }}
-                        transition={{
-                          duration: 3,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: "linear",
+                  <div className="flex flex-wrap items-center gap-3">
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      <Button
+                        onClick={convert}
+                        className="gap-2 rounded-xl h-11"
+                      >
+                        <motion.div
+                          animate={{ rotate: [0, 360] }}
+                          transition={{
+                            duration: 3,
+                            repeat: Number.POSITIVE_INFINITY,
+                            ease: "linear",
+                          }}
+                        >
+                          <Sparkles className="h-4 w-4" />
+                        </motion.div>
+                        {t("encodingConverter.convert")}
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      <Button
+                        variant="outline"
+                        className="rounded-xl bg-transparent h-11"
+                        onClick={() => {
+                          setInput("");
+                          setOutput("");
+                          setError(null);
                         }}
                       >
-                        <Sparkles className="h-4 w-4" />
-                      </motion.div>
-                      {t("encodingConverter.convert")}
-                    </Button>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                    <Button
-                      variant="outline"
-                      className="rounded-xl bg-transparent h-11"
-                      onClick={() => {
-                        setInput("");
-                        setOutput("");
-                        setError(null);
-                      }}
+                        {t("common.clear")}
+                      </Button>
+                    </motion.div>
+                  </div>
+
+                  {/* Usage Analysis Tags - 右侧 */}
+                  <motion.div
+                    className="flex flex-wrap gap-2"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
                     >
-                      {t("common.clear")}
-                    </Button>
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      {conversionStats.totalConversions} Converted
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      {conversionStats.encodeCount} UTF-8
+                    </motion.div>
+                    <motion.div
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-600 text-xs font-medium"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      {conversionStats.decodeCount} Hex
+                    </motion.div>
+                    {conversionStats.lastUsed && (
+                      <motion.div
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium"
+                        whileHover={{ scale: 1.05 }}
+                        title={`Last used: ${conversionStats.lastUsed.toLocaleString()}`}
+                      >
+                        <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                        {conversionStats.lastUsed.toLocaleTimeString()}
+                      </motion.div>
+                    )}
                   </motion.div>
                 </motion.div>
               </TabsContent>
-
-              <TabsContent value="examples" className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  {t("encodingConverter.examplesHint")}
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {exampleData.map((example, index) => (
-                    <motion.div
-                      key={example.titleKey}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -4, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Card
-                        className="cursor-pointer hover:border-accent transition-colors rounded-xl"
-                        onClick={() => loadExample(example.data)}
-                      >
-                        <CardHeader className="p-4">
-                          <CardTitle className="text-sm">
-                            {t(example.titleKey)}
-                          </CardTitle>
-                          <CardDescription className="text-xs font-mono truncate">
-                            {example.data}
-                          </CardDescription>
-                        </CardHeader>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </TabsContent>
             </Tabs>
+          </CardContent>
+        </Card>
+      </motion.section>
+
+      {/* Examples Section */}
+      <motion.section className="mb-12" variants={itemVariants}>
+        <Card className="rounded-2xl overflow-hidden">
+          <CardContent className="p-6">
+            <motion.h3
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Sparkles className="h-5 w-5" />
+              {t("encodingConverter.examples")}
+            </motion.h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              {t("encodingConverter.examplesHint")} Click on any example to load
+              it into the input field, or use "Quick Run" to automatically
+              convert:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {exampleData.map((example, index) => (
+                <motion.div
+                  key={example.titleKey}
+                  className="pixel-card p-4 space-y-3 cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  onClick={() => loadExample(example.data)}
+                >
+                  <div className="flex items-start justify-between">
+                    <h4 className="text-sm font-semibold flex-1">
+                      {t(example.titleKey)}
+                    </h4>
+                    <div className="flex gap-1 ml-2">
+                      <motion.button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          loadExample(example.data);
+                          // Note: Do NOT auto-convert, let user manually click convert button
+                        }}
+                        className="pixel-btn px-3 py-1 text-xs h-7"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Load Example Only"
+                      >
+                        <motion.span
+                          animate={{ rotate: [0, 15, -15, 0] }}
+                          transition={{
+                            duration: 2,
+                            repeat: Number.POSITIVE_INFINITY,
+                            repeatDelay: 4,
+                          }}
+                        >
+                          <Sparkles className="h-3 w-3" />
+                        </motion.span>
+                      </motion.button>
+                      <motion.button
+                        onClick={async (e) => {
+                          e.stopPropagation(); // Prevent triggering parent onClick
+                          await navigator.clipboard.writeText(example.data);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="px-3 py-1 text-xs h-7 rounded-full border-2 border-foreground/30 dark:border-primary/30 bg-transparent hover:bg-accent transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Copy"
+                      >
+                        <Copy className="h-3 w-3" />
+                      </motion.button>
+                    </div>
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground break-all bg-muted/30 p-2 rounded border">
+                    {example.data}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </motion.section>
@@ -579,49 +763,155 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
         variants={containerVariants}
       >
         <motion.h2 className="text-xl font-bold mb-4" variants={itemVariants}>
-          What is Character Encoding?
+          What is Character Encoding? How Does it Work?
         </motion.h2>
         <motion.p
           className="text-muted-foreground leading-relaxed mb-6"
           variants={itemVariants}
         >
-          <strong className="text-foreground">Character encoding</strong> is a system
-          that maps characters to bytes for storage and transmission. Different
-          encodings like UTF-8, GBK, and ISO-8859-1 represent characters differently,
-          which can cause "mojibake" (garbled text) when data is decoded with the
-          wrong encoding.
+          <strong className="text-foreground">Character encoding</strong> is a
+          system that maps characters to bytes for storage and transmission. Our
+          implementation uses JavaScript's built-in TextEncoder/TextDecoder APIs
+          with custom handlers for hex, binary, and Unicode escape formats.
+          Different encodings like UTF-8, GBK, and ISO-8859-1 represent
+          characters differently, which can cause "mojibake" (garbled text) when
+          data is decoded with the wrong encoding.
         </motion.p>
 
         <motion.h3
           className="text-lg font-semibold mt-8 mb-4"
           variants={itemVariants}
         >
-          Common Use Cases
+          Technical Implementation
+        </motion.h3>
+        <motion.div
+          className="bg-muted/30 rounded-xl p-4 mb-6"
+          variants={itemVariants}
+        >
+          <div className="grid gap-4 text-sm">
+            <div>
+              <strong>Core Conversion Logic:</strong>
+              <ul className="list-disc list-inside text-muted-foreground mt-1 space-y-1">
+                <li>TextEncoder/TextDecoder for UTF-8/UTF-16 processing</li>
+                <li>Custom hex/binary conversion with proper byte alignment</li>
+                <li>Unicode escape sequence parsing (\uXXXX format)</li>
+                <li>Surrogate pair handling for emoji (0x10000-0x10FFFF)</li>
+                <li>Character-by-character processing with error recovery</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Supported Encodings:</strong>
+              <ul className="list-disc list-inside text-muted-foreground mt-1 space-y-1">
+                <li>
+                  UTF-8: 1-4 bytes per character, backward compatible with ASCII
+                </li>
+                <li>
+                  UTF-16: 2 or 4 bytes per character (BMP + surrogate pairs)
+                </li>
+                <li>ASCII: 7-bit encoding (0-127), subset of UTF-8</li>
+                <li>
+                  ISO-8859-1: 8-bit encoding for Western European languages
+                </li>
+                <li>Hex: Two-digit hexadecimal representation of each byte</li>
+                <li>Binary: 8-bit binary representation separated by spaces</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Key Features
+        </motion.h3>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              title: "Multi-Encoding",
+              desc: "Support for UTF-8, GBK, Latin-1 and more",
+            },
+            {
+              title: "Real-time Conversion",
+              desc: "Instant preview as you type",
+            },
+            {
+              title: "Format Support",
+              desc: "Text, Hex, Base64 and Unicode formats",
+            },
+            {
+              title: "100% Private",
+              desc: "All processing happens in your browser",
+            },
+          ].map((feature) => (
+            <motion.div
+              key={feature.title}
+              className="pixel-card p-4"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03, y: -4 }}
+            >
+              <h4 className="font-semibold text-sm">{feature.title}</h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                {feature.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.h3
+          className="text-lg font-semibold mt-8 mb-4"
+          variants={itemVariants}
+        >
+          Common Use Cases & Usage Boundaries
         </motion.h3>
         <motion.ul
           className="text-muted-foreground space-y-2"
           variants={containerVariants}
         >
           {[
-            "Fixing garbled text from incorrect encoding",
-            "Converting legacy GBK data to UTF-8",
-            "Debugging character encoding issues",
-            "Viewing hex representation of text",
-            "Converting between Unicode formats",
+            {
+              case: "Fixing garbled text from incorrect encoding",
+              boundary:
+                "✅ Essential - Most common use case for recovering readable text",
+            },
+            {
+              case: "Converting legacy GBK data to UTF-8",
+              boundary:
+                "✅ Recommended - UTF-8 is the web standard and most compatible",
+            },
+            {
+              case: "Debugging character encoding issues",
+              boundary:
+                "✅ Perfect - Hex view helps identify encoding problems",
+            },
+            {
+              case: "Viewing hex representation of text",
+              boundary: "✅ Useful - Debugging and data analysis applications",
+            },
+            {
+              case: "Converting between Unicode formats",
+              boundary:
+                "⚠️ Context-dependent - Ensure target system supports the format",
+            },
           ].map((item, index) => (
             <motion.li
-              key={item}
-              className="flex items-center gap-3 text-sm"
+              key={item.case}
+              className="flex items-start gap-3 text-sm"
               variants={itemVariants}
               whileHover={{ x: 4 }}
             >
               <motion.span
-                className="w-2 h-2 bg-primary rounded-full"
+                className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: index * 0.1 }}
               />
-              {item}
+              <div>
+                <div className="font-medium">{item.case}</div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {item.boundary}
+                </div>
+              </div>
             </motion.li>
           ))}
         </motion.ul>

@@ -6,10 +6,16 @@ import Link from "next/link";
 
 const footerLinks = {
   tools: [
-    { label: "JSON Formatter", href: "/tools/json-formatter" },
-    { label: "Base64 Encoder", href: "/tools/base64" },
-    { label: "Hash Generator", href: "/tools/hash" },
-    { label: "UUID Generator", href: "/tools/uuid" },
+    { label: "URL Encoder", href: "/" },
+    { label: "Base64 Encoder", href: "/tools/base64-encoder" },
+    { label: "MD5 Generator", href: "/tools/md5-generator" },
+    { label: "UUID Generator", href: "/tools/uuid-generator" },
+    { label: "Password Generator", href: "/tools/password-generator" },
+    { label: "Encoding Converter", href: "/tools/encoding-converter" },
+  ],
+  company: [
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ],
   resources: [
     { label: "Blog", href: "/blog" },
@@ -20,6 +26,7 @@ const footerLinks = {
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
+    { label: "Disclaimer", href: "/disclaimer" },
   ],
 };
 
@@ -160,7 +167,7 @@ export function Footer({ lang }: FooterProps) {
         viewport={{ once: true, amount: 0.2 }}
         variants={containerVariants}
       >
-        <div className="grid gap-8 md:grid-cols-4">
+        <div className="grid gap-8 md:grid-cols-5">
           {/* Brand */}
           <motion.div className="md:col-span-1" variants={itemVariants}>
             <Link href={`/${lang}`} className="flex items-center gap-3">
@@ -170,7 +177,9 @@ export function Footer({ lang }: FooterProps) {
               >
                 <KittyEncodeLogo />
               </motion.div>
-              <span className="text-xl font-bold tracking-tight">KittyEncode</span>
+              <span className="text-xl font-bold tracking-tight">
+                KittyEncode
+              </span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               Purr-fect coding utilities with a feline touch.
@@ -202,6 +211,33 @@ export function Footer({ lang }: FooterProps) {
                 </Link>
               </motion.div>
             </div>
+          </motion.div>
+
+          {/* Company */}
+          <motion.div variants={itemVariants}>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground border-b-2 border-dashed border-foreground/25 dark:border-primary/25 pb-2">
+              Company
+            </h4>
+            <ul className="space-y-2">
+              {footerLinks.company.map((link) => (
+                <motion.li
+                  key={link.href}
+                  whileHover={{ x: 4 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Link
+                    href={
+                      link.href.startsWith("http")
+                        ? link.href
+                        : `/${lang}${link.href}`
+                    }
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
           </motion.div>
 
           {/* Tools */}
@@ -292,7 +328,8 @@ export function Footer({ lang }: FooterProps) {
           variants={itemVariants}
         >
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} KittyEncode. Made with ♥ for developers.
+            © {new Date().getFullYear()} KittyEncode. Made with ♥ for
+            developers.
           </p>
         </motion.div>
       </motion.div>

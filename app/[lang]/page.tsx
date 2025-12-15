@@ -4,6 +4,8 @@ import { UrlEncoderTool } from "@/components/tools/url-encoder-tool";
 import type { LanguageType } from "@/lib/translations";
 import { generateHreflangLinks } from "@/lib/translations";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kitty-encode.top";
+
 // 多语言元数据
 const metadataConfig = {
   en: {
@@ -24,7 +26,7 @@ const metadataConfig = {
       title: "URL Encoder / Decoder - Free Online Tool",
       description:
         "Encode or decode URLs instantly. Free, fast, no signup required.",
-      url: "https://devtools.app/tools/url-encoder",
+      url: `${baseUrl}/en`,
       type: "website",
     },
   },
@@ -45,7 +47,7 @@ const metadataConfig = {
     openGraph: {
       title: "URL 编码/解码工具 - 免费在线工具",
       description: "立即编码或解码URL。免费、快速、无需注册。",
-      url: "https://devtools.app/tools/url-encoder",
+      url: `${baseUrl}/zh`,
       type: "website",
     },
   },
@@ -67,7 +69,7 @@ const metadataConfig = {
       title: "URL エンコーダー/デコーダー - 無料オンライン ツール",
       description:
         "URLを即座にエンコードまたはデコード。無料、高速、サインアップ不要。",
-      url: "https://devtools.app/tools/url-encoder",
+      url: `${baseUrl}/ja`,
       type: "website",
     },
   },
@@ -89,7 +91,7 @@ const metadataConfig = {
       title: "Encodeur/Décodeur URL - Outil en ligne gratuit",
       description:
         "Encodez ou décodez les URL instantanément. Gratuit, rapide, aucune inscription requise.",
-      url: "https://devtools.app/tools/url-encoder",
+      url: `${baseUrl}/fr`,
       type: "website",
     },
   },
@@ -111,7 +113,7 @@ const metadataConfig = {
       title: "Codificador/Decodificador URL - Herramienta en línea gratis",
       description:
         "Codifica o decodifica URLs instantáneamente. Gratis, rápido, sin registro requerido.",
-      url: "https://devtools.app/tools/url-encoder",
+      url: `${baseUrl}/es`,
       type: "website",
     },
   },
@@ -133,7 +135,7 @@ const metadataConfig = {
       title: "URL Кодер/Декодер - Бесплатный онлайн инструмент",
       description:
         "Кодируйте или декодируйте URL мгновенно. Бесплатно, быстро, без регистрации.",
-      url: "https://devtools.app/tools/url-encoder",
+      url: `${baseUrl}/ru`,
       type: "website",
     },
   },
@@ -155,7 +157,7 @@ const metadataConfig = {
       title: "URL Encoder/Decoder - Kostenloses Online Tool",
       description:
         "Kodieren oder dekodieren Sie URLs sofort. Kostenlos, schnell, keine Registrierung erforderlich.",
-      url: "https://devtools.app/tools/url-encoder",
+      url: `${baseUrl}/de`,
       type: "website",
     },
   },
@@ -179,7 +181,7 @@ export async function generateMetadata({
     keywords: langData.keywords,
     openGraph: langData.openGraph,
     alternates: {
-      canonical: "https://devtools.app/tools/url-encoder",
+      canonical: `${baseUrl}/${lang}`,
       languages: hreflangLinks,
     },
   };
