@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EncodingConverterGuideContent } from "@/components/blog/guides/encoding-converter-guide-content";
+import { EncodingConverterGuideStructuredData } from "@/components/structured-data/blog-post";
 import { siteUrl } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -24,5 +25,10 @@ export const metadata: Metadata = {
 };
 
 export default function EncodingConverterGuidePage() {
-  return <EncodingConverterGuideContent />;
+  return (
+    <>
+      <EncodingConverterGuideStructuredData />
+      <EncodingConverterGuideContent />
+    </>
+  );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Base64GuideContent } from "@/components/blog/guides/base64-guide-content";
+import { Base64GuideStructuredData } from "@/components/structured-data/blog-post";
 import { siteUrl } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -22,5 +23,10 @@ export const metadata: Metadata = {
 };
 
 export default function Base64GuidePage() {
-  return <Base64GuideContent />;
+  return (
+    <>
+      <Base64GuideStructuredData />
+      <Base64GuideContent />
+    </>
+  );
 }

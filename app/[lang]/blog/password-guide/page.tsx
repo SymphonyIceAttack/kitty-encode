@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PasswordGuideContent } from "@/components/blog/guides/password-guide-content";
+import { PasswordGuideStructuredData } from "@/components/structured-data/blog-post";
 import { siteUrl } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -22,5 +23,10 @@ export const metadata: Metadata = {
 };
 
 export default function PasswordGuidePage() {
-  return <PasswordGuideContent />;
+  return (
+    <>
+      <PasswordGuideStructuredData />
+      <PasswordGuideContent />
+    </>
+  );
 }

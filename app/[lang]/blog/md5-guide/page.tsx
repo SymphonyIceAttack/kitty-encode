@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Md5GuideContent } from "@/components/blog/guides/md5-guide-content";
+import { Md5GuideStructuredData } from "@/components/structured-data/blog-post";
 import { siteUrl } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -22,5 +23,10 @@ export const metadata: Metadata = {
 };
 
 export default function Md5GuidePage() {
-  return <Md5GuideContent />;
+  return (
+    <>
+      <Md5GuideStructuredData />
+      <Md5GuideContent />
+    </>
+  );
 }

@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Streamdown } from "streamdown";
 import { StreamdownTOC } from "@/components/blog/streamdown-toc";
-import { Base64GuideStructuredData } from "@/components/structured-data/blog-post";
 import { extractTOCFromText, shouldShowTOC } from "@/lib/toc";
 
 export function Base64GuideContent() {
@@ -253,180 +252,177 @@ Base64 encoding is an essential tool for web developers and system administrator
   };
 
   return (
-    <>
-      <Base64GuideStructuredData />
-      <div className="container mx-auto max-w-7xl px-4 py-12">
-        <div className="flex gap-8">
-          {/* Main Content */}
-          <motion.article
-            className={`${showTOC ? "lg:w-2/3" : "max-w-4xl mx-auto"}`}
-            variants={staggerChildren}
-            initial="initial"
-            animate="animate"
+    <div className="container mx-auto max-w-7xl px-4 py-12">
+      <div className="flex gap-8">
+        {/* Main Content */}
+        <motion.article
+          className={`${showTOC ? "lg:w-2/3" : "max-w-4xl mx-auto"}`}
+          variants={staggerChildren}
+          initial="initial"
+          animate="animate"
+        >
+          <motion.div
+            className="prose prose-lg max-w-none streamdown-content"
+            variants={fadeInUp}
           >
-            <motion.div
-              className="prose prose-lg max-w-none streamdown-content"
-              variants={fadeInUp}
-            >
-              <Streamdown
-                shikiTheme={["github-light", "github-dark"]}
-                components={{
-                  h1: ({ children }) => {
-                    const title = typeof children === "string" ? children : "";
-                    const id = title
-                      .toLowerCase()
-                      .replace(/[^\w\s-]/gu, "")
-                      .replace(/\s+/g, "-")
-                      .replace(/-+/g, "-")
-                      .trim();
-                    return (
-                      <h1
-                        id={
-                          id || "learn-base64-encoding-from-basics-to-advanced"
-                        }
-                        className="text-4xl font-bold text-gray-900 dark:text-gray-100 border-b-4 border-blue-500 pb-4 mb-8"
-                      >
-                        {children}
-                      </h1>
-                    );
-                  },
-                  h2: ({ children }) => {
-                    const title = typeof children === "string" ? children : "";
-                    const id = title
-                      .toLowerCase()
-                      .replace(/[^\w\s-]/gu, "")
-                      .replace(/\s+/g, "-")
-                      .replace(/-+/g, "-")
-                      .trim();
-                    return (
-                      <h2
-                        id={id}
-                        className="text-3xl font-semibold text-gray-800 dark:text-gray-200 mt-12 mb-6 pb-2 border-b-2 border-gray-200 dark:border-gray-700"
-                      >
-                        {children}
-                      </h2>
-                    );
-                  },
-                  h3: ({ children }) => {
-                    const title = typeof children === "string" ? children : "";
-                    const id = title
-                      .toLowerCase()
-                      .replace(/[^\w\s-]/gu, "")
-                      .replace(/\s+/g, "-")
-                      .replace(/-+/g, "-")
-                      .trim();
-                    return (
-                      <h3
-                        id={id}
-                        className="text-2xl font-medium text-gray-700 dark:text-gray-300 mt-8 mb-4"
-                      >
-                        {children}
-                      </h3>
-                    );
-                  },
-                  h4: ({ children }) => {
-                    const title = typeof children === "string" ? children : "";
-                    const id = title
-                      .toLowerCase()
-                      .replace(/[^\w\s-]/gu, "")
-                      .replace(/\s+/g, "-")
-                      .replace(/-+/g, "-")
-                      .trim();
-                    return (
-                      <h4
-                        id={id}
-                        className="text-xl font-medium text-gray-700 dark:text-gray-300 mt-6 mb-3"
-                      >
-                        {children}
-                      </h4>
-                    );
-                  },
-                  h5: ({ children }) => {
-                    const title = typeof children === "string" ? children : "";
-                    const id = title
-                      .toLowerCase()
-                      .replace(/[^\w\s-]/gu, "")
-                      .replace(/\s+/g, "-")
-                      .replace(/-+/g, "-")
-                      .trim();
-                    return (
-                      <h5
-                        id={id}
-                        className="text-lg font-medium text-gray-700 dark:text-gray-300 mt-4 mb-2"
-                      >
-                        {children}
-                      </h5>
-                    );
-                  },
-                  h6: ({ children }) => {
-                    const title = typeof children === "string" ? children : "";
-                    const id = title
-                      .toLowerCase()
-                      .replace(/[^\w\s-]/gu, "")
-                      .replace(/\s+/g, "-")
-                      .replace(/-+/g, "-")
-                      .trim();
-                    return (
-                      <h6
-                        id={id}
-                        className="text-base font-medium text-gray-700 dark:text-gray-300 mt-3 mb-2"
-                      >
-                        {children}
-                      </h6>
-                    );
-                  },
-                  p: ({ children }) => (
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6 text-lg">
-                      {children}
-                    </p>
-                  ),
-                  ul: ({ children }) => (
-                    <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-3 mb-6 ml-4">
-                      {children}
-                    </ul>
-                  ),
-                  ol: ({ children }) => (
-                    <ol className="list-decimal list-inside text-gray-600 dark:text-gray-400 space-y-3 mb-6 ml-4">
-                      {children}
-                    </ol>
-                  ),
-                  li: ({ children }) => <li className="text-lg">{children}</li>,
-                  blockquote: ({ children }) => (
-                    <blockquote className="border-l-4 border-blue-500 pl-6 py-2 my-6 bg-blue-50 dark:bg-blue-950/50 rounded-r-lg">
-                      {children}
-                    </blockquote>
-                  ),
-                  strong: ({ children }) => (
-                    <strong className="font-bold text-gray-800 dark:text-gray-200">
-                      {children}
-                    </strong>
-                  ),
-                  a: ({ href, children }) => (
-                    <a
-                      href={href}
-                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline decoration-2 decoration-blue-300 dark:decoration-blue-600 hover:decoration-blue-600 dark:hover:decoration-blue-400 transition-colors"
+            <Streamdown
+              shikiTheme={["github-light", "github-dark"]}
+              components={{
+                h1: ({ children }) => {
+                  const title = typeof children === "string" ? children : "";
+                  const id = title
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/gu, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-")
+                    .trim();
+                  return (
+                    <h1
+                      id={
+                        id || "master-base64-encoding-from-basics-to-advanced"
+                      }
+                      className="text-4xl font-bold text-gray-900 dark:text-gray-100 border-b-4 border-blue-500 pb-4 mb-8"
                     >
                       {children}
-                    </a>
-                  ),
-                }}
-              >
-                {content}
-              </Streamdown>
-            </motion.div>
-          </motion.article>
+                    </h1>
+                  );
+                },
+                h2: ({ children }) => {
+                  const title = typeof children === "string" ? children : "";
+                  const id = title
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/gu, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-")
+                    .trim();
+                  return (
+                    <h2
+                      id={id}
+                      className="text-3xl font-semibold text-gray-800 dark:text-gray-200 mt-12 mb-6 pb-2 border-b-2 border-gray-200 dark:border-gray-700"
+                    >
+                      {children}
+                    </h2>
+                  );
+                },
+                h3: ({ children }) => {
+                  const title = typeof children === "string" ? children : "";
+                  const id = title
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/gu, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-")
+                    .trim();
+                  return (
+                    <h3
+                      id={id}
+                      className="text-2xl font-medium text-gray-700 dark:text-gray-300 mt-8 mb-4"
+                    >
+                      {children}
+                    </h3>
+                  );
+                },
+                h4: ({ children }) => {
+                  const title = typeof children === "string" ? children : "";
+                  const id = title
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/gu, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-")
+                    .trim();
+                  return (
+                    <h4
+                      id={id}
+                      className="text-xl font-medium text-gray-700 dark:text-gray-300 mt-6 mb-3"
+                    >
+                      {children}
+                    </h4>
+                  );
+                },
+                h5: ({ children }) => {
+                  const title = typeof children === "string" ? children : "";
+                  const id = title
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/gu, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-")
+                    .trim();
+                  return (
+                    <h5
+                      id={id}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-300 mt-4 mb-2"
+                    >
+                      {children}
+                    </h5>
+                  );
+                },
+                h6: ({ children }) => {
+                  const title = typeof children === "string" ? children : "";
+                  const id = title
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/gu, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-")
+                    .trim();
+                  return (
+                    <h6
+                      id={id}
+                      className="text-base font-medium text-gray-700 dark:text-gray-300 mt-3 mb-2"
+                    >
+                      {children}
+                    </h6>
+                  );
+                },
+                p: ({ children }) => (
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6 text-lg">
+                    {children}
+                  </p>
+                ),
+                ul: ({ children }) => (
+                  <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-3 mb-6 ml-4">
+                    {children}
+                  </ul>
+                ),
+                ol: ({ children }) => (
+                  <ol className="list-decimal list-inside text-gray-600 dark:text-gray-400 space-y-3 mb-6 ml-4">
+                    {children}
+                  </ol>
+                ),
+                li: ({ children }) => <li className="text-lg">{children}</li>,
+                blockquote: ({ children }) => (
+                  <blockquote className="border-l-4 border-blue-500 pl-6 py-2 my-6 bg-blue-50 dark:bg-blue-950/50 rounded-r-lg">
+                    {children}
+                  </blockquote>
+                ),
+                strong: ({ children }) => (
+                  <strong className="font-bold text-gray-800 dark:text-gray-200">
+                    {children}
+                  </strong>
+                ),
+                a: ({ href, children }) => (
+                  <a
+                    href={href}
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline decoration-2 decoration-blue-300 dark:decoration-blue-600 hover:decoration-blue-600 dark:hover:decoration-blue-400 transition-colors"
+                  >
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {content}
+            </Streamdown>
+          </motion.div>
+        </motion.article>
 
-          {/* Enhanced Streamdown TOC */}
-          {showTOC && (
-            <StreamdownTOC
-              items={tocItems}
-              enableAutoExtract={false}
-              stickyOffset={80}
-              showProgress={true}
-            />
-          )}
-        </div>
+        {/* Enhanced Streamdown TOC */}
+        {showTOC && (
+          <StreamdownTOC
+            items={tocItems}
+            enableAutoExtract={false}
+            stickyOffset={80}
+            showProgress={true}
+          />
+        )}
       </div>
-    </>
+    </div>
   );
 }

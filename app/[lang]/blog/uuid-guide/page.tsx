@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { UuidGuideContent } from "@/components/blog/guides/uuid-guide-content";
+import { UuidGuideStructuredData } from "@/components/structured-data/blog-post";
 import { siteUrl } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -22,5 +23,10 @@ export const metadata: Metadata = {
 };
 
 export default function UuidGuidePage() {
-  return <UuidGuideContent />;
+  return (
+    <>
+      <UuidGuideStructuredData />
+      <UuidGuideContent />
+    </>
+  );
 }

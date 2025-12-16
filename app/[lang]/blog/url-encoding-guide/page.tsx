@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { UrlEncodingGuideContent } from "@/components/blog/guides/url-encoding-guide-content";
+import { UrlEncodingGuideStructuredData } from "@/components/structured-data/blog-post";
 import { siteUrl } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -22,5 +23,10 @@ export const metadata: Metadata = {
 };
 
 export default function UrlEncodingGuidePage() {
-  return <UrlEncodingGuideContent />;
+  return (
+    <>
+      <UrlEncodingGuideStructuredData />
+      <UrlEncodingGuideContent />
+    </>
+  );
 }
