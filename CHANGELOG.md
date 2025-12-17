@@ -57,76 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Development setup guide
   - Contributing guidelines
 
-### Technical Details
-- **Framework**: Next.js 16.0.10
-- **UI Library**: React 19.2.3
-- **Styling**: Tailwind CSS 4.0
-- **Language**: TypeScript 5.0+
-- **Icons**: Lucide React
-- **Animations**: Framer Motion
-- **Code Quality**: Biome (linter and formatter)
-- **Deployment**: Optimized for Vercel and static hosting
-
-### Tools Implemented
-1. **URL Encoder/Decoder**
-   - Percent encoding/decoding
-   - Query parameter handling
-   - Special character support
-
-2. **Base64 Encoder/Decoder**
-   - Text to Base64 conversion
-   - Base64 to text decoding
-   - File encoding support
-
-3. **Character Encoding Converter**
-   - UTF-8 ↔ GBK conversion
-   - Hexadecimal encoding
-   - Binary representation
-   - Unicode normalization
-
-4. **MD5 Hash Generator**
-   - 32-bit and 16-bit output
-   - Batch processing
-   - File hashing support
-
-5. **Password Generator**
-   - Cryptographically secure random generation
-   - Customizable length and character sets
-   - API key generation
-   - Strength indicators
-
-6. **UUID Generator**
-   - RFC4122 compliant
-   - Support for v1, v4, and v7
-   - Bulk generation
-   - Multiple output formats
-
-### Internationalization
-- Complete translation for all 7 supported languages
-- Language detection and switching
-- Localized date/time formatting
-- Cultural number formatting
-
-### Security Features
-- Client-side processing only
-- No data transmission to servers
-- No user tracking or analytics
-- Cryptographically secure random generation
-- Input sanitization and validation
-
-### Performance Metrics
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3s
-- **Bundle Size**: Optimized with code splitting
-
-### Browser Support
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
 ---
 
 ## Version History
@@ -134,16 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### [1.0.0] - 2025-12-17
 Initial public release with full feature set.
 
-### Future Versions
-- [1.1.0] - Planned: Additional tools and features
-- [1.2.0] - Planned: PWA implementation
-- [2.0.0] - Planned: Major UI overhaul
-
 ---
-
-## Contributing
-
-See [README.md](README.md#contributing) for contribution guidelines.
 
 ## License
 
