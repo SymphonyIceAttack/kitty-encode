@@ -145,7 +145,7 @@ export function ContactPage({ lang }: ContactPageProps) {
                     {t("contact.email.address", lang)}
                   </p>
                 </div>
-                <a 
+                <a
                   href={`mailto:${t("contact.email.address", lang)}?subject=${encodeURIComponent(`KittyEncode Contact - ${t("contact.email.subject.placeholder", lang)}`)}&body=${encodeURIComponent(t("contact.email.message.placeholder", lang))}`}
                   className="w-full"
                 >

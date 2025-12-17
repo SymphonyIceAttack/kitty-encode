@@ -24,7 +24,7 @@ const blogPosts = [
     href: "/en/blog/url-encoding-guide",
     readTime: "8 min",
     featured: true,
-    image: "/url-encoding-tutorial.jpg",
+    image: "/url-encoding-guide.jpeg",
   },
   {
     title: "Learn Base64 Encoding: From Basics to Advanced",
@@ -36,7 +36,7 @@ const blogPosts = [
     href: "/en/blog/base64-guide",
     readTime: "7 min",
     featured: true,
-    image: "/base64-encoding-web.jpg",
+    image: "/base64-guide.jpeg",
   },
   {
     title: "Learn MD5 Hashing: Complete Tutorial",
@@ -48,7 +48,7 @@ const blogPosts = [
     href: "/en/blog/md5-guide",
     readTime: "10 min",
     featured: false,
-    image: "/hash-functions-security.jpg",
+    image: "/md5-guide.jpeg",
   },
   {
     title: "Learn UUID Generation: A Developer's Guide",
@@ -60,7 +60,7 @@ const blogPosts = [
     href: "/en/blog/uuid-guide",
     readTime: "9 min",
     featured: false,
-    image: "/uuid-database-primary-key.jpg",
+    image: "/uuid-guide.jpeg",
   },
   {
     title: "Learn Password Generation: Security Best Practices",
@@ -72,7 +72,7 @@ const blogPosts = [
     href: "/en/blog/password-guide",
     readTime: "8 min",
     featured: false,
-    image: "/password-security-guide.jpg",
+    image: "/password-guide.jpeg",
   },
   {
     title: "Learn Character Encoding: UTF-8, GBK & Beyond",
@@ -84,31 +84,19 @@ const blogPosts = [
     href: "/en/blog/encoding-guide",
     readTime: "11 min",
     featured: false,
-    image: "/character-encoding-guide.jpg",
+    image: "/encoding-guide.jpeg",
   },
   {
-    title: "Developer Toolkit: 10x Productivity Secrets",
+    title: "Learn Encoding Converter: Multi-Format Tool Guide",
     description:
-      "A curated collection of developer tools that streamline your workflow from code editing to deployment.",
-    date: "2024-11-20",
+      "Master the encoding converter tool with support for multiple formats. Learn how to convert between Base64, URL encoding, HTML entities, and more in one powerful tool.",
+    date: "2024-12-09",
     author: "Dev Team",
-    tags: ["Tools", "Productivity", "Tutorial"],
-    href: "/en/blog/developer-toolkit",
-    readTime: "5 min",
-    featured: false,
-    image: "/developer-tools-productivity.jpg",
-  },
-  {
-    title: "Why Privacy Matters for Developers",
-    description:
-      "Discussing privacy concerns with online tools, why we insist on local data processing, and how to protect sensitive information.",
-    date: "2024-11-15",
-    author: "Security Team",
-    tags: ["Privacy", "Security", "Tutorial"],
-    href: "/en/blog/privacy-matters",
+    tags: ["Converter", "Guide", "Encoding"],
+    href: "/en/blog/encoding-converter-guide",
     readTime: "6 min",
     featured: false,
-    image: "/privacy-security-developer.jpg",
+    image: "/encoding-converter-guide.jpeg",
   },
 ];
 
