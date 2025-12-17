@@ -27,6 +27,8 @@ pnpm run format       # Format code (biome format --write)
 app/
 ├── layout.tsx       # Root layout with fonts and metadata
 ├── page.tsx         # Home page
+├── sitemap.ts       # SEO sitemap generation
+├── robots.ts        # SEO robots.txt configuration
 ├── globals.css      # Global styles and Tailwind theme
 ├── favicon.ico
 └── [lang]/          # i18n dynamic route (currently empty)
@@ -62,6 +64,19 @@ public/              # Static assets (SVGs)
 ### Fonts
 - Geist Sans: `--font-geist-sans` (body text)
 - Geist Mono: `--font-geist-mono` (code)
+
+## SEO Configuration
+
+### Sitemap & Robots
+- **sitemap.ts**: 自动生成多语言 sitemap.xml，包含所有语言版本的页面
+- **robots.ts**: 配置 robots.txt，允许搜索引擎索引公开内容
+- **支持的页面类型**:
+  - 多语言主页和工具页面 (优先级 0.8-1.0)
+  - 博客文章和静态页面 (优先级 0.5-0.7)
+  - 更新频率根据页面类型动态调整
+
+### Environment Variables
+- `NEXT_PUBLIC_SITE_URL`: 设置网站的基础URL (默认: https://kitty-encode.top)
 
 ## shadcn/ui Integration
 
