@@ -1,4 +1,7 @@
-# <img src="public/base-logo.png" alt="KittyEncode Logo" width="40" height="40"> KittyEncode
+<div align="center">
+  <img src="public/base-logo.png" alt="KittyEncode Logo" width="120" height="120">
+  <h1>KittyEncode</h1>
+</div>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-16.0.10-black.svg)](https://nextjs.org/)
