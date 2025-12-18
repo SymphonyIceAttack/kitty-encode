@@ -14,7 +14,7 @@ export const urlEncoder = {
   "urlEncoder.swapBtn": "Swap & Convert",
   "urlEncoder.clearBtn": "Clear",
   "urlEncoder.encodeTab": "Encode/Decode",
-  "urlEncoder.examplesTab": "Examples",
+  "urlEncoder.examplesTab": "Примеры",
   "urlEncoder.examplesHint": "Click on an example to load it:",
   "urlEncoder.examplesTitle": "Example URLs",
   "urlEncoder.examplesDesc": "Click on any example to load it into the input field, or use \"Quick Run\" to automatically convert:",
