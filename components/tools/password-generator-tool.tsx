@@ -16,6 +16,7 @@ import { CodeHighlighter } from "@/components/ui/code-highlighter";
 import { useCat } from "@/context/cat-context";
 import { useTranslation } from "@/hooks/use-translation";
 import type { LanguageType } from "@/lib/translations";
+import { RelatedTools } from "./related-tools";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -1259,6 +1260,9 @@ export function PasswordGeneratorTool({ lang }: PasswordGeneratorToolProps) {
           )}
         </AnimatePresence>
       </motion.section>
+
+      {/* Related Tools & Guides */}
+      <RelatedTools lang={lang} currentTool="password-generator" />
     </main>
   );
 }

@@ -2,13 +2,14 @@ export const tools = {
   // Tools Page
   "tools.title": "KittyEncode Tools",
   "tools.subtitle": "Purr-fect coding utilities crafted for developers",
-  "tools.search": "Search tools...",
   "tools.category.all": "All",
   "tools.category.data": "Data",
   "tools.category.encoding": "Encoding",
   "tools.category.text": "Text",
   "tools.category.crypto": "Crypto",
   "tools.category.design": "Design",
+  "tools.category.hashing": "Hashing",
+  "tools.category.generators": "Generators",
   "tools.noResults": "No tools found matching your criteria.",
 
   // Base64

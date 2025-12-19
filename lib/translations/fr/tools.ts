@@ -9,6 +9,8 @@ export const tools = {
   "tools.category.text": "Texte",
   "tools.category.crypto": "Crypto",
   "tools.category.design": "Design",
+  "tools.category.hashing": "Hachage",
+  "tools.category.generators": "Générateurs",
   "tools.noResults": "Aucun outil trouvé correspondant à vos critères.",
 
   // Base64

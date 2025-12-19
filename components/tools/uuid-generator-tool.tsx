@@ -19,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCat } from "@/context/cat-context";
 import { useTranslation } from "@/hooks/use-translation";
 import type { LanguageType } from "@/lib/translations";
+import { RelatedTools } from "./related-tools";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -1034,6 +1035,9 @@ export function UuidGeneratorTool({ lang }: UuidGeneratorToolProps) {
           )}
         </AnimatePresence>
       </motion.section>
+
+      {/* Related Tools & Guides */}
+      <RelatedTools lang={lang} currentTool="uuid-generator" />
     </motion.div>
   );
 }

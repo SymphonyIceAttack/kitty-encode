@@ -2,13 +2,14 @@ export const tools = {
   // Tools Page
   "tools.title": "开发者工具",
   "tools.subtitle": "为开发者打造的实用工具集合",
-  "tools.search": "搜索工具...",
   "tools.category.all": "全部",
   "tools.category.data": "数据处理",
   "tools.category.encoding": "编码转换",
   "tools.category.text": "文本处理",
   "tools.category.crypto": "加密",
   "tools.category.design": "设计",
+  "tools.category.hashing": "哈希工具",
+  "tools.category.generators": "生成工具",
   "tools.noResults": "没有找到符合条件的工具。",
 
   // Base64

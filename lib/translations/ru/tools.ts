@@ -2,13 +2,14 @@ export const tools = {
   // Tools Page
   "tools.title": "Инструменты разработчика",
   "tools.subtitle": "Коллекция полезных инструментов для разработчиков",
-  "tools.search": "Поиск инструментов...",
   "tools.category.all": "Все",
   "tools.category.data": "Данные",
   "tools.category.encoding": "Кодирование",
   "tools.category.text": "Текст",
   "tools.category.crypto": "Крипто",
   "tools.category.design": "Дизайн",
+  "tools.category.hashing": "Хеширование",
+  "tools.category.generators": "Генераторы",
   "tools.noResults":
     "Инструменты, соответствующие вашим критериям, не найдены.",
 

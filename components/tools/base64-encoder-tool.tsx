@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCat } from "@/context/cat-context";
 import { useTranslation } from "@/hooks/use-translation";
 import type { LanguageType } from "@/lib/translations";
+import { RelatedTools } from "./related-tools";
 
 interface Base64EncoderToolProps {
   lang: LanguageType;
@@ -878,6 +879,9 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
           </div>
         )}
       </section>
+
+      {/* Related Tools & Guides */}
+      <RelatedTools lang={lang} currentTool="base64-encoder" />
     </div>
   );
 }

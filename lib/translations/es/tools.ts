@@ -9,6 +9,8 @@ export const tools = {
   "tools.category.text": "Texto",
   "tools.category.crypto": "Cripto",
   "tools.category.design": "Diseño",
+  "tools.category.hashing": "Hash",
+  "tools.category.generators": "Generadores",
   "tools.noResults":
     "No se encontraron herramientas que coincidan con tus criterios.",
 

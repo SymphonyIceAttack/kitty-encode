@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCat } from "@/context/cat-context";
 import { useTranslation } from "@/hooks/use-translation";
 import type { LanguageType } from "@/lib/translations";
+import { RelatedTools } from "./related-tools";
 
 export function UrlEncoderTool({ lang = "en" as LanguageType }) {
   const { t } = useTranslation(lang);
@@ -877,6 +878,9 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
           </section>
         )}
       </section>
+
+      {/* Related Tools & Guides */}
+      <RelatedTools lang={lang} currentTool="url-encoder" />
     </div>
   );
 }

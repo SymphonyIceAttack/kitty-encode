@@ -32,6 +32,10 @@ export const common = {
   "common.examples": "例",
   "common.faq": "よくある質問",
   "common.needsUpdate": "入力が変更されました。再変換が必要です",
+  "common.relatedTools": "関連ツールとガイド",
+  "common.relatedToolsDesc": "開発ワークフローを向上させるための他のツールとガイドを発見",
+  "common.relatedToolDesc": "開発ワークフローを向上させる強力なツール",
+  "common.relatedGuideDesc": "このトピックをマスターするための包括的ガイド",
 
   // Badges
   "badge.free": "無料",

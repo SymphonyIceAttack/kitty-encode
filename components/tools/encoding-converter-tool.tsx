@@ -40,6 +40,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCat } from "@/context/cat-context";
 import { useTranslation } from "@/hooks/use-translation";
 import type { LanguageType } from "@/lib/translations";
+import { RelatedTools } from "./related-tools";
 
 /**
  * Supported encoding types
@@ -1607,6 +1608,9 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
           )}
         </AnimatePresence>
       </motion.section>
+
+      {/* Related Tools & Guides */}
+      <RelatedTools lang={lang} currentTool="encoding-converter" />
     </motion.div>
   );
 }

@@ -8,7 +8,6 @@ import {
   Key,
   KeyRound,
   Link as LinkIcon,
-  Search,
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
@@ -40,14 +39,6 @@ const allTools = [
     category: "tools.category.encoding",
   },
   {
-    titleKey: "md5Generator.title",
-    descriptionKey: "md5Generator.description",
-    icon: Hash,
-    href: "/tools/md5-generator",
-    color: "text-purple-500",
-    category: "tools.category.encoding",
-  },
-  {
     titleKey: "encodingConverter.title",
     descriptionKey: "encodingConverter.description",
     icon: FileText,
@@ -56,12 +47,20 @@ const allTools = [
     category: "tools.category.encoding",
   },
   {
+    titleKey: "md5Generator.title",
+    descriptionKey: "md5Generator.description",
+    icon: Hash,
+    href: "/tools/md5-generator",
+    color: "text-purple-500",
+    category: "tools.category.hashing",
+  },
+  {
     titleKey: "passwordGenerator.title",
     descriptionKey: "passwordGenerator.description",
     icon: KeyRound,
     href: "/tools/password-generator",
     color: "text-pink-500",
-    category: "tools.category.encoding",
+    category: "tools.category.generators",
   },
   {
     titleKey: "uuidGenerator.title",
@@ -69,13 +68,15 @@ const allTools = [
     icon: Fingerprint,
     href: "/tools/uuid-generator",
     color: "text-cyan-500",
-    category: "tools.category.encoding",
+    category: "tools.category.generators",
   },
 ];
 
 const categories = [
   { key: "tools.category.all", value: "all" },
   { key: "tools.category.encoding", value: "tools.category.encoding" },
+  { key: "tools.category.hashing", value: "tools.category.hashing" },
+  { key: "tools.category.generators", value: "tools.category.generators" },
 ];
 
 interface ToolsPageClientProps {
@@ -85,34 +86,20 @@ interface ToolsPageClientProps {
 export function ToolsPageClient({ lang }: ToolsPageClientProps) {
   const { t } = useTranslation(lang);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Performance optimization: Memoize filtered results
   const filteredTools = useMemo(() => {
     return allTools.filter((tool) => {
       const matchesCategory =
         selectedCategory === "all" || tool.category === selectedCategory;
-      const matchesSearch =
-        searchQuery === "" ||
-        t(tool.titleKey).toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t(tool.descriptionKey)
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
+      return matchesCategory;
     });
-  }, [selectedCategory, searchQuery, t]);
+  }, [selectedCategory, t]);
 
   // Performance optimization: Memoize callbacks
   const handleCategoryChange = useCallback((category: string) => {
     setSelectedCategory(category);
   }, []);
-
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(e.target.value);
-    },
-    [],
-  );
 
   return (
     <main className="container mx-auto px-4 py-8" aria-labelledby="tools-title">
@@ -128,30 +115,8 @@ export function ToolsPageClient({ lang }: ToolsPageClientProps) {
         <p className="text-lg text-muted-foreground">{t("tools.subtitle")}</p>
       </motion.div>
 
-      {/* Search and Filter */}
-      <div className="mb-8 space-y-4">
-        <div className="relative max-w-md mx-auto">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <label htmlFor="tool-search" className="sr-only">
-            {t("tools.search")}
-          </label>
-          <input
-            id="tool-search"
-            type="text"
-            placeholder={t("tools.search")}
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground"
-            aria-describedby="search-help"
-          />
-          <div id="search-help" className="sr-only">
-            {t("tools.searchHelp")}
-          </div>
-        </div>
-
+      {/* Filter */}
+      <div className="mb-8">
         <div className="flex flex-wrap justify-center gap-2">
           {categories.map((category) => (
             <Button

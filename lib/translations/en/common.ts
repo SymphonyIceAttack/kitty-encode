@@ -32,6 +32,10 @@ export const common = {
   "common.examples": "Examples",
   "common.faq": "Frequently Asked Questions",
   "common.needsUpdate": "Input changed, need to re-convert",
+  "common.relatedTools": "Related Tools & Guides",
+  "common.relatedToolsDesc": "Discover more tools and guides to help you with your development workflow",
+  "common.relatedToolDesc": "A powerful tool to enhance your development workflow",
+  "common.relatedGuideDesc": "Comprehensive guide to master this topic",
 
   // Badges
   "badge.free": "Free",
