@@ -12,6 +12,7 @@ export const encodingConverter = {
   "encodingConverter.sourceEncoding": "Encodage Source",
   "encodingConverter.targetEncoding": "Encodage Cible",
   "encodingConverter.convert": "Convertir",
+  "encodingConverter.swapEncodings": "Échanger l'encodage source et cible",
   "encodingConverter.autoDetect": "Détection Automatique",
   "encodingConverter.hexView": "Vue Hex",
   "encodingConverter.textView": "Vue Texte",

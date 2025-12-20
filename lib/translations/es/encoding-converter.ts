@@ -13,6 +13,8 @@ export const encodingConverter = {
   "encodingConverter.sourceEncoding": "Codificación de Origen",
   "encodingConverter.targetEncoding": "Codificación de Destino",
   "encodingConverter.convert": "Convertir",
+  "encodingConverter.swapEncodings":
+    "Intercambiar codificación de origen y destino",
   "encodingConverter.autoDetect": "Detección Automática",
   "encodingConverter.hexView": "Vista Hex",
   "encodingConverter.textView": "Vista de Texto",

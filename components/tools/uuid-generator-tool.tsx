@@ -660,14 +660,14 @@ export function UuidGeneratorTool({ lang }: UuidGeneratorToolProps) {
       <motion.section className="mb-12" variants={itemVariants}>
         <Card className="rounded-2xl overflow-hidden">
           <CardContent className="p-6">
-            <motion.h3
+            <motion.h2
               className="text-lg font-semibold mb-4 flex items-center gap-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <Sparkles className="h-5 w-5" />
               {t("uuidGenerator.examplesTitle")}
-            </motion.h3>
+            </motion.h2>
             <p className="text-sm text-muted-foreground mb-6">
               {t("uuidGenerator.examplesDesc")}
             </p>

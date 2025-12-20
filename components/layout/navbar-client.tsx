@@ -217,10 +217,10 @@ export function Navbar({ lang }: NavbarProps) {
                 <Button
                   variant="ghost"
                   size="icon"
+                  aria-label={t("button.switchLanguage")}
                   className="hidden sm:flex rounded-full border-2 border-transparent hover:border-foreground/30 dark:hover:border-primary/30"
                 >
                   <Globe className="h-5 w-5" />
-                  <span className="sr-only">{t("button.switchLanguage")}</span>
                 </Button>
               </motion.div>
             </DropdownMenuTrigger>

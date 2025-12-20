@@ -13,6 +13,7 @@ export const encodingConverter = {
   "encodingConverter.sourceEncoding": "Исходная Кодировка",
   "encodingConverter.targetEncoding": "Целевая Кодировка",
   "encodingConverter.convert": "Преобразовать",
+  "encodingConverter.swapEncodings": "Поменять исходную и целевую кодировку",
   "encodingConverter.autoDetect": "Автоопределение",
   "encodingConverter.hexView": "Hex Вид",
   "encodingConverter.textView": "Текстовый Вид",

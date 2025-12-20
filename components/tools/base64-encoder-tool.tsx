@@ -441,10 +441,10 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
       <section className="mb-12">
         <Card className="rounded-2xl overflow-hidden">
           <CardContent className="p-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Sparkles className="h-5 w-5" />
               {t("base64Encoder.examples")}
-            </h3>
+            </h2>
             <p className="text-sm text-muted-foreground mb-6">
               {t("base64Encoder.examplesHint")} Click on any example to load it
               into the input field, or use "Quick Run" to automatically

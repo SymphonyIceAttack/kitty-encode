@@ -470,10 +470,10 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
       <section className="mb-12">
         <Card className="rounded-2xl overflow-hidden">
           <CardContent className="p-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Sparkles className="h-5 w-5" />
               {t("urlEncoder.examplesTitle")}
-            </h3>
+            </h2>
             <p className="text-sm text-muted-foreground mb-6">
               {t("urlEncoder.examplesDesc")}
             </p>

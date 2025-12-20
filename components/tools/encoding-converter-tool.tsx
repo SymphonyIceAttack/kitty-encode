@@ -999,6 +999,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                       onValueChange={(value: string) =>
                         setSourceEncoding(value as EncodingType)
                       }
+                      aria-label={t("encodingConverter.sourceEncoding")}
                     >
                       <SelectTrigger className="rounded-xl">
                         <SelectValue />
@@ -1023,6 +1024,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                       size="icon"
                       onClick={swapEncodings}
                       className="rounded-full"
+                      aria-label={t("encodingConverter.swapEncodings")}
                     >
                       <ArrowRightLeft className="h-4 w-4" />
                     </Button>
@@ -1037,6 +1039,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                       onValueChange={(value) =>
                         setTargetEncoding(value as EncodingType)
                       }
+                      aria-label={t("encodingConverter.targetEncoding")}
                     >
                       <SelectTrigger className="rounded-xl">
                         <SelectValue />
@@ -1112,6 +1115,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                             size="sm"
                             onClick={() => setViewMode("text")}
                             className="h-6 text-xs rounded-lg"
+                            aria-label={t("encodingConverter.textView")}
                           >
                             {t("encodingConverter.textView")}
                           </Button>
@@ -1120,6 +1124,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                             size="sm"
                             onClick={() => setViewMode("hex")}
                             className="h-6 text-xs rounded-lg"
+                            aria-label={t("encodingConverter.hexView")}
                           >
                             {t("encodingConverter.hexView")}
                           </Button>
@@ -1135,6 +1140,9 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                           onClick={copyToClipboard}
                           disabled={!output}
                           className="rounded-lg"
+                          aria-label={
+                            copied ? t("common.copied") : t("common.copy")
+                          }
                         >
                           <AnimatePresence mode="wait">
                             {copied ? (
@@ -1322,14 +1330,14 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
       <motion.section className="mb-12" variants={itemVariants}>
         <Card className="rounded-2xl overflow-hidden">
           <CardContent className="p-6">
-            <motion.h3
+            <motion.h2
               className="text-lg font-semibold mb-4 flex items-center gap-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <Sparkles className="h-5 w-5" />
               {t("encodingConverter.examples")}
-            </motion.h3>
+            </motion.h2>
             <p className="text-sm text-muted-foreground mb-6">
               {t("encodingConverter.examplesHint")} Click on any example to load
               it into the input field, or use "Quick Run" to automatically

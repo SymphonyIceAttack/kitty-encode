@@ -13,6 +13,7 @@ export const encodingConverter = {
   "encodingConverter.sourceEncoding": "ソースエンコーディング",
   "encodingConverter.targetEncoding": "ターゲットエンコーディング",
   "encodingConverter.convert": "変換",
+  "encodingConverter.swapEncodings": "ソースとターゲットエンコーディングを交換",
   "encodingConverter.autoDetect": "自動検出",
   "encodingConverter.hexView": "Hexビュー",
   "encodingConverter.textView": "テキストビュー",

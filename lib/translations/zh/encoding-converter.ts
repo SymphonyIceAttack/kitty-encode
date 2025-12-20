@@ -11,6 +11,7 @@ export const encodingConverter = {
   "encodingConverter.sourceEncoding": "源编码",
   "encodingConverter.targetEncoding": "目标编码",
   "encodingConverter.convert": "转换",
+  "encodingConverter.swapEncodings": "交换源和目标编码",
   "encodingConverter.autoDetect": "自动检测",
   "encodingConverter.hexView": "十六进制视图",
   "encodingConverter.textView": "文本视图",
