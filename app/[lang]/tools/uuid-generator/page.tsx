@@ -7,7 +7,10 @@ import { UuidGeneratorStructuredData } from "@/components/structured-data/uuid-g
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kitty-encode.top";
 
 const UuidGeneratorTool = dynamic(
-  () => import("@/components/tools/uuid-generator-tool").then((mod) => mod.UuidGeneratorTool),
+  () =>
+    import("@/components/tools/uuid-generator-tool").then(
+      (mod) => mod.UuidGeneratorTool,
+    ),
   {
     ssr: true,
     loading: () => (
@@ -19,7 +22,7 @@ const UuidGeneratorTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 const metadataConfig = {

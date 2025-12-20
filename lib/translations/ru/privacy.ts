@@ -5,7 +5,7 @@ export const privacy = {
   "privacy.keywords":
     "privacy policy, data protection, privacy, developer tools privacy",
   "privacy.heading": "Privacy Policy",
-  "privacy.lastUpdated": "Last updated: December 15, 2025",
+  "privacy.lastUpdated": "Последнее обновление: 20 декабря 2025 г.",
   "privacy.intro":
     "Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our developer tools.",
   "privacy.dataCollection.title": "Information We Collect",
@@ -21,12 +21,25 @@ export const privacy = {
     "We don't share, sell, or transfer any information because we don't collect any.",
   "privacy.cookies.title": "Cookies and Local Storage",
   "privacy.cookies.content":
-    "We use minimal local storage to remember your preferences (like theme settings) but no tracking cookies or analytics.",
+    "Мы используем минимальное локальное хранилище для запоминания ваших предпочтений (например, настроек темы), но без отслеживающих файлов cookie или аналитики.",
   "privacy.cookies.optional":
-    "You can disable local storage in your browser settings without affecting tool functionality.",
-  "privacy.thirdParty.title": "Third-Party Services",
+    "Вы можете отключить локальное хранилище в настройках браузера без влияния на функциональность инструментов.",
+
+  // Заявление о файлах cookie AdSense (Требуется Google для соответствия AdSense)
+  "privacy.cookies.adsense":
+    "Мы можем показывать рекламу на нашем сайте. Сторонние поставщики, включая Google, используют файлы cookie для показа рекламы на основе предыдущих посещений пользователями нашего сайта или других сайтов. Вы можете отказаться от персонализированной рекламы, посетив Настройки рекламы Google (https://www.google.com/ads/preferences) или страницу отказа Инициативы сетевой рекламы (https://www.aboutads.info/choices).",
+
+  // Заявление CMP (Платформа управления согласием)
+  "privacy.cmp.title": "Платформа управления согласием (CMP)",
+  "privacy.cmp.content":
+    "Для пользователей из Европейской экономической зоны (ЕЭЗ) и Соединенного Королевства мы используем сертифицированную Google платформу управления согласием для управления согласием на использование файлов cookie. Это обеспечивает соответствие Общему регламенту по защите данных ЕС (GDPR) и Закону Великобритании о защите данных 2018 года. CMP получает согласие пользователя перед установкой несущественных файлов cookie, и пользователи могут управлять своими настройками согласия в любое время.",
+  "privacy.cmp.consent":
+    "Продолжая использовать наш сайт, вы соглашаетесь на использование файлов cookie, как описано в этой политике.",
+
+  "privacy.thirdParty.title": "Сторонние сервисы",
   "privacy.thirdParty.content":
-    "Our tools run entirely in your browser. We don't use any third-party analytics, advertising, or tracking services.",
+    "Наши инструменты работают полностью в вашем браузере. Мы не используем сторонние сервисы аналитики или отслеживания. Однако рекламные партнеры, такие как Google, могут использовать собственные файлы cookie для показа персонализированной рекламы.",
+
   "privacy.security.title": "Data Security",
   "privacy.security.content":
     "Since we don't store any data, there's no risk of data breaches or unauthorized access to your information.",

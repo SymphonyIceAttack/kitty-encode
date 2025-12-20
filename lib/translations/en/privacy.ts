@@ -8,7 +8,7 @@ export const privacy = {
 
   // Page content
   "privacy.heading": "Privacy Policy",
-  "privacy.lastUpdated": "Last updated: December 15, 2025",
+  "privacy.lastUpdated": "Last updated: December 20, 2025",
 
   "privacy.intro":
     "Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our developer tools.",
@@ -33,9 +33,20 @@ export const privacy = {
   "privacy.cookies.optional":
     "You can disable local storage in your browser settings without affecting tool functionality.",
 
+  // AdSense Cookie Statement (Required by Google for AdSense compliance)
+  "privacy.cookies.adsense":
+    "We may display advertisements on our website. Third-party vendors, including Google, use cookies to serve ads based on users' prior visits to our website or other websites. You can opt out of personalized advertising by visiting Google Ads Settings (https://www.google.com/ads/preferences) or the Network Advertising Initiative opt-out page (https://www.aboutads.info/choices).",
+
+  // CMP (Consent Management Platform) Statement
+  "privacy.cmp.title": "Consent Management Platform (CMP)",
+  "privacy.cmp.content":
+    "For users in the European Economic Area (EEA) and the United Kingdom, we use a Google-certified Consent Management Platform to manage cookie consent. This ensures compliance with the EU General Data Protection Regulation (GDPR) and the UK Data Protection Act 2018. The CMP obtains user consent before non-essential cookies are set, and users can manage their consent preferences at any time.",
+  "privacy.cmp.consent":
+    "By continuing to use our website, you consent to the use of cookies as described in this policy.",
+
   "privacy.thirdParty.title": "Third-Party Services",
   "privacy.thirdParty.content":
-    "Our tools run entirely in your browser. We don't use any third-party analytics, advertising, or tracking services.",
+    "Our tools run entirely in your browser. We don't use any third-party analytics or tracking services. However, advertising partners such as Google may use their own cookies to serve personalized advertisements.",
 
   "privacy.security.title": "Data Security",
   "privacy.security.content":

@@ -7,7 +7,7 @@ export const privacy = {
 
   // 页面内容
   "privacy.heading": "隐私政策",
-  "privacy.lastUpdated": "最后更新：2025年12月15日",
+  "privacy.lastUpdated": "最后更新：2025年12月20日",
 
   "privacy.intro":
     "您的隐私对我们很重要。本隐私政策解释了我们如何在您使用我们的开发者工具时收集、使用和保护您的信息。",
@@ -31,10 +31,19 @@ export const privacy = {
   "privacy.cookies.optional":
     "您可以在浏览器设置中禁用本地存储，而不影响工具功能。",
 
+  // AdSense Cookie 声明（Google AdSense 合规要求）
+  "privacy.cookies.adsense":
+    "我们可能会在我们的网站上展示广告。第三方供应商（包括 Google）会使用 Cookie，根据用户之前访问我们网站或其他网站的情况来投放广告。您可以通过访问 Google 广告设置（https://www.google.com/ads/preferences）或网络广告倡议退出页面（https://www.aboutads.info/choices）来选择退出个性化广告。",
+
+  // CMP（同意管理平台）声明
+  "privacy.cmp.title": "同意管理平台 (CMP)",
+  "privacy.cmp.content":
+    "对于欧洲经济区（EEA）和英国的用户，我们使用 Google 认证的同意管理平台来管理 Cookie 同意。这确保符合欧盟通用数据保护条例（GDPR）和 2018 年英国数据保护法。CMP 在设置非必要 Cookie 之前获取用户同意，用户可以随时管理其同意偏好。",
+  "privacy.cmp.consent":
+    "继续使用我们的网站，即表示您同意按照本政策中所述使用 Cookie。",
   "privacy.thirdParty.title": "第三方服务",
   "privacy.thirdParty.content":
-    "我们的工具完全在您的浏览器中运行。我们不使用任何第三方分析、广告或跟踪服务。",
-
+    "我们的工具完全在您的浏览器中运行。我们不使用任何第三方分析或跟踪服务。但是，广告合作伙伴（如 Google）可能会使用自己的 Cookie 来投放个性化广告。",
   "privacy.security.title": "数据安全",
   "privacy.security.content":
     "由于我们不存储任何数据，因此不存在数据泄露或未经授权访问您信息的风险。",

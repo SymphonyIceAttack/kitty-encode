@@ -8,7 +8,7 @@ export const privacy = {
 
   // Page content
   "privacy.heading": "Privacy Policy",
-  "privacy.lastUpdated": "Last updated: December 15, 2025",
+  "privacy.lastUpdated": "Dernière mise à jour : 20 décembre 2025",
 
   "privacy.intro":
     "Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our developer tools.",
@@ -29,14 +29,23 @@ export const privacy = {
 
   "privacy.cookies.title": "Cookies and Local Storage",
   "privacy.cookies.content":
-    "We use minimal local storage to remember your preferences (like theme settings) but no tracking cookies or analytics.",
+    "Nous utilisons un stockage local minimal pour mémoriser vos préférences (comme les paramètres de thème) mais sans cookies de suivi ni analyse.",
   "privacy.cookies.optional":
-    "You can disable local storage in your browser settings without affecting tool functionality.",
+    "Vous pouvez désactiver le stockage local dans les paramètres de votre navigateur sans affecter la fonctionnalité des outils.",
 
-  "privacy.thirdParty.title": "Third-Party Services",
+  // Déclaration relative aux cookies AdSense (Requise par Google pour la conformité AdSense)
+  "privacy.cookies.adsense":
+    "Nous pouvons afficher des publicités sur notre site. Les fournisseurs tiers, y compris Google, utilisent des cookies pour diffuser des publicités en fonction des visites antérieures des utilisateurs sur notre site ou d'autres sites. Vous pouvez refuser la publicité personnalisée en visitant les Paramètres des annonces Google (https://www.google.com/ads/preferences) ou la page de désinscription de la Network Advertising Initiative (https://www.aboutads.info/choices).",
+
+  // Déclaration CMP (Plateforme de Gestion du Consentement)
+  "privacy.cmp.title": "Plateforme de Gestion du Consentement (CMP)",
+  "privacy.cmp.content":
+    "Pour les utilisateurs de l'Espace Économique Européen (EEE) et du Royaume-Uni, nous utilisons une Plateforme de Gestion du Consentement certifiée par Google pour gérer le consentement aux cookies. Cela garantit la conformité au Règlement Général sur la Protection des Données (RGPD) de l'UE et à la Loi britannique sur la protection des données de 2018. La CMP obtient le consentement de l'utilisateur avant que les cookies non essentiels ne soient définis, et les utilisateurs peuvent gérer leurs préférences de consentement à tout moment.",
+  "privacy.cmp.consent":
+    "En continuant à utiliser notre site, vous consentez à l'utilisation des cookies comme décrit dans cette politique.",
+  "privacy.thirdParty.title": "Services Tiers",
   "privacy.thirdParty.content":
-    "Our tools run entirely in your browser. We don't use any third-party analytics, advertising, or tracking services.",
-
+    "Nos outils fonctionnent entièrement dans votre navigateur. Nous n'utilisons aucun service d'analyse ou de suivi tiers. Cependant, les partenaires publicitaires comme Google peuvent utiliser leurs propres cookies pour diffuser des publicités personnalisées.",
   "privacy.security.title": "Data Security",
   "privacy.security.content":
     "Since we don't store any data, there's no risk of data breaches or unauthorized access to your information.",

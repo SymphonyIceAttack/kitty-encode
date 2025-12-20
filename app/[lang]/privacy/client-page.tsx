@@ -173,6 +173,49 @@ export function PrivacyPage({ lang }: PrivacyPageProps) {
           </Card>
         </motion.section>
 
+        {/* AdSense Cookie Statement */}
+        <motion.section variants={itemVariants}>
+          <Card className="border-0 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <Eye className="w-4 h-4 text-orange-500" />
+                </div>
+                Google AdSense
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                {t("privacy.cookies.adsense", lang)}
+              </p>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        {/* CMP Statement */}
+        <motion.section variants={itemVariants}>
+          <Card className="border-0 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-indigo-500" />
+                </div>
+                {t("privacy.cmp.title", lang)}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground">
+                {t("privacy.cmp.content", lang)}
+              </p>
+              <div className="bg-indigo-50 dark:bg-indigo-950/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800">
+                <p className="text-sm text-indigo-800 dark:text-indigo-200 italic">
+                  {t("privacy.cmp.consent", lang)}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
+
         {/* Third Party */}
         <motion.section variants={itemVariants}>
           <Card className="border-0 shadow-lg">

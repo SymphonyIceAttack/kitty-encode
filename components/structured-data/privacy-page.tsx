@@ -24,7 +24,7 @@ export function PrivacyPageStructuredData() {
     url: `${baseUrl}/privacy`,
     about: organizationSchema,
     datePublished: "2024-01-01",
-    dateModified: "2024-12-01",
+    dateModified: "2025-12-20",
   };
 
   return (
