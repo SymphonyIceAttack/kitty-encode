@@ -953,7 +953,7 @@ export function PasswordGeneratorTool({ lang }: PasswordGeneratorToolProps) {
                   {generationStats.randomCount} Random
                 </motion.div>
                 <motion.div
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium"
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-700 text-xs font-medium"
                   whileHover={{ scale: 1.05 }}
                 >
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -961,7 +961,7 @@ export function PasswordGeneratorTool({ lang }: PasswordGeneratorToolProps) {
                 </motion.div>
                 {generationStats.lastUsed && (
                   <motion.div
-                    className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium"
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-medium"
                     whileHover={{ scale: 1.05 }}
                     title={`Last used: ${generationStats.lastUsed.toLocaleString()}`}
                   >

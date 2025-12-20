@@ -1178,7 +1178,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                         <div>
                           {needsUpdate && (
                             <div className="flex items-center gap-2 p-3 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30">
-                              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                              <AlertCircle className="h-4 w-4 text-amber-700 dark:text-amber-500" />
                               <span className="text-sm text-amber-800 dark:text-amber-200">
                                 {t("common.needsUpdate")}
                               </span>
@@ -1265,7 +1265,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                       {conversionStats.totalConversions} Converted
                     </motion.div>
                     <motion.div
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-700 text-xs font-medium"
                       whileHover={{ scale: 1.05 }}
                       title={`Encoding operations: ${conversionStats.encodeCount}`}
                     >
@@ -1302,7 +1302,7 @@ export function EncodingConverterTool({ lang }: EncodingConverterToolProps) {
                     )}
                     {conversionStats.lastUsed && (
                       <motion.div
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-medium"
                         whileHover={{ scale: 1.05 }}
                         title={`Last used: ${conversionStats.lastUsed.toLocaleString()}`}
                       >

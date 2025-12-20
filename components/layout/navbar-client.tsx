@@ -295,6 +295,9 @@ export function Navbar({ lang }: NavbarProps) {
               size="icon"
               className="md:hidden rounded-full border-2 border-transparent hover:border-foreground/30 dark:hover:border-primary/30"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={
+                mobileMenuOpen ? t("button.closeMenu") : t("button.openMenu")
+              }
             >
               <AnimatePresence mode="wait">
                 {mobileMenuOpen ? (

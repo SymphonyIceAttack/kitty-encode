@@ -315,7 +315,7 @@ export function UuidGeneratorTool({ lang }: UuidGeneratorToolProps) {
                   </motion.div>
                   {generationStats.lastUsed && (
                     <motion.div
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-medium"
                       whileHover={{ scale: 1.05 }}
                       title={`Last used: ${generationStats.lastUsed.toLocaleString()}`}
                     >

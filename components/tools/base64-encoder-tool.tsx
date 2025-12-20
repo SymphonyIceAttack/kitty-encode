@@ -276,7 +276,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
                       {conversionStats.totalConversions} Total
                     </div>
-                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
+                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-700 text-xs font-medium">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       {conversionStats.encodeCount} Encodes
                     </div>
@@ -286,7 +286,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                     </div>
                     {conversionStats.lastUsed && (
                       <div
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-medium"
                         title={`Last used: ${conversionStats.lastUsed.toLocaleString()}`}
                       >
                         <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
@@ -378,7 +378,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                         <div>
                           {needsUpdate && (
                             <div className="flex items-center gap-2 p-3 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30">
-                              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                              <AlertCircle className="h-4 w-4 text-amber-700 dark:text-amber-500" />
                               <span className="text-sm text-amber-800 dark:text-amber-200">
                                 {t("common.needsUpdate")}
                               </span>
@@ -518,9 +518,9 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
         />
 
         <div className="mb-6 p-4 bg-muted/30 rounded-xl border border-border/50">
-          <h4 className="font-semibold mb-2">
+          <h3 className="font-semibold mb-2">
             {t("base64Encoder.seo.techImplTitle")}
-          </h4>
+          </h3>
           <p
             className="text-sm text-muted-foreground leading-relaxed"
             dangerouslySetInnerHTML={{
@@ -529,9 +529,9 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
           />
         </div>
 
-        <h3 className="text-lg font-semibold mt-8 mb-4">
+        <h4 className="text-lg font-semibold mt-8 mb-4">
           {t("base64Encoder.featuresTitle")}
-        </h3>
+        </h4>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
@@ -668,7 +668,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                 <div className="text-muted-foreground mb-2">
                   {t("base64Encoder.scenarios.scenario2.encoded")}
                 </div>
-                <div className="mb-3 font-mono text-green-600">
+                <div className="mb-3 font-mono text-green-700">
                   dXNlcm5hbWU6cGFzc3dvcmQxMjM=
                 </div>
                 <div className="text-muted-foreground mb-2">
@@ -706,7 +706,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                 <div className="text-muted-foreground mb-2">
                   {t("base64Encoder.scenarios.scenario3.encoding")}
                 </div>
-                <div className="mb-3 font-mono text-green-600">
+                <div className="mb-3 font-mono text-green-700">
                   JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4K...
                 </div>
                 <div className="text-muted-foreground mb-2">
@@ -781,7 +781,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
             </h3>
             <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <h4 className="font-semibold mb-3 text-amber-600">
+                <h4 className="font-semibold mb-3 text-amber-700">
                   {t("base64Encoder.limits.limitations")}
                 </h4>
                 <ul className="space-y-2 text-sm text-muted-foreground">
@@ -804,7 +804,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-green-600">
+                <h4 className="font-semibold mb-3 text-green-700">
                   {t("base64Encoder.limits.bestPractices")}
                 </h4>
                 <ul className="space-y-2 text-sm text-muted-foreground">

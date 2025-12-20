@@ -272,7 +272,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                       {conversionStats.encodeCount} Encodes
                     </div>
-                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
+                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-700 text-xs font-medium">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       {conversionStats.decodeCount} Decodes
                     </div>
@@ -376,7 +376,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
                         <>
                           {needsUpdate && (
                             <div className="flex items-center gap-2 p-3 mb-4 bg-amber-100/80 dark:bg-amber-900/20 border-b border-amber-300 dark:border-amber-600/30 rounded-lg">
-                              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                              <AlertCircle className="h-4 w-4 text-amber-700 dark:text-amber-500" />
                               <span className="text-sm text-amber-800 dark:text-amber-200">
                                 {t("common.needsUpdate")}
                               </span>
@@ -598,9 +598,9 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
           </div>
         </div>
 
-        <h3 className="text-lg font-semibold mt-8 mb-4">
+        <h4 className="text-lg font-semibold mt-8 mb-4">
           {t("urlEncoder.seo.featuresTitle")}
-        </h3>
+        </h4>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
@@ -629,9 +629,9 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
           ))}
         </div>
 
-        <h3 className="text-lg font-semibold mt-8 mb-4">
+        <h4 className="text-lg font-semibold mt-8 mb-4">
           {t("urlEncoder.seo.useCasesTitle")}
-        </h3>
+        </h4>
         <ul className="text-muted-foreground space-y-2">
           {[
             t("urlEncoder.seo.useCase1"),
@@ -660,7 +660,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
               <h5 className="font-medium text-amber-700 dark:text-amber-300 text-xs mb-2">
                 ✅ {t("urlEncoder.limitations.appropriate")}
               </h5>
-              <ul className="text-xs text-amber-600 dark:text-amber-400 space-y-1">
+              <ul className="text-xs text-amber-700 dark:text-amber-500 space-y-1">
                 <li>• {t("urlEncoder.limitations.appropriateList1")}</li>
                 <li>• {t("urlEncoder.limitations.appropriateList2")}</li>
                 <li>• {t("urlEncoder.limitations.appropriateList3")}</li>
@@ -671,7 +671,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
               <h5 className="font-medium text-amber-700 dark:text-amber-300 text-xs mb-2">
                 ⚠️ {t("urlEncoder.limitations.notSuitable")}
               </h5>
-              <ul className="text-xs text-amber-600 dark:text-amber-400 space-y-1">
+              <ul className="text-xs text-amber-700 dark:text-amber-500 space-y-1">
                 <li>• {t("urlEncoder.limitations.notSuitableList1")}</li>
                 <li>• {t("urlEncoder.limitations.notSuitableList2")}</li>
                 <li>• {t("urlEncoder.limitations.notSuitableList3")}</li>
@@ -708,7 +708,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
               <div className="text-muted-foreground mb-2">
                 ✅ {t("urlEncoder.scenarios.scenario1.solution")}
               </div>
-              <div className="text-green-600">
+              <div className="text-green-700">
                 https://shop.com/search?query=men%27s%20shoes%20%26%20category%3Dathletic
               </div>
             </div>
@@ -739,7 +739,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
               <div className="text-muted-foreground mb-2">
                 {t("urlEncoder.scenarios.scenario2.encoded")}
               </div>
-              <div className="text-green-600">
+              <div className="text-green-700">
                 %E5%BC%80%E5%8F%91%E3%83%84%E3%83%BC%E3%83%AB%20%2B%20%E5%9C%A8%E7%BA%BF%E6%9C%8D%E5%8A%A1
               </div>
             </div>
@@ -773,7 +773,7 @@ export function UrlEncoderTool({ lang = "en" as LanguageType }) {
               <div className="text-muted-foreground mb-2">
                 {t("urlEncoder.scenarios.scenario3.ready")}
               </div>
-              <div className="text-green-600">
+              <div className="text-green-700">
                 https://app.com/share?title=Check%20this%20out%21&amp;text=Amazing%20article%20about%20web%20development
               </div>
             </div>

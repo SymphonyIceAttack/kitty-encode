@@ -60,6 +60,8 @@ export const common = {
   "button.learnMore": "詳細を見る",
   "button.switchTheme": "テーマを切替",
   "button.switchLanguage": "言語を切替",
+  "button.openMenu": "メニューを開く",
+  "button.closeMenu": "メニューを閉じる",
   "button.viewAll": "すべてのツールを見る",
 
   // Cat Mascot

@@ -61,6 +61,8 @@ export const common = {
   "button.learnMore": "En savoir plus",
   "button.switchTheme": "Changer de thème",
   "button.switchLanguage": "Changer de langue",
+  "button.openMenu": "Ouvrir le menu",
+  "button.closeMenu": "Fermer le menu",
   "button.viewAll": "Voir tous les outils",
 
   // Cat Mascot
