@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { UuidGeneratorStructuredData } from "@/components/structured-data/uuid-generator";
 import type { LanguageType } from "@/lib/translations";
 import { generateHreflangLinks, supportedLocales } from "@/lib/translations";
-import { UuidGeneratorStructuredData } from "@/components/structured-data/uuid-generator";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://kitty-encode.top";
 

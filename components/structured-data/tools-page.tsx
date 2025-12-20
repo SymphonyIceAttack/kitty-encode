@@ -1,5 +1,3 @@
-"use client";
-
 import type { CollectionPage, WithContext } from "schema-dts";
 
 export function ToolsPageStructuredData() {

@@ -1,5 +1,3 @@
-"use client";
-
 import type { ContactPage, Organization, WithContext } from "schema-dts";
 
 export function ContactPageStructuredData() {

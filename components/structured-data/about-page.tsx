@@ -1,5 +1,3 @@
-"use client";
-
 import type { AboutPage, Organization, WithContext } from "schema-dts";
 
 export function AboutPageStructuredData() {

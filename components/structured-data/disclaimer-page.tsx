@@ -1,5 +1,3 @@
-"use client";
-
 import type { Organization, WebPage, WithContext } from "schema-dts";
 
 export function DisclaimerPageStructuredData() {

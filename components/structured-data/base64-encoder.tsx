@@ -1,5 +1,3 @@
-"use client";
-
 import type { FAQPage, WebApplication, WithContext } from "schema-dts";
 
 export function Base64EncoderStructuredData() {

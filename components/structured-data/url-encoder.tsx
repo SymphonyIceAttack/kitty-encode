@@ -1,5 +1,3 @@
-"use client";
-
 import type { FAQPage, WebApplication, WebSite, WithContext } from "schema-dts";
 
 export function StructuredDataScripts() {

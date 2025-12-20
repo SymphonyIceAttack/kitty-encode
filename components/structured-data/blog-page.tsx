@@ -1,5 +1,3 @@
-"use client";
-
 import type { Blog, WithContext } from "schema-dts";
 import { siteUrl } from "@/lib/config";
 
