@@ -35,7 +35,7 @@ const pixelFont = VT323({
   subsets: ["latin"],
   variable: "--font-pixel",
   display: "swap",
-  preload: false, // 减少预加载，像素字体使用频率较低
+  preload: false,
   fallback: ["monospace"],
 });
 

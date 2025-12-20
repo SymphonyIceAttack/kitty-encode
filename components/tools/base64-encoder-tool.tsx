@@ -458,6 +458,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                         type="button"
                         className="text-left w-full after:absolute after:inset-0 outline-none focus:ring-2 focus:ring-primary rounded-lg"
                         onClick={() => loadExample(example.data)}
+                        aria-label={t(example.titleKey)}
                       >
                         {t(example.titleKey)}
                       </button>
@@ -472,6 +473,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                         }}
                         className="pixel-btn px-3 py-1 text-xs h-7"
                         title="Load Example Only"
+                        aria-label="Load example only"
                       >
                         <span>
                           <Sparkles className="h-3 w-3" />
@@ -487,6 +489,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                         }}
                         className="px-3 py-1 text-xs h-7 rounded-full border-2 border-foreground/30 dark:border-primary/30 bg-transparent hover:bg-accent transition-colors"
                         title="Copy"
+                        aria-label="Copy example data"
                       >
                         <Copy className="h-3 w-3" />
                       </button>
@@ -842,17 +845,25 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
           type="button"
           onClick={() => setShowFaq(!showFaq)}
           className="flex items-center justify-between w-full text-left py-4 border-t-2 border-b-2 border-dashed border-foreground/25 dark:border-primary/25"
+          aria-expanded={showFaq}
+          aria-controls="faq-content"
         >
           <h2 className="text-lg font-semibold">
             {t("base64Encoder.faqTitle")}
           </h2>
-          <div>
-            <ChevronDown className="h-5 w-5" />
+          <div aria-hidden="true">
+            <ChevronDown
+              className={`h-5 w-5 transition-transform ${showFaq ? "rotate-180" : ""}`}
+            />
           </div>
         </button>
 
         {showFaq && (
-          <div className="space-y-4 pt-6 overflow-hidden">
+          <section
+            id="faq-content"
+            className="space-y-4 pt-6 overflow-hidden"
+            aria-label={t("base64Encoder.faqTitle")}
+          >
             {[
               {
                 q: t("base64Encoder.faq.q1"),
@@ -876,7 +887,7 @@ export function Base64EncoderTool({ lang }: Base64EncoderToolProps) {
                 <p className="text-sm text-muted-foreground">{faq.a}</p>
               </div>
             ))}
-          </div>
+          </section>
         )}
       </section>
 
