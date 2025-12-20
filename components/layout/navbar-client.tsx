@@ -213,16 +213,14 @@ export function Navbar({ lang }: NavbarProps) {
           {/* Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("button.switchLanguage")}
-                  className="hidden sm:flex rounded-full border-2 border-transparent hover:border-foreground/30 dark:hover:border-primary/30"
-                >
-                  <Globe className="h-5 w-5" />
-                </Button>
-              </motion.div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="hidden sm:flex items-center justify-center rounded-full border-2 border-transparent hover:border-foreground/30 dark:hover:border-primary/30 bg-background hover:bg-accent size-9 transition-colors"
+                aria-label={t("button.switchLanguage")}
+              >
+                <Globe className="h-5 w-5" />
+              </motion.button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
