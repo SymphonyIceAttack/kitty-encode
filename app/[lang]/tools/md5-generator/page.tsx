@@ -134,8 +134,8 @@ export default async function Md5GeneratorPage({
   const { lang } = await params;
   return (
     <>
-      <Md5GeneratorStructuredData />
-      <Md5GeneratorTool lang={lang as LanguageType} />
+      <Md5GeneratorStructuredData lang={lang} />
+      <Md5GeneratorTool lang={lang} />
     </>
   );
 }

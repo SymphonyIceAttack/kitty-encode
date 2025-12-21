@@ -136,8 +136,8 @@ export default async function Base64EncoderPage({
   const { lang } = await params;
   return (
     <>
-      <Base64EncoderStructuredData />
-      <Base64EncoderTool lang={lang as LanguageType} />
+      <Base64EncoderStructuredData lang={lang} />
+      <Base64EncoderTool lang={lang} />
     </>
   );
 }

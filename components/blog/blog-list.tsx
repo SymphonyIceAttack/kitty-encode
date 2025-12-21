@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BlogPageStructuredData } from "@/components/structured-data/blog-page";
 import { Badge } from "@/components/ui/badge";
+import { BreadcrumbNav } from "@/components/ui/breadcrumb";
 import {
   Card,
   CardContent,
@@ -164,6 +165,15 @@ export function BlogList() {
         className="container mx-auto max-w-6xl px-4 py-12"
         aria-labelledby="blog-title"
       >
+        {/* Breadcrumb Navigation */}
+        <BreadcrumbNav
+          items={[
+            { label: "Developer Guides", href: "/blog" },
+            { label: "All Tutorials" },
+          ]}
+          className="mb-6"
+        />
+
         {/* Header */}
         <motion.div
           className="mb-12 text-center"

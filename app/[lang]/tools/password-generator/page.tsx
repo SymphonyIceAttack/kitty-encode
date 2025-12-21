@@ -138,8 +138,8 @@ export default async function PasswordGeneratorPage({
   const { lang } = await params;
   return (
     <>
-      <PasswordGeneratorStructuredData />
-      <PasswordGeneratorTool lang={lang as LanguageType} />
+      <PasswordGeneratorStructuredData lang={lang} />
+      <PasswordGeneratorTool lang={lang} />
     </>
   );
 }

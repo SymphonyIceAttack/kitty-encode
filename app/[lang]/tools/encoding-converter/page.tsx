@@ -139,8 +139,8 @@ export default async function EncodingConverterPage({
   const { lang } = await params;
   return (
     <>
-      <EncodingConverterStructuredData />
-      <EncodingConverterTool lang={lang as LanguageType} />
+      <EncodingConverterStructuredData lang={lang} />
+      <EncodingConverterTool lang={lang} />
     </>
   );
 }

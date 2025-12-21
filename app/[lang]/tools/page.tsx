@@ -132,7 +132,7 @@ export default async function ToolsPage({
   const { lang } = await params;
   return (
     <>
-      <ToolsPageStructuredData />
+      <ToolsPageStructuredData lang={lang as LanguageType} />
       <ToolsPageClient lang={lang as LanguageType} />
     </>
   );

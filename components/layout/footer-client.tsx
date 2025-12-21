@@ -7,7 +7,18 @@ import Link from "next/link";
 import { useTranslation } from "@/hooks/use-translation";
 import type { LanguageType } from "@/lib/translations";
 
-const footerLinks = {
+interface FooterLink {
+  labelKey: string;
+  href: string;
+  forceLang?: LanguageType;
+}
+
+const footerLinks: {
+  tools: FooterLink[];
+  company: FooterLink[];
+  resources: FooterLink[];
+  legal: FooterLink[];
+} = {
   tools: [
     { labelKey: "footer.tool.urlEncoder", href: "/" },
     { labelKey: "footer.tool.base64Encoder", href: "/tools/base64-encoder" },
@@ -27,7 +38,7 @@ const footerLinks = {
     { labelKey: "footer.contact", href: "/contact" },
   ],
   resources: [
-    { labelKey: "footer.blog", href: "/blog" },
+    { labelKey: "footer.blog", href: "/blog", forceLang: "en" },
     {
       labelKey: "footer.githubProfile",
       href: "https://github.com/SymphonyIceAttack/kitty-encode",
@@ -232,7 +243,9 @@ export function Footer({ lang }: FooterProps) {
                     href={
                       link.href.startsWith("http")
                         ? link.href
-                        : `/${lang}${link.href}`
+                        : link.forceLang
+                          ? `/${link.forceLang}${link.href}`
+                          : `/${lang}${link.href}`
                     }
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -259,7 +272,9 @@ export function Footer({ lang }: FooterProps) {
                     href={
                       link.href.startsWith("http")
                         ? link.href
-                        : `/${lang}${link.href}`
+                        : link.forceLang
+                          ? `/${link.forceLang}${link.href}`
+                          : `/${lang}${link.href}`
                     }
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -286,7 +301,9 @@ export function Footer({ lang }: FooterProps) {
                     href={
                       link.href.startsWith("http")
                         ? link.href
-                        : `/${lang}${link.href}`
+                        : link.forceLang
+                          ? `/${link.forceLang}${link.href}`
+                          : `/${lang}${link.href}`
                     }
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
@@ -313,7 +330,9 @@ export function Footer({ lang }: FooterProps) {
                     href={
                       link.href.startsWith("http")
                         ? link.href
-                        : `/${lang}${link.href}`
+                        : link.forceLang
+                          ? `/${link.forceLang}${link.href}`
+                          : `/${lang}${link.href}`
                     }
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >

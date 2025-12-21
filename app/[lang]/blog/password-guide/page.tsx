@@ -1,26 +1,35 @@
 import type { Metadata } from "next";
 import { PasswordGuideContent } from "@/components/blog/guides/password-guide-content";
 import { PasswordGuideStructuredData } from "@/components/structured-data/blog-post";
+import { PasswordGuideBreadcrumbSchema } from "@/components/structured-data/breadcrumbs";
+import { ArticleBreadcrumbNav } from "@/components/ui/breadcrumb";
 import { siteUrl } from "@/lib/config";
 
 // Generate static params for English only
+
 export async function generateStaticParams() {
-  return [
-    {
-      lang: "en",
-    },
-  ];
+  return [{ lang: "en" }];
 }
 
 export const metadata: Metadata = {
   title: "Password Security: Entropy, Salting, and KDFs - KittyEncode",
   description:
-    "An engineering analysis of password security mechanics: calculating entropy, preventing rainbow table attacks with salts, and slowing down GPUs with Argon2 and bcrypt.",
+    "Master password security with our comprehensive guide. Learn about entropy calculation, salting to prevent rainbow table attacks, and key derivation functions like Argon2 and bcrypt for modern authentication systems.",
   keywords:
-    "argon2, bcrypt, password entropy, kdf, salt, rainbow table, nist sp 800-63b, credential stuffing",
+    "password security, password entropy, salting, kdf, argon2, bcrypt, key derivation, rainbow table, password hashing, nist guidelines, credential security",
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  creator: "Engineering Team",
+  publisher: "KittyEncode",
   robots: {
-    index: false,
+    index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   alternates: {
     canonical: `${siteUrl}/en/blog/password-guide`,
@@ -28,13 +37,53 @@ export const metadata: Metadata = {
       en: `${siteUrl}/en/blog/password-guide`,
     },
   },
+  openGraph: {
+    type: "article",
+    locale: "en",
+    url: `${siteUrl}/en/blog/password-guide`,
+    title: "Password Security: Entropy, Salting, and KDFs - KittyEncode",
+    description:
+      "Master password security: entropy, salting, and key derivation functions like Argon2 and bcrypt.",
+    siteName: "KittyEncode",
+    images: [
+      {
+        url: `${siteUrl}/password-guide-pixel.jpeg`,
+        width: 1200,
+        height: 630,
+        alt: "Password Security Guide",
+      },
+    ],
+  } as const,
+  twitter: {
+    card: "summary_large_image",
+    title: "Password Security: Entropy, Salting, and KDFs",
+    description:
+      "Master password security: entropy, salting, and key derivation functions like Argon2 and bcrypt.",
+    images: [`${siteUrl}/password-guide-pixel.jpeg`],
+    creator: "@kittyencode",
+  },
+  other: {
+    "og:site_name": "KittyEncode",
+    "og:type": "article",
+  },
 };
 
-export default function PasswordGuidePage() {
+export default async function PasswordGuidePage() {
   return (
     <>
       <PasswordGuideStructuredData />
-      <PasswordGuideContent />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(PasswordGuideBreadcrumbSchema()),
+        }}
+      />
+      <div className="container mx-auto max-w-4xl px-4 pt-8">
+        <ArticleBreadcrumbNav title="Password Security Guide" />
+      </div>
+      <div className="container mx-auto max-w-6xl px-4">
+        <PasswordGuideContent />
+      </div>
     </>
   );
 }

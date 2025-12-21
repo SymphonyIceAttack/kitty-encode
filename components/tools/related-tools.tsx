@@ -200,7 +200,7 @@ export function RelatedTools({ lang, currentTool }: RelatedToolsProps) {
           if (!guide) return null;
 
           const GuideIcon = guide.icon;
-          const guidePath = `/${lang}${guide.path}`;
+          const guidePath = `/en${guide.path}`;
 
           return (
             <Link href={guidePath}>

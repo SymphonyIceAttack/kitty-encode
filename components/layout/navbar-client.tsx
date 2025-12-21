@@ -22,7 +22,7 @@ import { languageNames, supportedLocales } from "@/lib/translations";
 const navLinks = [
   { href: "", labelKey: "nav.home" },
   { href: "/tools", labelKey: "nav.tools" },
-  { href: "/blog", labelKey: "nav.blog" },
+  { href: "/blog", labelKey: "nav.blog", forceLang: "en" },
 ];
 
 function KittyEncodeLogo() {
@@ -194,7 +194,11 @@ export function Navbar({ lang }: NavbarProps) {
               transition={{ delay: index * 0.1 + 0.3 }}
             >
               <Link
-                href={`/${lang}${link.href}`}
+                href={
+                  link.forceLang
+                    ? `/${link.forceLang}${link.href}`
+                    : `/${lang}${link.href}`
+                }
                 className="px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground hover:bg-accent/50 rounded-full border-2 border-transparent hover:border-foreground/30 dark:hover:border-primary/30"
               >
                 <motion.span
@@ -342,7 +346,11 @@ export function Navbar({ lang }: NavbarProps) {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Link
-                    href={`/${lang}${link.href}`}
+                    href={
+                      link.forceLang
+                        ? `/${link.forceLang}${link.href}`
+                        : `/${lang}${link.href}`
+                    }
                     className="px-4 py-3 text-sm font-medium text-muted-foreground rounded-xl border-2 border-transparent hover:border-foreground/30 dark:hover:border-primary/30 transition-colors hover:bg-accent hover:text-foreground block"
                     onClick={() => setMobileMenuOpen(false)}
                   >

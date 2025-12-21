@@ -158,8 +158,8 @@ export default async function UuidGeneratorPage({
   const { lang } = await params;
   return (
     <>
-      <UuidGeneratorStructuredData />
-      <UuidGeneratorTool lang={lang as LanguageType} />
+      <UuidGeneratorStructuredData lang={lang} />
+      <UuidGeneratorTool lang={lang} />
     </>
   );
 }

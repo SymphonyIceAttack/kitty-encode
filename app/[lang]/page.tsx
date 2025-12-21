@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { StructuredDataScripts } from "@/components/structured-data/url-encoder";
+import { UrlEncoderStructuredData } from "@/components/structured-data/url-encoder";
 import { UrlEncoderTool } from "@/components/tools/url-encoder-tool";
 import type { LanguageType } from "@/lib/translations";
 import { generateHreflangLinks, supportedLocales } from "@/lib/translations";
@@ -143,7 +143,7 @@ export default async function UrlEncoderPage({
   const { lang } = await params;
   return (
     <>
-      <StructuredDataScripts />
+      <UrlEncoderStructuredData lang={lang} />
       <UrlEncoderTool lang={lang as LanguageType} />
     </>
   );

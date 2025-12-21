@@ -51,93 +51,109 @@ export function BlogPostStructuredData({
   );
 }
 
-export function UrlEncodingGuideStructuredData() {
+interface BlogPostData {
+  title: string;
+  description: string;
+  author: string;
+  image: string;
+}
+
+const posts: Record<string, BlogPostData> = {
+  "url-encoding-guide": {
+    title: "URL Encoding: The RFC 3986 Engineering Reference",
+    description:
+      "A comprehensive analysis of Percent-Encoding (RFC 3986), reserved character sets, UTF-8 byte sequences, and common security pitfalls in URL construction.",
+    author: "Engineering Team",
+    image: "/url-encoding-guide-pixel.jpeg",
+  },
+  "base64-guide": {
+    title: "Base64 Encoding: The Definitive Engineering Guide",
+    description:
+      "A deep technical analysis of Base64 encoding algorithms, memory implications, RFC 4648 standards, and implementation best practices for engineers.",
+    author: "Engineering Team",
+    image: "/base64-guide-pixel.jpeg",
+  },
+  "md5-guide": {
+    title: "MD5: A Post-Mortem and Engineering Analysis",
+    description:
+      "An in-depth look at the MD5 algorithm's internal structure (Merkle-Damgård), the mathematics of collision attacks, and why it persists in non-cryptographic use cases.",
+    author: "Security Engineering",
+    image: "/md5-guide-pixel.jpeg",
+  },
+  "uuid-guide": {
+    title: "UUIDs in Distributed Systems: The Engineering Guide",
+    description:
+      "A deep technical comparison of UUID v4, v7 (RFC 9562), and ULIDs. Analysis of database indexing performance, collision probabilities, and entropy requirements.",
+    author: "Engineering Team",
+    image: "/uuid-guide-pixel.jpeg",
+  },
+  "password-guide": {
+    title: "Password Security: Entropy, Salting, and KDFs",
+    description:
+      "An engineering analysis of password security mechanics: calculating entropy, preventing rainbow table attacks with salts, and slowing down GPUs with Argon2 and bcrypt.",
+    author: "Security Engineering",
+    image: "/password-guide-pixel.jpeg",
+  },
+  "encoding-guide": {
+    title: "Character Encoding: The UTF-8 Engineering Guide",
+    description:
+      "A deep dive into Unicode, UTF-8 bit layouts, Byte Order Marks (BOM), and debugging encoding corruption (mojibake) in distributed systems.",
+    author: "Engineering Team",
+    image: "/encoding-guide-pixel.jpeg",
+  },
+  "encoding-converter-guide": {
+    title:
+      "A Low-Level Guide to Text Encodings: Hex, Binary, and Base Encodings",
+    description:
+      "Understanding the byte-level mechanics of text representation: how ASCII, Hex, Binary, and Base64 function as different views of the same underlying data.",
+    author: "Engineering Team",
+    image: "/encoding-converter-guide-pixel.jpeg",
+  },
+};
+
+function getBlogPostData(slug: string): BlogPostData {
+  return posts[slug] || posts["url-encoding-guide"];
+}
+
+export function BlogPostDataStructuredData({ slug }: { slug: string }) {
+  const postData = getBlogPostData(slug);
+
   return (
     <BlogPostStructuredData
-      title="URL Encoding: The RFC 3986 Engineering Reference"
-      description="A comprehensive analysis of Percent-Encoding (RFC 3986), reserved character sets, UTF-8 byte sequences, and common security pitfalls in URL construction."
-      url={`${siteUrl}/en/blog/url-encoding-guide`}
+      title={postData.title}
+      description={postData.description}
+      url={`${siteUrl}/en/blog/${slug}`}
       datePublished="2024-12-21"
-      author="Engineering Team"
-      image="/url-encoding-guide-pixel.jpeg"
+      author={postData.author}
+      image={postData.image}
     />
   );
+}
+
+export function UrlEncodingGuideStructuredData() {
+  return BlogPostDataStructuredData({ slug: "url-encoding-guide" });
 }
 
 export function Base64GuideStructuredData() {
-  return (
-    <BlogPostStructuredData
-      title="Base64 Encoding: The Definitive Engineering Guide"
-      description="A deep technical analysis of Base64 encoding algorithms, memory implications, RFC 4648 standards, and implementation best practices for engineers."
-      url={`${siteUrl}/en/blog/base64-guide`}
-      datePublished="2024-12-21"
-      author="Engineering Team"
-      image="/base64-guide-pixel.jpeg"
-    />
-  );
+  return BlogPostDataStructuredData({ slug: "base64-guide" });
 }
 
 export function Md5GuideStructuredData() {
-  return (
-    <BlogPostStructuredData
-      title="MD5: A Post-Mortem and Engineering Analysis"
-      description="An in-depth look at the MD5 algorithm's internal structure (Merkle-Damgård), the mathematics of collision attacks, and why it persists in non-cryptographic use cases."
-      url={`${siteUrl}/en/blog/md5-guide`}
-      datePublished="2024-12-21"
-      author="Security Engineering"
-      image="/md5-guide-pixel.jpeg"
-    />
-  );
+  return BlogPostDataStructuredData({ slug: "md5-guide" });
 }
 
 export function UuidGuideStructuredData() {
-  return (
-    <BlogPostStructuredData
-      title="UUIDs in Distributed Systems: The Engineering Guide"
-      description="A deep technical comparison of UUID v4, v7 (RFC 9562), and ULIDs. Analysis of database indexing performance, collision probabilities, and entropy requirements."
-      url={`${siteUrl}/en/blog/uuid-guide`}
-      datePublished="2024-12-21"
-      author="Engineering Team"
-      image="/uuid-guide-pixel.jpeg"
-    />
-  );
+  return BlogPostDataStructuredData({ slug: "uuid-guide" });
 }
 
 export function PasswordGuideStructuredData() {
-  return (
-    <BlogPostStructuredData
-      title="Password Security: Entropy, Salting, and KDFs"
-      description="An engineering analysis of password security mechanics: calculating entropy, preventing rainbow table attacks with salts, and slowing down GPUs with Argon2 and bcrypt."
-      url={`${siteUrl}/en/blog/password-guide`}
-      datePublished="2024-12-21"
-      author="Security Engineering"
-      image="/password-guide-pixel.jpeg"
-    />
-  );
+  return BlogPostDataStructuredData({ slug: "password-guide" });
 }
 
 export function EncodingGuideStructuredData() {
-  return (
-    <BlogPostStructuredData
-      title="Character Encoding: The UTF-8 Engineering Guide"
-      description="A deep dive into Unicode, UTF-8 bit layouts, Byte Order Marks (BOM), and debugging encoding corruption (mojibake) in distributed systems."
-      url={`${siteUrl}/en/blog/encoding-guide`}
-      datePublished="2024-12-21"
-      author="Engineering Team"
-      image="/encoding-guide-pixel.jpeg"
-    />
-  );
+  return BlogPostDataStructuredData({ slug: "encoding-guide" });
 }
 
 export function EncodingConverterGuideStructuredData() {
-  return (
-    <BlogPostStructuredData
-      title="A Low-Level Guide to Text Encodings: Hex, Binary, and Base Encodings"
-      description="Understanding the byte-level mechanics of text representation: how ASCII, Hex, Binary, and Base64 function as different views of the same underlying data."
-      url={`${siteUrl}/en/blog/encoding-converter-guide`}
-      datePublished="2024-12-21"
-      author="Engineering Team"
-      image="/encoding-converter-guide-pixel.jpeg"
-    />
-  );
+  return BlogPostDataStructuredData({ slug: "encoding-converter-guide" });
 }

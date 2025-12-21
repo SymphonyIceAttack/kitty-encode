@@ -154,7 +154,7 @@ export default async function DisclaimerPage({
 
   return (
     <>
-      <DisclaimerPageStructuredData />
+      <DisclaimerPageStructuredData lang={lang as LanguageType} />
       <main
         className="container mx-auto max-w-4xl px-4 py-12"
         aria-labelledby="disclaimer-title"
