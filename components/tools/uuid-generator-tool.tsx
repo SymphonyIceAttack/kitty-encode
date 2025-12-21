@@ -44,13 +44,15 @@ function generateUuidV4(): string {
 }
 
 function generateUuidV7(): string {
-  let timestamp = Date.now();
+  const timestamp = Date.now();
   const timestampBytes = new Uint8Array(6);
 
-  for (let i = 5; i >= 0; i--) {
-    timestampBytes[i] = timestamp & 0xff;
-    timestamp >>= 8;
-  }
+  timestampBytes[0] = (timestamp >> 40) & 0xFF;
+  timestampBytes[1] = (timestamp >> 32) & 0xFF;
+  timestampBytes[2] = (timestamp >> 24) & 0xFF;
+  timestampBytes[3] = (timestamp >> 16) & 0xFF;
+  timestampBytes[4] = (timestamp >> 8) & 0xFF;
+  timestampBytes[5] = timestamp & 0xFF;
 
   const randomBytes = new Uint8Array(10);
   crypto.getRandomValues(randomBytes);
@@ -160,6 +162,9 @@ function FaqSection({ t }: { t: TranslateFn }) {
     { q: t("uuidGenerator.faq.q1"), a: t("uuidGenerator.faq.a1") },
     { q: t("uuidGenerator.faq.q2"), a: t("uuidGenerator.faq.a2") },
     { q: t("uuidGenerator.faq.q3"), a: t("uuidGenerator.faq.a3") },
+    { q: t("uuidGenerator.faq.q4"), a: t("uuidGenerator.faq.a4") },
+    { q: t("uuidGenerator.faq.q5"), a: t("uuidGenerator.faq.a5") },
+    { q: t("uuidGenerator.faq.q6"), a: t("uuidGenerator.faq.a6") },
   ];
 
   return (
@@ -251,6 +256,24 @@ function ExamplesSection({
       version: "v4" as const,
       format: "braces" as const,
     },
+    {
+      title: t("uuidGenerator.example.dbKey.title"),
+      desc: t("uuidGenerator.example.dbKey.desc"),
+      version: "v7" as const,
+      format: "withoutHyphens" as const,
+    },
+    {
+      title: t("uuidGenerator.example.apiKey.title"),
+      desc: t("uuidGenerator.example.apiKey.desc"),
+      version: "v4" as const,
+      format: "uppercase" as const,
+    },
+    {
+      title: t("uuidGenerator.example.logging.title"),
+      desc: t("uuidGenerator.example.logging.desc"),
+      version: "v7" as const,
+      format: "standard" as const,
+    },
   ];
 
   const loadExample = (version: string, format: string) => {
@@ -334,24 +357,209 @@ function ExamplesSection({
   );
 }
 
+// Comprehensive Technical Details Component
+function TechnicalDetailsSection({ t }: { t: TranslateFn }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const v4Details = [
+    t("uuidGenerator.tech.v4.entropy"),
+    t("uuidGenerator.tech.v4.bits"),
+    t("uuidGenerator.tech.v4.random"),
+    t("uuidGenerator.tech.v4.uniqueness"),
+  ];
+
+  const v7Details = [
+    t("uuidGenerator.tech.v7.timestamp"),
+    t("uuidGenerator.tech.v7.counter"),
+    t("uuidGenerator.tech.v7.random"),
+    t("uuidGenerator.tech.v7.sortable"),
+  ];
+
+  const implementationExamples = [
+    {
+      lang: "JavaScript",
+      code: `const uuid = crypto.randomUUID();
+console.log(uuid);`,
+    },
+    {
+      lang: "Python",
+      code: `import uuid
+id = uuid.uuid4()
+print(id)`,
+    },
+    {
+      lang: "Go",
+      code: `import "github.com/google/uuid"
+id := uuid.New()
+fmt.Println(id.String())`,
+    },
+    {
+      lang: "Rust",
+      code: `use uuid::Uuid;
+let id = Uuid::new_v4();
+println!("{}", id);`,
+    },
+  ];
+
+  return (
+    <section
+      className="mb-12"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "auto" }}
+    >
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        className="flex items-center justify-between w-full text-left py-4 border-t-2 border-b-2 border-dashed border-foreground/25 dark:border-primary/25 cursor-pointer hover:bg-accent/50 transition-colors"
+      >
+        <h2 className="text-lg font-semibold">
+          {t("uuidGenerator.technicalDetailsTitle")}
+        </h2>
+        <ChevronDown
+          className={`h-5 w-5 transition-transform duration-300 ${
+            expanded ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          expanded ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="space-y-6 pt-6">
+          {/* Version 4 Details */}
+          <Card className="rounded-xl overflow-hidden">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2">
+                <span className="w-3 h-3 bg-cyan-500 rounded-full" />
+                UUID v4 Technical Details
+              </h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {v4Details.map((detail, index) => (
+                  <li
+                    key={index}
+                    className="flex items-start gap-2 hover:translate-x-1 transition-transform duration-150"
+                  >
+                    <span className="w-2 h-2 bg-cyan-500/50 rounded-full mt-2 flex-shrink-0" />
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Version 7 Details */}
+          <Card className="rounded-xl overflow-hidden">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2">
+                <span className="w-3 h-3 bg-purple-500 rounded-full" />
+                UUID v7 Technical Details
+              </h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {v7Details.map((detail, index) => (
+                  <li
+                    key={index}
+                    className="flex items-start gap-2 hover:translate-x-1 transition-transform duration-150"
+                  >
+                    <span className="w-2 h-2 bg-purple-500/50 rounded-full mt-2 flex-shrink-0" />
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Implementation Examples */}
+          <Card className="rounded-xl overflow-hidden">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-3">
+                {t("uuidGenerator.implementationTitle")}
+              </h3>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {implementationExamples.map((example, index) => (
+                  <div
+                    key={example.lang}
+                    className="bg-muted/30 rounded-lg p-3 animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="text-xs font-medium mb-2 text-muted-foreground">
+                      {example.lang}
+                    </div>
+                    <CodeHighlighter
+                      code={example.code}
+                      language="javascript"
+                      className="text-xs"
+                    />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* RFC References */}
+          <Card className="rounded-xl overflow-hidden">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-3">
+                {t("uuidGenerator.rfcReferencesTitle")}
+              </h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                  <span className="font-mono text-primary font-semibold min-w-[80px]">
+                    RFC 4122
+                  </span>
+                  <span className="text-muted-foreground">
+                    {t("uuidGenerator.rfc4122.desc")}
+                  </span>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                  <span className="font-mono text-primary font-semibold min-w-[80px]">
+                    RFC 9562
+                  </span>
+                  <span className="text-muted-foreground">
+                    {t("uuidGenerator.rfc9562.desc")}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // SEO Content Section
 function SeoContentSection({ t }: { t: TranslateFn }) {
   const features = [
     {
       title: t("uuidGenerator.feature.rfc.title"),
       desc: t("uuidGenerator.feature.rfc.desc"),
+      icon: "📋",
     },
     {
       title: t("uuidGenerator.feature.formats.title"),
       desc: t("uuidGenerator.feature.formats.desc"),
+      icon: "🔤",
     },
     {
       title: t("uuidGenerator.feature.bulk.title"),
       desc: t("uuidGenerator.feature.bulk.desc"),
+      icon: "⚡",
     },
     {
       title: t("uuidGenerator.feature.privacy.title"),
       desc: t("uuidGenerator.feature.privacy.desc"),
+      icon: "🔒",
+    },
+    {
+      title: t("uuidGenerator.feature.performance.title"),
+      desc: t("uuidGenerator.feature.performance.desc"),
+      icon: "🚀",
+    },
+    {
+      title: t("uuidGenerator.feature.compatibility.title"),
+      desc: t("uuidGenerator.feature.compatibility.desc"),
+      icon: "🌐",
     },
   ];
 
@@ -361,6 +569,43 @@ function SeoContentSection({ t }: { t: TranslateFn }) {
     t("uuidGenerator.useCase.distributed"),
     t("uuidGenerator.useCase.files"),
     t("uuidGenerator.useCase.queue"),
+    t("uuidGenerator.useCase.api"),
+    t("uuidGenerator.useCase.logging"),
+    t("uuidGenerator.useCase.cache"),
+  ];
+
+  const versionComparison = [
+    {
+      version: "UUID v1",
+      method: t("uuidGenerator.comparison.v1.method"),
+      sortable: t("uuidGenerator.comparison.v1.sortable"),
+      entropy: t("uuidGenerator.comparison.v1.entropy"),
+      privacy: t("uuidGenerator.comparison.v1.privacy"),
+      bestFor: t("uuidGenerator.comparison.v1.bestFor"),
+    },
+    {
+      version: "UUID v4",
+      method: t("uuidGenerator.comparison.v4.method"),
+      sortable: t("uuidGenerator.comparison.v4.sortable"),
+      entropy: t("uuidGenerator.comparison.v4.entropy"),
+      privacy: t("uuidGenerator.comparison.v4.privacy"),
+      bestFor: t("uuidGenerator.comparison.v4.bestFor"),
+    },
+    {
+      version: "UUID v7",
+      method: t("uuidGenerator.comparison.v7.method"),
+      sortable: t("uuidGenerator.comparison.v7.sortable"),
+      entropy: t("uuidGenerator.comparison.v7.entropy"),
+      privacy: t("uuidGenerator.comparison.v7.privacy"),
+      bestFor: t("uuidGenerator.comparison.v7.bestFor"),
+    },
+  ];
+
+  const bestPractices = [
+    t("uuidGenerator.bestPractice.v7"),
+    t("uuidGenerator.bestPractice.storage"),
+    t("uuidGenerator.bestPractice.security"),
+    t("uuidGenerator.bestPractice.validation"),
   ];
 
   return (
@@ -379,61 +624,28 @@ function SeoContentSection({ t }: { t: TranslateFn }) {
         }}
       />
 
-      <div
-        className="bg-muted/30 rounded-xl p-4 mb-6 animate-fade-in"
-        style={{ animationDelay: "0.2s" }}
-      >
-        <h4 className="font-semibold mb-2">
-          💻 {t("uuidGenerator.techDetailsTitle")}
-        </h4>
-        <div className="space-y-2 text-sm text-muted-foreground">
-          <p
-            dangerouslySetInnerHTML={{
-              __html: t("uuidGenerator.tech.webCrypto"),
-            }}
-          />
-          <p
-            dangerouslySetInnerHTML={{
-              __html: t("uuidGenerator.tech.v4Struct"),
-            }}
-          />
-          <p
-            dangerouslySetInnerHTML={{
-              __html: t("uuidGenerator.tech.v7Struct"),
-            }}
-          />
-          <p
-            dangerouslySetInnerHTML={{
-              __html: t("uuidGenerator.tech.bitManip"),
-            }}
-          />
-          <p
-            dangerouslySetInnerHTML={{
-              __html: t("uuidGenerator.tech.collision"),
-            }}
-          />
-        </div>
-      </div>
-
+      {/* Core Features */}
       <h3
         className="text-lg font-semibold mt-8 mb-4 animate-fade-in"
-        style={{ animationDelay: "0.3s" }}
+        style={{ animationDelay: "0.2s" }}
       >
         {t("uuidGenerator.featuresTitle")}
       </h3>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-8">
         {features.map((feature, index) => (
           <div
             key={feature.title}
             className="pixel-card p-4 animate-fade-in-up hover:scale-103 hover:-translate-y-1 transition-all duration-200"
-            style={{ animationDelay: `${0.4 + index * 0.1}s` }}
+            style={{ animationDelay: `${0.3 + index * 0.1}s` }}
           >
+            <span className="text-2xl mb-2 block">{feature.icon}</span>
             <h4 className="font-semibold text-sm">{feature.title}</h4>
             <p className="text-xs text-muted-foreground mt-1">{feature.desc}</p>
           </div>
         ))}
       </div>
 
+      {/* Version Comparison Table */}
       <h3
         className="text-lg font-semibold mt-8 mb-4 animate-fade-in"
         style={{ animationDelay: "0.8s" }}
@@ -457,45 +669,35 @@ function SeoContentSection({ t }: { t: TranslateFn }) {
                 {t("uuidGenerator.comparison.sortable")}
               </th>
               <th className="text-left p-3 font-semibold">
+                {t("uuidGenerator.comparison.entropy")}
+              </th>
+              <th className="text-left p-3 font-semibold">
+                {t("uuidGenerator.comparison.privacy")}
+              </th>
+              <th className="text-left p-3 font-semibold">
                 {t("uuidGenerator.comparison.bestFor")}
               </th>
             </tr>
           </thead>
           <tbody className="text-muted-foreground">
-            <tr className="border-b border-border/50">
-              <td className="p-3 font-medium text-foreground">UUID v1</td>
-              <td className="p-3">{t("uuidGenerator.comparison.v1.method")}</td>
-              <td className="p-3">
-                {t("uuidGenerator.comparison.v1.sortable")}
-              </td>
-              <td className="p-3">
-                {t("uuidGenerator.comparison.v1.bestFor")}
-              </td>
-            </tr>
-            <tr className="border-b border-border/50">
-              <td className="p-3 font-medium text-foreground">UUID v4</td>
-              <td className="p-3">{t("uuidGenerator.comparison.v4.method")}</td>
-              <td className="p-3">
-                {t("uuidGenerator.comparison.v4.sortable")}
-              </td>
-              <td className="p-3">
-                {t("uuidGenerator.comparison.v4.bestFor")}
-              </td>
-            </tr>
-            <tr className="border-b border-border/50">
-              <td className="p-3 font-medium text-foreground">UUID v7</td>
-              <td className="p-3">{t("uuidGenerator.comparison.v7.method")}</td>
-              <td className="p-3">
-                {t("uuidGenerator.comparison.v7.sortable")}
-              </td>
-              <td className="p-3">
-                {t("uuidGenerator.comparison.v7.bestFor")}
-              </td>
-            </tr>
+            {versionComparison.map((row, index) => (
+              <tr
+                key={row.version}
+                className="border-b border-border/50 hover:bg-muted/30 transition-colors"
+              >
+                <td className="p-3 font-medium text-foreground">{row.version}</td>
+                <td className="p-3">{row.method}</td>
+                <td className="p-3">{row.sortable}</td>
+                <td className="p-3">{row.entropy}</td>
+                <td className="p-3">{row.privacy}</td>
+                <td className="p-3">{row.bestFor}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
+      {/* Use Cases */}
       <h3
         className="text-lg font-semibold mt-8 mb-4 animate-fade-in"
         style={{ animationDelay: "1s" }}
@@ -503,7 +705,7 @@ function SeoContentSection({ t }: { t: TranslateFn }) {
         {t("uuidGenerator.useCasesTitle")}
       </h3>
       <ul
-        className="text-muted-foreground space-y-2 animate-fade-in"
+        className="text-muted-foreground space-y-2 mb-8 animate-fade-in"
         style={{ animationDelay: "1.1s" }}
       >
         {useCases.map((item, index) => (
@@ -516,6 +718,85 @@ function SeoContentSection({ t }: { t: TranslateFn }) {
           </li>
         ))}
       </ul>
+
+      {/* Best Practices */}
+      <h3
+        className="text-lg font-semibold mt-8 mb-4 animate-fade-in"
+        style={{ animationDelay: "1.2s" }}
+      >
+        {t("uuidGenerator.bestPracticesTitle")}
+      </h3>
+      <div
+        className="grid gap-3 sm:grid-cols-2 mb-8 animate-fade-in"
+        style={{ animationDelay: "1.3s" }}
+      >
+        {bestPractices.map((practice, index) => (
+          <div
+            key={index}
+            className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors"
+          >
+            <span className="text-green-500 mt-0.5">✓</span>
+            <span className="text-sm">{practice}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Technical Details Reference */}
+      <div
+        className="bg-muted/30 rounded-xl p-4 mb-6 animate-fade-in"
+        style={{ animationDelay: "1.4s" }}
+      >
+        <h4 className="font-semibold mb-3 flex items-center gap-2">
+          <span className="text-lg">💻</span>
+          {t("uuidGenerator.techDetailsTitle")}
+        </h4>
+        <div className="grid gap-3 sm:grid-cols-2 text-sm text-muted-foreground">
+          <p
+            dangerouslySetInnerHTML={{
+              __html: t("uuidGenerator.tech.webCrypto"),
+            }}
+          />
+          <p
+            dangerouslySetInnerHTML={{
+              __html: t("uuidGenerator.tech.v4Struct"),
+            }}
+          />
+          <p
+            dangerouslySetInnerHTML={{
+              __html: t("uuidGenerator.tech.v7Struct"),
+            }}
+          />
+          <p
+            dangerouslySetInnerHTML={{
+              __html: t("uuidGenerator.tech.collision"),
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Security Considerations */}
+      <Card className="rounded-xl overflow-hidden mb-6 animate-fade-in" style={{ animationDelay: "1.5s" }}>
+        <CardContent className="p-4">
+          <h4 className="font-semibold mb-3 flex items-center gap-2">
+            <span className="text-lg">🔐</span>
+            {t("uuidGenerator.securityTitle")}
+          </h4>
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <div className="flex items-start gap-3 p-2 bg-red-500/10 rounded-lg">
+              <span className="text-red-500 font-semibold">⚠️</span>
+              <span>{t("uuidGenerator.security.v1Warning")}</span>
+            </div>
+            <div className="flex items-start gap-3 p-2 bg-yellow-500/10 rounded-lg">
+              <span className="text-yellow-500 font-semibold">⚡</span>
+              <span>{t("uuidGenerator.security.v7Warning")}</span>
+            </div>
+            <div className="flex items-start gap-3 p-2 bg-green-500/10 rounded-lg">
+              <span className="text-green-500 font-semibold">✓</span>
+              <span>{t("uuidGenerator.security.v4Secure")}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </section>
   );
 }
@@ -1006,6 +1287,8 @@ export function UuidGeneratorTool({ lang }: UuidGeneratorToolProps) {
       />
 
       <SeoContentSection t={t} />
+
+      <TechnicalDetailsSection t={t} />
 
       <FaqSection t={t} />
 
