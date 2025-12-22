@@ -50,7 +50,7 @@ const blogPosts = [
     href: "/en/blog/url-encoding-guide",
     readTime: "8 min",
     featured: true,
-    image: "/url-encoding-guide-pixel.jpeg",
+    image: "/images/blog/url-encoding-guide-pixel.jpeg",
   },
   {
     title: "Learn Base64 Encoding: From Basics to Advanced",
@@ -62,7 +62,7 @@ const blogPosts = [
     href: "/en/blog/base64-guide",
     readTime: "7 min",
     featured: true,
-    image: "/base64-guide-pixel.jpeg",
+    image: "/images/blog/base64-guide-pixel.jpeg",
   },
   {
     title: "Learn MD5 Hashing: Complete Tutorial",
@@ -74,7 +74,7 @@ const blogPosts = [
     href: "/en/blog/md5-guide",
     readTime: "10 min",
     featured: false,
-    image: "/md5-guide-pixel.jpeg",
+    image: "/images/blog/md5-guide-pixel.jpeg",
   },
   {
     title: "Learn UUID Generation: A Developer's Guide",
@@ -86,7 +86,7 @@ const blogPosts = [
     href: "/en/blog/uuid-guide",
     readTime: "9 min",
     featured: false,
-    image: "/uuid-guide-pixel.jpeg",
+    image: "/images/blog/uuid-guide-pixel.jpeg",
   },
   {
     title: "Learn Password Generation: Security Best Practices",
@@ -98,7 +98,7 @@ const blogPosts = [
     href: "/en/blog/password-guide",
     readTime: "8 min",
     featured: false,
-    image: "/password-guide-pixel.jpeg",
+    image: "/images/blog/password-guide-pixel.jpeg",
   },
   {
     title: "Learn Character Encoding: UTF-8, GBK & Beyond",
@@ -110,7 +110,7 @@ const blogPosts = [
     href: "/en/blog/encoding-guide",
     readTime: "11 min",
     featured: false,
-    image: "/encoding-guide-pixel.jpeg",
+    image: "/images/blog/encoding-guide-pixel.jpeg",
   },
   {
     title: "Learn Encoding Converter: Multi-Format Tool Guide",
@@ -122,7 +122,7 @@ const blogPosts = [
     href: "/en/blog/encoding-converter-guide",
     readTime: "6 min",
     featured: false,
-    image: "/encoding-converter-guide-pixel.jpeg",
+    image: "/images/blog/encoding-converter-guide-pixel.jpeg",
   },
 ];
 

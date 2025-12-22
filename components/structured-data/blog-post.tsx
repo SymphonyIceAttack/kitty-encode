@@ -64,42 +64,42 @@ const posts: Record<string, BlogPostData> = {
     description:
       "A comprehensive analysis of Percent-Encoding (RFC 3986), reserved character sets, UTF-8 byte sequences, and common security pitfalls in URL construction.",
     author: "Engineering Team",
-    image: "/url-encoding-guide-pixel.jpeg",
+    image: "/images/blog/url-encoding-guide-pixel.jpeg",
   },
   "base64-guide": {
     title: "Base64 Encoding: The Definitive Engineering Guide",
     description:
       "A deep technical analysis of Base64 encoding algorithms, memory implications, RFC 4648 standards, and implementation best practices for engineers.",
     author: "Engineering Team",
-    image: "/base64-guide-pixel.jpeg",
+    image: "/images/blog/base64-guide-pixel.jpeg",
   },
   "md5-guide": {
     title: "MD5: A Post-Mortem and Engineering Analysis",
     description:
       "An in-depth look at the MD5 algorithm's internal structure (Merkle-Damgård), the mathematics of collision attacks, and why it persists in non-cryptographic use cases.",
     author: "Security Engineering",
-    image: "/md5-guide-pixel.jpeg",
+    image: "/images/blog/md5-guide-pixel.jpeg",
   },
   "uuid-guide": {
     title: "UUIDs in Distributed Systems: The Engineering Guide",
     description:
       "A deep technical comparison of UUID v4, v7 (RFC 9562), and ULIDs. Analysis of database indexing performance, collision probabilities, and entropy requirements.",
     author: "Engineering Team",
-    image: "/uuid-guide-pixel.jpeg",
+    image: "/images/blog/uuid-guide-pixel.jpeg",
   },
   "password-guide": {
     title: "Password Security: Entropy, Salting, and KDFs",
     description:
       "An engineering analysis of password security mechanics: calculating entropy, preventing rainbow table attacks with salts, and slowing down GPUs with Argon2 and bcrypt.",
     author: "Security Engineering",
-    image: "/password-guide-pixel.jpeg",
+    image: "/images/blog/password-guide-pixel.jpeg",
   },
   "encoding-guide": {
     title: "Character Encoding: The UTF-8 Engineering Guide",
     description:
       "A deep dive into Unicode, UTF-8 bit layouts, Byte Order Marks (BOM), and debugging encoding corruption (mojibake) in distributed systems.",
     author: "Engineering Team",
-    image: "/encoding-guide-pixel.jpeg",
+    image: "/images/blog/encoding-guide-pixel.jpeg",
   },
   "encoding-converter-guide": {
     title:
@@ -107,7 +107,7 @@ const posts: Record<string, BlogPostData> = {
     description:
       "Understanding the byte-level mechanics of text representation: how ASCII, Hex, Binary, and Base64 function as different views of the same underlying data.",
     author: "Engineering Team",
-    image: "/encoding-converter-guide-pixel.jpeg",
+    image: "/images/blog/encoding-converter-guide-pixel.jpeg",
   },
 };
 
