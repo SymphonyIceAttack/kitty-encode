@@ -680,7 +680,7 @@ function SeoContentSection({ t }: { t: TranslateFn }) {
             </tr>
           </thead>
           <tbody className="text-muted-foreground">
-            {versionComparison.map((row, index) => (
+            {versionComparison.map((row, _index) => (
               <tr
                 key={row.version}
                 className="border-b border-border/50 hover:bg-muted/30 transition-colors"
