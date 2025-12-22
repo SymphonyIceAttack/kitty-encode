@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "KittyEncode",
     images: [
       {
-        url: `${siteUrl}/uuid-guide-pixel.jpeg`,
+        url: `${siteUrl}/images/blog/uuid-guide.jpeg`,
         width: 1200,
         height: 630,
         alt: "UUID Engineering Guide",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "UUIDs in Distributed Systems: The Engineering Guide",
     description:
       "Master UUID generation in distributed systems. Compare UUID v4, v7 (RFC 9562), and ULIDs.",
-    images: [`${siteUrl}/uuid-guide-pixel.jpeg`],
+    images: [`${siteUrl}/images/blog/uuid-guide.jpeg`],
     creator: "@kittyencode",
   },
   other: {

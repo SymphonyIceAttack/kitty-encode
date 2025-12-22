@@ -23,7 +23,7 @@ const articleData = {
   date: "2024-12-21",
   readTime: "25 min",
   tags: ["Computer Science", "Unicode", "UTF-8", "I18n", "Database"],
-  image: "/encoding-guide-pixel.jpeg",
+  image: "/images/blog/encoding-guide-pixel.jpeg",
   featured: false,
 };
 

@@ -16,7 +16,7 @@ const articleData = {
   date: "2024-12-21",
   readTime: "25 min",
   tags: ["Cryptography", "Argon2", "Information Theory", "NIST"],
-  image: "/password-guide-pixel.jpeg",
+  image: "/images/blog/password-guide-pixel.jpeg",
   featured: false,
 };
 

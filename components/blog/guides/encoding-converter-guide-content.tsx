@@ -23,7 +23,7 @@ const articleData = {
   date: "2024-12-21",
   readTime: "25 min",
   tags: ["Computer Science", "Serialization", "Binary", "Data Structures", "Encoding"],
-  image: "/encoding-converter-guide-pixel.jpeg",
+  image: "/images/blog/encoding-converter-guide-pixel.jpeg",
   featured: false,
 };
 

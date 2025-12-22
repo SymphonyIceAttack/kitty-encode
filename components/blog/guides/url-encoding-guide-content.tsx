@@ -16,7 +16,7 @@ const articleData = {
   date: "2024-12-21",
   readTime: "25 min",
   tags: ["Computer Science", "RFC 3986", "HTTP", "Security"],
-  image: "/url-encoding-guide-pixel.jpeg",
+  image: "/images/blog/url-encoding-guide-pixel.jpeg",
   featured: true,
 };
 

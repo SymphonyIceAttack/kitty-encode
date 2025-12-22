@@ -15,7 +15,7 @@ const articleData = {
   date: "2024-12-21",
   readTime: "25 min",
   tags: ["Computer Science", "RFC 4648", "Data Transport", "Algorithms"],
-  image: "/base64-guide-pixel.jpeg",
+  image: "/images/blog/base64-guide-pixel.jpeg",
   featured: true,
 };
 

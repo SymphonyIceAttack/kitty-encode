@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     siteName: "KittyEncode",
     images: [
       {
-        url: `${siteUrl}/encoding-converter-guide-pixel.jpeg`,
+        url: `${siteUrl}/images/blog/encoding-converter-guide-pixel.jpeg`,
         width: 1200,
         height: 630,
         alt: "Text Encoding Formats Guide",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     title: "Text Encoding Formats: Hex, Binary, and Base Encodings Guide",
     description:
       "Master text encoding formats. Understand byte-level mechanics of ASCII, Hex, Binary, and Base64.",
-    images: [`${siteUrl}/encoding-converter-guide-pixel.jpeg`],
+    images: [`${siteUrl}/images/blog/encoding-converter-guide-pixel.jpeg`],
     creator: "@kittyencode",
   },
   other: {

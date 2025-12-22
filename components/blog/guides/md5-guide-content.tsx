@@ -16,7 +16,7 @@ const articleData = {
   date: "2024-12-21",
   readTime: "30 min",
   tags: ["Cryptography", "Cryptanalysis", "Hash Functions", "MD5", "Security"],
-  image: "/md5-guide-pixel.jpeg",
+  image: "/images/blog/md5-guide-pixel.jpeg",
   featured: false,
 };
 

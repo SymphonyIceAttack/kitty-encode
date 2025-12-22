@@ -16,7 +16,7 @@ const articleData = {
   date: "2024-12-21",
   readTime: "30 min",
   tags: ["Distributed Systems", "Database Theory", "UUID", "RFC 9562"],
-  image: "/uuid-guide-pixel.jpeg",
+  image: "/images/blog/uuid-guide-pixel.jpeg",
   featured: false,
 };
 

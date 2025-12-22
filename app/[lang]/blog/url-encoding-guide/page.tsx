@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "KittyEncode",
     images: [
       {
-        url: `${siteUrl}/url-encoding-guide-pixel.jpeg`,
+        url: `${siteUrl}/images/blog/url-encoding-guide-pixel.jpeg`,
         width: 1200,
         height: 630,
         alt: "URL Encoding Engineering Guide",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "URL Encoding: The RFC 3986 Engineering Reference",
     description:
       "Master percent-encoding (RFC 3986) with our comprehensive engineering guide. Learn reserved character sets and security best practices.",
-    images: [`${siteUrl}/url-encoding-guide-pixel.jpeg`],
+    images: [`${siteUrl}/images/blog/url-encoding-guide-pixel.jpeg`],
     creator: "@kittyencode",
   },
   other: {

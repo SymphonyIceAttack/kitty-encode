@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "KittyEncode",
     images: [
       {
-        url: `${siteUrl}/password-guide-pixel.jpeg`,
+        url: `${siteUrl}/images/blog/password-guide-pixel.jpeg`,
         width: 1200,
         height: 630,
         alt: "Password Security Guide",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "Password Security: Entropy, Salting, and KDFs",
     description:
       "Master password security: entropy, salting, and key derivation functions like Argon2 and bcrypt.",
-    images: [`${siteUrl}/password-guide-pixel.jpeg`],
+    images: [`${siteUrl}/images/blog/password-guide-pixel.jpeg`],
     creator: "@kittyencode",
   },
   other: {

@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "KittyEncode",
     images: [
       {
-        url: `${siteUrl}/encoding-guide-pixel.jpeg`,
+        url: `${siteUrl}/images/blog/encoding-guide-pixel.jpeg`,
         width: 1200,
         height: 630,
         alt: "Character Encoding Engineering Guide",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "Character Encoding: The UTF-8 Engineering Guide",
     description:
       "Master character encoding fundamentals with our comprehensive UTF-8 guide.",
-    images: [`${siteUrl}/encoding-guide-pixel.jpeg`],
+    images: [`${siteUrl}/images/blog/encoding-guide-pixel.jpeg`],
     creator: "@kittyencode",
   },
   other: {

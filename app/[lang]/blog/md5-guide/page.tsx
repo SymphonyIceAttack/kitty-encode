@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "KittyEncode",
     images: [
       {
-        url: `${siteUrl}/md5-guide-pixel.jpeg`,
+        url: `${siteUrl}/images/blog/md5-guide-pixel.jpeg`,
         width: 1200,
         height: 630,
         alt: "MD5 Hashing Engineering Guide",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "MD5 Hashing: Security Analysis and Engineering Guide",
     description:
       "Comprehensive guide to MD5 hashing: understand Merkle-Damgård construction, collision attacks, and appropriate use cases.",
-    images: [`${siteUrl}/md5-guide-pixel.jpeg`],
+    images: [`${siteUrl}/images/blog/md5-guide-pixel.jpeg`],
     creator: "@kittyencode",
   },
   other: {

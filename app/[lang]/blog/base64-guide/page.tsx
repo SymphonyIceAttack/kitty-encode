@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "KittyEncode",
     images: [
       {
-        url: `${siteUrl}/base64-guide-pixel.jpeg`,
+        url: `${siteUrl}/images/blog/base64-guide-pixel.jpeg`,
         width: 1200,
         height: 630,
         alt: "Base64 Encoding Engineering Guide",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "Base64 Encoding: The Definitive Engineering Guide",
     description:
       "Master Base64 encoding with our comprehensive engineering guide. Learn RFC 4648 standards and implementation best practices.",
-    images: [`${siteUrl}/base64-guide-pixel.jpeg`],
+    images: [`${siteUrl}/images/blog/base64-guide-pixel.jpeg`],
     creator: "@kittyencode",
   },
   other: {
