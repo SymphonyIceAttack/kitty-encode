@@ -61,30 +61,30 @@ export const base64Encoder = {
   "base64Encoder.useCase.serialization":
     "Data serialization for web applications",
 
-  "base64Encoder.limitsTitle": "Usage Limits & Best Practices",
-  "base64Encoder.limits.limitations": "⚠️ Limitations",
+  "base64Encoder.limitsTitle": "Verwendungslimits und Best Practices",
+  "base64Encoder.limits.limitations": "⚠️ Einschränkungen",
   "base64Encoder.limits.sizeIncrease":
-    "Increases data size by ~33% (4 chars per 3 bytes)",
+    "Erhöht die Datengröße um ~33% (4 Zeichen pro 3 Bytes)",
   "base64Encoder.limits.largeFiles":
-    "Not suitable for large files (use binary protocols instead)",
+    "Nicht geeignet für große Dateien (verwenden Sie stattdessen Binärprotokolle)",
   "base64Encoder.limits.notEncryption":
-    "Not encryption - easily reversible, don't use for sensitive data",
+    "Keine Verschlüsselung - leicht umkehrbar, nicht für sensible Daten verwenden",
   "base64Encoder.limits.browserMemory":
-    "Browser memory limits for very large inputs",
+    "Browser-Speicherlimits für sehr große Eingaben",
 
   "base64Encoder.limits.bestPractices": "✅ Best Practices",
   "base64Encoder.limits.smallBinary":
-    "Use for small binary data (images, files < 10MB)",
+    "Verwenden Sie für kleine Binärdaten (Bilder, Dateien < 10MB)",
   "base64Encoder.limits.compression":
-    "Combine with compression (gzip) for efficiency",
+    "Kombinieren Sie mit Kompression (gzip) für mehr Effizienz",
   "base64Encoder.limits.urlSafe":
-    "Use URL-safe Base64 (+/-) for web applications",
+    "Verwenden Sie URL-sicheres Base64 (+/-) für Web-Anwendungen",
   "base64Encoder.limits.validation":
-    "Always validate Base64 input before decoding",
+    "Validieren Sie Base64-Eingaben vor dem Dekodieren immer",
 
-  "base64Encoder.security.title": "🔒 Security Note",
+  "base64Encoder.security.title": "🔒 Sicherheitshinweis",
   "base64Encoder.security.desc":
-    "Base64 is NOT encryption. It provides no security or privacy. Only use for data format conversion, never for protecting sensitive information. For encryption, use proper cryptographic algorithms like AES.",
+    "Base64 ist KEINE Verschlüsselung. Es bietet keine Sicherheit oder Privatsphäre. Verwenden Sie es nur für die Datenformatkonvertierung, niemals zum Schutz sensibler Informationen. Für die Verschlüsselung verwenden Sie properitäre kryptografische Algorithmen wie AES.",
 
   // SEO Content
   "base64Encoder.seo.title": "Was ist Base64-Kodierung?",

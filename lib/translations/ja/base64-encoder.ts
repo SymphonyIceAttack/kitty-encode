@@ -60,30 +60,30 @@ export const base64Encoder = {
   "base64Encoder.useCase.serialization":
     "Data serialization for web applications",
 
-  "base64Encoder.limitsTitle": "Usage Limits & Best Practices",
-  "base64Encoder.limits.limitations": "⚠️ Limitations",
+  "base64Encoder.limitsTitle": "使用制限とベストプラクティス",
+  "base64Encoder.limits.limitations": "⚠️ 制限事項",
   "base64Encoder.limits.sizeIncrease":
-    "Increases data size by ~33% (4 chars per 3 bytes)",
+    "データサイズが約33%増加（3バイトにつき4文字）",
   "base64Encoder.limits.largeFiles":
-    "Not suitable for large files (use binary protocols instead)",
+    "大きなファイルには適していません（代わりにバイナリプロトコルを使用してください）",
   "base64Encoder.limits.notEncryption":
-    "Not encryption - easily reversible, don't use for sensitive data",
+    "暗号化ではありません - 簡単に逆変換できるため、機密データには使用しないでください",
   "base64Encoder.limits.browserMemory":
-    "Browser memory limits for very large inputs",
+    "非常に大きな入力はブラウザのメモリ制限の対象となります",
 
-  "base64Encoder.limits.bestPractices": "✅ Best Practices",
+  "base64Encoder.limits.bestPractices": "✅ ベストプラクティス",
   "base64Encoder.limits.smallBinary":
-    "Use for small binary data (images, files < 10MB)",
+    "小さなバイナリデータに使用（画像、10MB未満のファイル）",
   "base64Encoder.limits.compression":
-    "Combine with compression (gzip) for efficiency",
+    "効率のために圧縮（gzip）と組み合わせて使用",
   "base64Encoder.limits.urlSafe":
-    "Use URL-safe Base64 (+/-) for web applications",
+    "WebアプリケーションではURLセーフBase64（+/-）を使用",
   "base64Encoder.limits.validation":
-    "Always validate Base64 input before decoding",
+    "デコードする前にBase64入力を常に検証してください",
 
-  "base64Encoder.security.title": "🔒 Security Note",
+  "base64Encoder.security.title": "🔒 セキュリティ上の注意",
   "base64Encoder.security.desc":
-    "Base64 is NOT encryption. It provides no security or privacy. Only use for data format conversion, never for protecting sensitive information. For encryption, use proper cryptographic algorithms like AES.",
+    "Base64は暗号化ではありません。セキュリティやプライバシーを提供しません。データ形式の変換にのみ使用し、機密情報の保護には決して使用しないでください。暗号化にはAESなどの適切な暗号化アルゴリズムを使用してください。",
 
   // SEO Content
   "base64Encoder.seo.title": "Base64エンコードとは何ですか？",

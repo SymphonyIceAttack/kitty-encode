@@ -60,30 +60,30 @@ export const base64Encoder = {
   "base64Encoder.useCase.serialization":
     "Data serialization for web applications",
 
-  "base64Encoder.limitsTitle": "Usage Limits & Best Practices",
-  "base64Encoder.limits.limitations": "⚠️ Limitations",
+  "base64Encoder.limitsTitle": "Ограничения использования и лучшие практики",
+  "base64Encoder.limits.limitations": "⚠️ Ограничения",
   "base64Encoder.limits.sizeIncrease":
-    "Increases data size by ~33% (4 chars per 3 bytes)",
+    "Увеличивает размер данных примерно на 33% (4 символа на 3 байта)",
   "base64Encoder.limits.largeFiles":
-    "Not suitable for large files (use binary protocols instead)",
+    "Не подходит для больших файлов (используйте бинарные протоколы)",
   "base64Encoder.limits.notEncryption":
-    "Not encryption - easily reversible, don't use for sensitive data",
+    "Не является шифрованием - легко обратимо, не используйте для конфиденциальных данных",
   "base64Encoder.limits.browserMemory":
-    "Browser memory limits for very large inputs",
+    "Ограничения памяти браузера для очень больших входных данных",
 
-  "base64Encoder.limits.bestPractices": "✅ Best Practices",
+  "base64Encoder.limits.bestPractices": "✅ Лучшие практики",
   "base64Encoder.limits.smallBinary":
-    "Use for small binary data (images, files < 10MB)",
+    "Используйте для небольших бинарных данных (изображения, файлы < 10 МБ)",
   "base64Encoder.limits.compression":
-    "Combine with compression (gzip) for efficiency",
+    "Комбинируйте со сжатием (gzip) для повышения эффективности",
   "base64Encoder.limits.urlSafe":
-    "Use URL-safe Base64 (+/-) for web applications",
+    "Используйте URL-безопасный Base64 (+/-) для веб-приложений",
   "base64Encoder.limits.validation":
-    "Always validate Base64 input before decoding",
+    "Всегда проверяйте ввод Base64 перед декодированием",
 
-  "base64Encoder.security.title": "🔒 Security Note",
+  "base64Encoder.security.title": "🔒 Примечание по безопасности",
   "base64Encoder.security.desc":
-    "Base64 is NOT encryption. It provides no security or privacy. Only use for data format conversion, never for protecting sensitive information. For encryption, use proper cryptographic algorithms like AES.",
+    "Base64 НЕ является шифрованием. Он не обеспечивает безопасность или конфиденциальность. Используйте только для преобразования форматов данных, никогда для защиты конфиденциальной информации. Для шифрования используйте соответствующие криптографические алгоритмы, такие как AES.",
 
   // SEO Content
   "base64Encoder.seo.title": "Что такое кодирование Base64?",
