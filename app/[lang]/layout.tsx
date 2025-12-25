@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Nunito, VT323 } from "next/font/google";
 import "../globals.css";
 import { redirect } from "next/navigation";
+import Script from "next/script";
 import { CatSystem } from "@/components/cat/cat-system";
 import { BackgroundDecorations } from "@/components/layout/background-decorations";
 import { Footer } from "@/components/layout/footer-client";
@@ -87,6 +88,20 @@ export default async function RootLayout({
       <head>
         <link rel="preload" href="/base-logo.png" as="image" />
       </head>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-KL2K8YG0C4"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-KL2K8YG0C4');
+          `}
+      </Script>
+
       <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
