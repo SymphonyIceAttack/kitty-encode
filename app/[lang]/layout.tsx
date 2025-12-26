@@ -52,6 +52,7 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
   other: {
+    "google-adsense-account": "ca-pub-6087196891064352",
     "preload-image": "/base-logo.png",
   },
   manifest: "/manifest.json",
