@@ -1,5 +1,3 @@
-"use client";
-
 import type { FAQPage, WebApplication, WithContext } from "schema-dts";
 import { siteUrl } from "@/lib/config";
 import type { LanguageType } from "@/lib/translations";
