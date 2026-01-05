@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Master password security with our comprehensive guide. Learn about entropy calculation, salting to prevent rainbow table attacks, and key derivation functions like Argon2 and bcrypt for modern authentication systems.",
   keywords:
     "password security, password entropy, salting, kdf, argon2, bcrypt, key derivation, rainbow table, password hashing, nist guidelines, credential security",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {

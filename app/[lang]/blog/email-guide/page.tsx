@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EmailGuideContent } from "@/components/blog/guides/email-guide-content";
 import { EmailGuideStructuredData } from "@/components/structured-data/blog-post";
+import { EmailGuideBreadcrumbSchema } from "@/components/structured-data/breadcrumbs";
 import { ArticleBreadcrumbNav } from "@/components/ui/breadcrumb";
 import { siteUrl } from "@/lib/config";
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     "Master email validation with our comprehensive engineering guide. Learn RFC 5322 standards, regex patterns, format verification vs existence checking, and build robust email validation in any programming language.",
   keywords:
     "email validation, email verification, RFC 5322, email regex, email format validation, data quality, web development, SMTP verification",
-  authors: [{ name: "Engineering Research", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Research", url: `${siteUrl}/en/about` }],
   creator: "Engineering Research",
   publisher: "KittyEncode",
   robots: {
@@ -72,6 +73,12 @@ export default async function EmailGuidePage() {
   return (
     <>
       <EmailGuideStructuredData />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(EmailGuideBreadcrumbSchema()),
+        }}
+      />
       <div className="container mx-auto max-w-4xl px-4 pt-8">
         <ArticleBreadcrumbNav title="Email Validation Guide" />
       </div>

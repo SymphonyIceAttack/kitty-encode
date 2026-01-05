@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Master binary code with our comprehensive engineering guide. Learn binary representation, bitwise operations, two's complement, floating-point formats, and practical applications in computing systems.",
   keywords:
     "binary code, binary representation, bitwise operations, two's complement, floating point, computer science, digital systems, binary arithmetic, bit manipulation",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {

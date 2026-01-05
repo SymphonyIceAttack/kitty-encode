@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Master character encoding fundamentals with our comprehensive UTF-8 guide. Learn Unicode, byte-level bit layouts, Byte Order Marks (BOM), and how to debug encoding corruption (mojibake) in modern web applications.",
   keywords:
     "utf-8, unicode, character encoding, mojibake, byte order mark, text encoding, character set, utf-16, internationalization, i18n, text serialization",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "Master text encoding formats with our comprehensive guide. Understand byte-level mechanics of ASCII, Hex, Binary, and Base64. Learn how these encodings represent the same underlying data in different formats.",
   keywords:
     "hex encoding, binary encoding, base64, text encoding, data serialization, byte-level encoding, hex converter, binary representation, encoding formats, transfer encoding",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {

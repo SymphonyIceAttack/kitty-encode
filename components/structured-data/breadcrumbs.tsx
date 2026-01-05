@@ -169,3 +169,20 @@ export function BinaryCodeGuideBreadcrumbSchema() {
     },
   ]);
 }
+
+export function EmailGuideBreadcrumbSchema() {
+  return generateBreadcrumbSchema([
+    {
+      name: "Home",
+      url: `${siteUrl}/en`,
+    },
+    {
+      name: "Developer Guides",
+      url: `${siteUrl}/en/blog`,
+    },
+    {
+      name: "Email Validation Guide",
+      url: `${siteUrl}/en/blog/email-guide`,
+    },
+  ]);
+}

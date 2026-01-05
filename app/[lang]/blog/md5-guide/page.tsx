@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Comprehensive guide to MD5 hashing: understand Merkle-Damgård construction, collision attacks, and appropriate use cases for non-cryptographic checksums in modern software development.",
   keywords:
     "md5, md5 hash, cryptographic hash, data integrity, checksum, merkle-damgard, collision attack, hash algorithm, file verification",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {

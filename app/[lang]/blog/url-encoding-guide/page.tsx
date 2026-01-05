@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Master percent-encoding (RFC 3986) with our comprehensive engineering guide. Learn about reserved character sets, UTF-8 byte sequences, and security best practices for URL construction in modern web development.",
   keywords:
     "url encoding, percent encoding, rfc 3986, uri encoding, http, query strings, url parameters, web development, encoding tools, character encoding",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {

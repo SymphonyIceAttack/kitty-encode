@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Master UUID generation in distributed systems with our comprehensive guide. Compare UUID v4, v7 (RFC 9562), and ULIDs. Learn about database indexing performance, collision probabilities, and entropy requirements.",
   keywords:
     "uuid, uuid v7, rfc 9562, ulid, distributed systems, unique identifier, database indexing, uuid v4, guid, primary key",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {

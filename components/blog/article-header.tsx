@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Calendar, Clock, User } from "lucide-react";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 
 interface ArticleHeaderProps {
@@ -51,7 +52,13 @@ export function ArticleHeader({
         className="aspect-video bg-muted relative overflow-hidden rounded-2xl mb-8"
         variants={fadeInUp}
       >
-        <img src={image} alt={title} className="w-full h-full object-cover" />
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+        />
         {featured && (
           <div className="absolute top-4 left-4">
             <Badge className="bg-accent text-accent-foreground rounded-full">

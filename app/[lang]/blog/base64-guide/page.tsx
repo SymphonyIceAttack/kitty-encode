@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Master Base64 encoding with our comprehensive engineering guide. Learn RFC 4648 standards, Base64URL variants, performance optimization, and implementation best practices for modern web development.",
   keywords:
     "base64 encoding, base64url, rfc 4648, data encoding, binary to text, mime, encoding algorithm, web development, data serialization",
-  authors: [{ name: "Engineering Team", url: `${siteUrl}/about` }],
+  authors: [{ name: "Engineering Team", url: `${siteUrl}/en/about` }],
   creator: "Engineering Team",
   publisher: "KittyEncode",
   robots: {
