@@ -208,22 +208,46 @@ export function Footer({ lang }: FooterProps) {
               {t("footer.tagline")}
             </p>
             {/* 社交图标 */}
-            <div className="mt-4 flex gap-2">
-              <motion.div
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  href="https://github.com/SymphonyIceAttack/kitty-encode"
-                  className="p-2 rounded-xl border-2 border-foreground/40 dark:border-primary/40 hover:bg-accent transition-colors block"
-                  style={{ boxShadow: "2px 2px 0 0 var(--foreground)" }}
-                  aria-label="GitHub repository"
-                  target="_blank"
-                  rel="noopener noreferrer"
+            <div className="mt-4 flex flex-col gap-2">
+              <div className="flex gap-2">
+                <motion.div
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <Github className="h-5 w-5" aria-hidden="true" />
-                </Link>
-              </motion.div>
+                  <Link
+                    href="https://github.com/SymphonyIceAttack/kitty-encode"
+                    className="p-2 rounded-xl border-2 border-foreground/40 dark:border-primary/40 hover:bg-accent transition-colors block"
+                    style={{ boxShadow: "2px 2px 0 0 var(--foreground)" }}
+                    aria-label="GitHub repository"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Github className="h-5 w-5" aria-hidden="true" />
+                  </Link>
+                </motion.div>
+              </div>
+              <Link
+                href="https://www.producthunt.com/products/kittyencode/reviews/new?utm_source=badge-product_review&utm_medium=badge&utm_source=badge-kittyencode"
+                className="inline-block"
+                aria-label="Review on Product Hunt"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1145586&theme=light"
+                  alt="Review on Product Hunt"
+                  width={250}
+                  height={54}
+                  className="dark:hidden"
+                />
+                <Image
+                  src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1145586&theme=dark"
+                  alt="Review on Product Hunt"
+                  width={250}
+                  height={54}
+                  className="hidden dark:block"
+                />
+              </Link>
             </div>
           </motion.div>
 
